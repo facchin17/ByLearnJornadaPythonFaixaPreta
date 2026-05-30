@@ -1,0 +1,189 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Company {
+  id            String   @id @default(cuid())
+  name          String
+  slug          String   @unique
+  logo          String?
+  phone         String
+  email         String
+  website       String?
+  services      String[]
+  serviceArea   String[]
+  businessHours Json
+  averageTicket Float    @default(750)
+  monthlyFee    Float    @default(1000)
+  twilioPhone   String?
+  ghlApiKey     String?
+  googleCalId   String?
+  isActive      Boolean  @default(true)
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  leads         Lead[]
+  appointments  Appointment[]
+  conversations Conversation[]
+  users         User[]
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  name         String?
+  passwordHash String?
+  role         UserRole @default(COMPANY_ADMIN)
+  companyId    String?
+  company      Company? @relation(fields: [companyId], references: [id])
+  createdAt    DateTime @default(now())
+
+  @@index([companyId])
+}
+
+enum UserRole {
+  SUPER_ADMIN
+  COMPANY_ADMIN
+}
+
+model Lead {
+  id             String     @id @default(cuid())
+  companyId      String
+  company        Company    @relation(fields: [companyId], references: [id])
+  name           String
+  phone          String
+  email          String?
+  service        String?
+  urgency        Urgency    @default(NORMAL)
+  city           String?
+  notes          String?
+  estimatedValue Float?
+  source         LeadSource @default(WEBSITE)
+  status         LeadStatus @default(NEW)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  appointments  Appointment[]
+  conversations Conversation[]
+
+  @@index([companyId])
+  @@index([status])
+  @@index([createdAt])
+}
+
+enum LeadSource {
+  WEBSITE
+  CHATBOT
+  MISSED_CALL
+  MANUAL
+}
+
+enum LeadStatus {
+  NEW
+  CONTACTED
+  BOOKED
+  WON
+  LOST
+}
+
+enum Urgency {
+  EMERGENCY
+  HIGH
+  NORMAL
+  LOW
+}
+
+model Conversation {
+  id        String             @id @default(cuid())
+  companyId String
+  company   Company            @relation(fields: [companyId], references: [id])
+  leadId    String?
+  lead      Lead?              @relation(fields: [leadId], references: [id])
+  channel   Channel            @default(CHAT)
+  phone     String?
+  status    ConversationStatus @default(OPEN)
+  messages  Message[]
+  createdAt DateTime           @default(now())
+  updatedAt DateTime           @updatedAt
+
+  @@index([companyId])
+  @@index([phone])
+}
+
+enum Channel {
+  CHAT
+  SMS
+}
+
+enum ConversationStatus {
+  OPEN
+  CLOSED
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id])
+  role           MessageRole
+  content        String
+  createdAt      DateTime     @default(now())
+
+  @@index([conversationId])
+}
+
+enum MessageRole {
+  USER
+  ASSISTANT
+}
+
+model Appointment {
+  id            String            @id @default(cuid())
+  companyId     String
+  company       Company           @relation(fields: [companyId], references: [id])
+  leadId        String?
+  lead          Lead?             @relation(fields: [leadId], references: [id])
+  customerName  String
+  customerPhone String
+  customerEmail String?
+  service       String
+  address       String?
+  scheduledAt   DateTime
+  duration      Int               @default(120)
+  status        AppointmentStatus @default(PENDING)
+  notes         String?
+  googleEventId String?
+  createdAt     DateTime          @default(now())
+  updatedAt     DateTime          @updatedAt
+
+  @@index([companyId])
+  @@index([scheduledAt])
+}
+
+enum AppointmentStatus {
+  PENDING
+  CONFIRMED
+  COMPLETED
+  CANCELLED
+  NO_SHOW
+}
+
+model RoiSnapshot {
+  id                String   @id @default(cuid())
+  companyId         String
+  month             String
+  leadsCount        Int      @default(0)
+  missedCallsCount  Int      @default(0)
+  appointmentsCount Int      @default(0)
+  jobsWon           Int      @default(0)
+  estimatedRevenue  Float    @default(0)
+  monthlyFee        Float    @default(0)
+  createdAt         DateTime @default(now())
+
+  @@unique([companyId, month])
+  @@index([companyId])
+}
