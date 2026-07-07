@@ -1,0 +1,382 @@
+<title>Projeto Paraíso — o refúgio autossuficiente</title>
+<style>
+  :root{
+    --bg:#0c1410; --bg2:#0f1a14; --surf:#15211a; --surf2:#1c2b22;
+    --line:rgba(197,160,84,.18); --line2:rgba(255,255,255,.07);
+    --ink:#eceadf; --mut:#9fae9d; --mut2:#6f8070;
+    --gold:#c5a054; --gold-2:#e0c583; --moss:#6ea67e; --mist:#b9cdc0;
+    --maxw:1160px;
+    --serif:Georgia,"Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    line-height:1.62;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  h1,h2,h3{font-family:var(--serif);font-weight:400;text-wrap:balance;letter-spacing:.01em}
+  a{color:var(--gold-2);text-decoration:none}
+  .eyebrow{font-family:var(--sans);text-transform:uppercase;letter-spacing:.32em;
+    font-size:.66rem;color:var(--gold);font-weight:600}
+  .num{font-variant-numeric:tabular-nums}
+
+  /* HERO */
+  #scene{position:fixed;inset:0;z-index:0;display:block}
+  .hero{position:relative;z-index:2;min-height:100svh;display:flex;flex-direction:column;
+    justify-content:flex-end;align-items:center;text-align:center;padding:0 24px 12svh}
+  .hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:55%;z-index:-1;
+    background:linear-gradient(to bottom,transparent,var(--bg) 92%)}
+  .hero .eyebrow{margin-bottom:22px}
+  .hero h1{font-size:clamp(2.7rem,8.5vw,6rem);line-height:.98;margin:0;
+    letter-spacing:-.01em;text-shadow:0 2px 50px rgba(0,0,0,.7)}
+  .hero h1 em{font-style:italic;color:var(--gold-2)}
+  .lede{max-width:600px;margin:26px auto 0;color:#dce2d8;font-size:1.1rem;
+    text-shadow:0 1px 20px rgba(0,0,0,.6)}
+  .scroll-cue{margin-top:44px;font-size:.68rem;letter-spacing:.3em;text-transform:uppercase;
+    color:var(--mist);animation:float 2.6s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0);opacity:.55}50%{transform:translateY(7px);opacity:1}}
+
+  main{position:relative;z-index:2;background:linear-gradient(to bottom,var(--bg),var(--bg2) 45%,var(--bg));
+    border-top:1px solid var(--line)}
+  section{padding:78px 0}
+  .sec-head{max-width:730px;margin-bottom:40px}
+  .sec-head h2{font-size:clamp(1.9rem,4.4vw,2.8rem);margin:.3em 0 0}
+  .sec-head p{color:var(--mut);margin:.7em 0 0;font-size:1.02rem}
+
+  /* GOLDEN RULE */
+  .rule{background:linear-gradient(150deg,var(--surf),var(--surf2));border:1px solid var(--line);
+    border-radius:18px;padding:34px 32px}
+  .rule h2{font-size:clamp(1.6rem,3.5vw,2.2rem);margin:0 0 6px}
+  .rule .two{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:22px 0}
+  .capex,.opex{border-radius:12px;padding:18px 20px;border:1px solid var(--line2)}
+  .capex{background:rgba(110,166,126,.09)}.opex{background:rgba(197,160,84,.09)}
+  .capex .k,.opex .k{font-family:var(--serif);font-size:1.1rem;color:var(--gold-2)}
+  .capex p,.opex p{margin:4px 0 0;font-size:.9rem;color:#c7d0c4}
+  .scen{width:100%;border-collapse:collapse;margin-top:8px;font-size:.9rem}
+  .scen th,.scen td{text-align:left;padding:11px 12px;border-bottom:1px solid var(--line2);vertical-align:top}
+  .scen th{font-family:var(--sans);text-transform:uppercase;letter-spacing:.12em;font-size:.66rem;color:var(--mut2);font-weight:600}
+  .scen td.n{font-variant-numeric:tabular-nums;white-space:nowrap}
+  .scen .v-ok{color:var(--moss)}.scen .v-warn{color:var(--gold-2)}.scen .v-no{color:#d98a86}
+  .punch{margin-top:20px;font-size:1.02rem;color:#dce2d8}
+  .punch b{color:var(--gold-2)}
+
+  /* DOMAIN CARDS */
+  .cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:18px}
+  .card{background:var(--surf);border:1px solid var(--line2);border-radius:16px;padding:24px 24px 22px;
+    display:flex;flex-direction:column;transition:transform .3s,border-color .3s}
+  .card:hover{transform:translateY(-4px);border-color:var(--line)}
+  .card .top{display:flex;align-items:baseline;gap:10px;margin-bottom:4px}
+  .card .ic{font-size:1.3rem}
+  .card .idx{font-family:var(--serif);color:var(--gold);font-size:.82rem}
+  .card h3{font-size:1.32rem;margin:.1em 0 .5em}
+  .card p{margin:0 0 14px;font-size:.9rem;color:#c2ccc0}
+  .tiers{display:flex;flex-direction:column;gap:7px;margin-top:auto}
+  .tier{display:flex;justify-content:space-between;gap:10px;font-size:.82rem;
+    padding:7px 0;border-top:1px solid var(--line2)}
+  .tier .tn{color:var(--mist)}
+  .tier .tc{color:var(--gold-2);font-variant-numeric:tabular-nums;white-space:nowrap;text-align:right}
+
+  /* SYNERGIES */
+  .syn{display:grid;grid-template-columns:repeat(auto-fit,minmax(255px,1fr));gap:16px}
+  .synx{background:var(--surf);border:1px solid var(--line2);border-radius:13px;padding:20px}
+  .synx .h{font-family:var(--serif);color:var(--gold-2);font-size:1.05rem;margin-bottom:5px}
+  .synx p{margin:0;font-size:.87rem;color:#c2ccc0}
+
+  /* PHASES */
+  .rail{border-left:1px solid var(--line);margin-left:8px}
+  .stop{position:relative;padding:16px 0 16px 30px}
+  .stop::before{content:"";position:absolute;left:-5px;top:23px;width:9px;height:9px;border-radius:50%;
+    background:var(--gold);box-shadow:0 0 0 4px rgba(197,160,84,.14)}
+  .stop .ph{font-family:var(--serif);color:var(--gold-2);font-size:.8rem;letter-spacing:.06em}
+  .stop .ti{font-size:1.08rem;margin:2px 0 3px}
+  .stop .de{font-size:.88rem;color:var(--mut)}
+
+  /* FILM TOUCHES */
+  .film{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+  .fx{background:linear-gradient(155deg,var(--surf),var(--bg2));border:1px solid var(--line2);
+    border-radius:13px;padding:20px}
+  .fx .n{font-family:var(--serif);color:var(--gold);font-size:1.4rem}
+  .fx .t{font-size:.98rem;margin:4px 0 4px;color:var(--ink)}
+  .fx p{margin:0;font-size:.83rem;color:#b6c0b4}
+
+  .closing{text-align:center;max-width:760px;margin:0 auto}
+  .closing p{font-family:var(--serif);font-size:clamp(1.15rem,2.5vw,1.55rem);line-height:1.5;color:#dfe4da;font-style:italic}
+  .cta{display:inline-flex;align-items:center;gap:10px;margin-top:32px;padding:15px 28px;
+    border:1px solid var(--gold);border-radius:99px;color:var(--gold-2);font-family:var(--sans);
+    font-size:.92rem;transition:background .3s,color .3s}
+  .cta:hover{background:var(--gold);color:#0c1410}
+  footer{text-align:center;padding:54px 24px 76px;color:var(--mut2);font-size:.8rem}
+
+  @media(max-width:720px){ .rule .two{grid-template-columns:1fr} .scen{font-size:.82rem} .scen th:nth-child(4),.scen td:nth-child(4){display:none} }
+  @media(prefers-reduced-motion:reduce){ *{animation:none!important;transition:none!important;scroll-behavior:auto!important} }
+</style>
+
+<canvas id="scene" aria-hidden="true"></canvas>
+
+<header class="hero">
+  <p class="eyebrow">Um santuário privado no meio do nada</p>
+  <h1>Projeto<br><em>Paraíso</em></h1>
+  <p class="lede">Uma montanha só sua. Spa nórdico, seu próprio Wagyu, seus ovos ao amanhecer, e as estrelas do seu observatório. Natural por fora, autossuficiente por dentro — e sem risco extremo.</p>
+  <p class="scroll-cue">desça a serra ↓</p>
+</header>
+
+<main>
+  <!-- GOLDEN RULE -->
+  <section id="regra">
+    <div class="wrap">
+      <div class="rule">
+        <p class="eyebrow">A regra de ouro — leia antes de qualquer sonho</p>
+        <h2>O perigo não é o preço de compra. É a conta anual.</h2>
+        <div class="two">
+          <div class="capex"><div class="k">CAPEX</div><p>O quanto custa <b>construir</b> — gasto único. A terra e a casa você compra à vista: é o ativo que valoriza.</p></div>
+          <div class="opex"><div class="k">OPEX</div><p>O quanto custa <b>manter todo ano</b> — folha, manutenção, energia, seguros. É isto que quebra quem não calcula.</p></div>
+        </div>
+        <div style="overflow-x:auto">
+        <table class="scen">
+          <thead><tr><th>Cenário</th><th>CAPEX</th><th>OPEX / ano</th><th>% da renda</th><th>Veredito</th></tr></thead>
+          <tbody>
+            <tr><td><b>Enxuto</b><br>o paraíso sustentável</td><td class="n">US$ 2–4 mi</td><td class="n">US$ 180–260k</td><td class="n">~30%</td><td class="v-ok">✅ Sustentável — pago em 3–5 anos</td></tr>
+            <tr><td><b>Dos Sonhos</b><br>pista, hangar, observatório</td><td class="n">US$ 8–18 mi</td><td class="n">US$ 400–620k</td><td class="n">55–85%</td><td class="v-warn">⚠️ Exige capital, não fluxo</td></tr>
+            <tr><td><b>Absurdo</b><br>aeródromo + jato + frota</td><td class="n">US$ 25–70 mi+</td><td class="n">US$ 1,2–2,5 mi</td><td class="n">&gt;100%</td><td class="v-no">❌ Inviável só com a renda</td></tr>
+          </tbody>
+        </table>
+        </div>
+        <p class="punch">A jogada vencedora: <b>terra + casa à vista</b>; os brinquedos (aviação, observatório, funicular) <b>em fases</b>, pagos pelo excedente. Renda de referência: <b>~US$ 720k/ano líquido</b> — nunca deixe o OPEX passar de ~40% dela.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- DOMAINS -->
+  <section id="dominios">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Os dez sistemas</p>
+        <h2>Como se constrói um paraíso</h2>
+        <p>Cada sistema em três níveis — do enxuto e sustentável ao absurdo. Números reais de pesquisa (2025–26). Recomendação de base: <b>Serra da Mantiqueira</b>, 100–200 ha, a 2–3h de São Paulo.</p>
+      </div>
+      <div class="cards">
+
+        <article class="card"><div class="top"><span class="ic">🗺️</span><span class="idx">01</span></div>
+          <h3>A Terra & a Vista</h3>
+          <p>Mantiqueira: R$ 25–60 mil/ha, céu escuro, nascente na cota alta. A vista você não constrói — compra. Cuidado com APP e Reserva Legal <em>antes</em> de fechar.</p>
+          <div class="tiers">
+            <div class="tier"><span class="tn">Essencial · 30–80 ha</span><span class="tc">US$ 0,3–1,5 mi</span></div>
+            <div class="tier"><span class="tn">Dos Sonhos · 150–300 ha</span><span class="tc">US$ 1,5–6 mi</span></div>
+            <div class="tier"><span class="tn">Absurdo · rancho Montana</span><span class="tc">US$ 5–80 mi+</span></div>
+          </div></article>
+
+        <article class="card"><div class="top"><span class="ic">🏡</span><span class="idx">02</span></div>
+          <h3>A Casa</h3>
+          <p>Estilo Deplar/Aman: parede de vidro de pé-direito duplo para a montanha, pedra bruta, madeira quente, teto verde. Pavilhões de hóspedes separados.</p>
+          <div class="tiers">
+            <div class="tier"><span class="tn">Essencial · 300 m²</span><span class="tc">US$ 0,9–1,8 mi</span></div>
+            <div class="tier"><span class="tn">Dos Sonhos · lodge 600 m²</span><span class="tc">US$ 3–8 mi</span></div>
+            <div class="tier"><span class="tn">Absurdo · complexo na encosta</span><span class="tc">US$ 15–40 mi+</span></div>
+          </div></article>
+
+        <article class="card"><div class="top"><span class="ic">🧖</span><span class="idx">03</span></div>
+          <h3>O Spa Nórdico</h3>
+          <p>Sauna a lenha → cold plunge → ofurô com vista. Infinity pool aquecida por geotérmica apontada para o vale. Klafs, Harvia, Kirami.</p>
+          <div class="tiers">
+            <div class="tier"><span class="tn">Essencial</span><span class="tc">US$ 40–120k</span></div>
+            <div class="tier"><span class="tn">Dos Sonhos · infinity pool</span><span class="tc">US$ 350–750k</span></div>
+            <div class="tier"><span class="tn">Absurdo · spa cave na rocha</span><span class="tc">US$ 1,5–4 mi+</span></div>
+          </div></article>
+
+        <article class="card"><div class="top"><span class="ic">⚡</span><span class="idx">04</span></div>
+          <h3>Off-Grid</h3>
+          <p>Solar + baterias LFP + micro-hidro (se houver rio) + geotérmica + água de nascente + Starlink. Conforto de cidade, zero dependência de rede.</p>
+          <div class="tiers">
+            <div class="tier"><span class="tn">Essencial</span><span class="tc">US$ 60–130k</span></div>
+            <div class="tier"><span class="tn">Dos Sonhos · redundante</span><span class="tc">US$ 150–350k</span></div>
+            <div class="tier"><span class="tn">Absurdo · hidrogênio verde</span><span class="tc">US$ 0,5–1,5 mi+</span></div>
+          </div></article>
+
+        <article class="card"><div class="top"><span class="ic">🥩</span><span class="idx">05</span></div>
+          <h3>O Wagyu</h3>
+          <p>4–6 fullblood Tajima, pasto + finalização com grão, abate humanitário na fazenda, e uma <b>sala de dry-aging própria</b>. Um novilho = 2 anos de bife A5. + vaca Jersey p/ queijo.</p>
+          <div class="tiers">
+            <div class="tier"><span class="tn">Essencial · F1</span><span class="tc">US$ 6–15k</span></div>
+            <div class="tier"><span class="tn">Dos Sonhos · fullblood</span><span class="tc">US$ 40–120k</span></div>
+            <div class="tier"><span class="tn">Absurdo · embriões do Japão</span><span class="tc">US$ 0,25–1 mi+</span></div>
+          </div></article>
+
+        <article class="card"><div class="top"><span class="ic">🐔</span><span class="idx">06</span></div>
+          <h3>As Galinhas & Aves</h3>
+          <p>5–8 heritage (Marans chocolate, Ameraucana azul) em pastejo natural — gema alaranjada de verdade. + codornas, abelhas e o Poulet de Bresse.</p>
+          <div class="tiers">
+            <div class="tier"><span class="tn">Essencial · 5–6 aves</span><span class="tc">US$ 0,8–3,5k</span></div>
+            <div class="tier"><span class="tn">Dos Sonhos · coop de luxo</span><span class="tc">US$ 12–25k</span></div>
+            <div class="tier"><span class="tn">Absurdo · Bresse + apiário</span><span class="tc">US$ 40–120k+</span></div>
+          </div></article>
+
+        <article class="card"><div class="top"><span class="ic">🌿</span><span class="idx">07</span></div>
+          <h3>Horta, Pomar & Vinha</h3>
+          <p>Market garden Fortier (US$ 140k/ano em 1,5 acre) + estufa de vidro + vinha e olival próprios (azeite e vinho de estate) + cave climatizada.</p>
+          <div class="tiers">
+            <div class="tier"><span class="tn">Essencial</span><span class="tc">US$ 60–180k</span></div>
+            <div class="tier"><span class="tn">Dos Sonhos · + jardineiro-chefe</span><span class="tc">US$ 0,5–1,2 mi</span></div>
+            <div class="tier"><span class="tn">Absurdo · winery + chef</span><span class="tc">US$ 2–6 mi+</span></div>
+          </div></article>
+
+        <article class="card"><div class="top"><span class="ic">🔭</span><span class="idx">08</span></div>
+          <h3>Céu & Observatório</h3>
+          <p>Meça o Bortle antes de comprar. Iluminação dark-sky em toda a fazenda. Do teto deslizante ao domo de pesquisa com o nome da família em descobertas de asteroides.</p>
+          <div class="tiers">
+            <div class="tier"><span class="tn">Essencial · teto deslizante</span><span class="tc">US$ 5–20k</span></div>
+            <div class="tier"><span class="tn">Dos Sonhos · cúpula</span><span class="tc">US$ 50–150k</span></div>
+            <div class="tier"><span class="tn">Absurdo · domo de pesquisa</span><span class="tc">US$ 0,3–0,5 mi+</span></div>
+          </div></article>
+
+        <article class="card"><div class="top"><span class="ic">🏎️</span><span class="idx">09</span></div>
+          <h3>Carros & Aviação</h3>
+          <p>Garagem-galeria climatizada + carga EV solar. Brevê ANTES da pista — aeronave parada é o pior gasto. Hangar-catedral: avião + carros num templo de vidro.</p>
+          <div class="tiers">
+            <div class="tier"><span class="tn">Garagem-galeria + utilitários</span><span class="tc">variável</span></div>
+            <div class="tier"><span class="tn">Pista + hangar (ANAC)</span><span class="tc">~US$ 1–4 mi</span></div>
+            <div class="tier"><span class="tn">Aeronave leve</span><span class="tc">US$ 0,8–3 mi</span></div>
+          </div></article>
+
+        <article class="card"><div class="top"><span class="ic">🛡️</span><span class="idx">10</span></div>
+          <h3>Segurança & Conformidade</h3>
+          <p>Onde mora o "sem risco extremo": medevac por heliponto, defesa contra incêndio florestal, reserva de água p/ fogo, holding rural, redundância N+1.</p>
+          <div class="tiers">
+            <div class="tier"><span class="tn">Medevac + hospital &lt;1h</span><span class="tc">essencial</span></div>
+            <div class="tier"><span class="tn">Perímetro anti-wildfire</span><span class="tc">essencial</span></div>
+            <div class="tier"><span class="tn">Holding + APP/CAR</span><span class="tc">antes da obra</span></div>
+          </div></article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SYNERGIES -->
+  <section id="sinergias">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">O que torna isto vivo</p>
+        <h2>As sinergias — não uma lista de brinquedos, uma máquina viva</h2>
+        <p>O verdadeiro luxo é que cada sistema alimenta o outro. É o que separa um "resort particular" de um organismo autossuficiente.</p>
+      </div>
+      <div class="syn">
+        <div class="synx"><div class="h">Micro-hidro × observatório</div><p>A micro-hidrelétrica roda 24h, silenciosa e sem vibração — a fonte perfeita para astrofotografia de longa exposição. Um gerador a diesel arruinaria as fotos.</p></div>
+        <div class="synx"><div class="h">Um loop geotérmico refrigera tudo</div><p>Dry-aging (1–3°C), adega (12–14°C), root cellar e cold plunge no mesmo sistema de solo — substituindo 4–5 compressores independentes.</p></div>
+        <div class="synx"><div class="h">Loop circular de nutrientes</div><p>Esterco do Wagyu + cama das galinhas → biodigestor → biogás na cozinha + adubo para a horta. Esgoto → gado → horta, tudo conectado.</p></div>
+        <div class="synx"><div class="h">Galinha atrás do gado</div><p>O galinheiro móvel rotacionado atrás do Wagyu sanitiza o pasto (as galinhas comem larvas do esterco), reduz vermífugo e aduba. Um sistema de pastejo só.</p></div>
+        <div class="synx"><div class="h">Soro → porcos · abelhas → pomar</div><p>O soro do queijo Jersey alimenta porcos ibéricos para charcutaria; as abelhas do mel polinizam pomar, food forest e vinha.</p></div>
+        <div class="synx"><div class="h">A pista mata o custo da remotidão</div><p>Material de obra, chef privado e hóspedes chegam voando — muda toda a matemática do isolamento.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FILM TOUCHES -->
+  <section id="cinema">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Vida de filme</p>
+        <h2>Os toques que ninguém mais tem</h2>
+      </div>
+      <div class="film">
+        <div class="fx"><div class="n">01</div><div class="t">Suíte de teto retrátil</div><p>O quarto e a sauna abrem para a Via Láctea — dormir e suar sob as estrelas.</p></div>
+        <div class="fx"><div class="n">02</div><div class="t">Hangar-catedral</div><p>Avião e coleção de carros num único templo de vidro apontado para o pico.</p></div>
+        <div class="fx"><div class="n">03</div><div class="t">Adega-túnel na rocha</div><p>12–14°C sem energia, guarda os vinhos e serve de safe-room discreto.</p></div>
+        <div class="fx"><div class="n">04</div><div class="t">Funicular ao cume</div><p>Jantar no topo, fire-pit e stargazing acima de qualquer luz — em qualquer idade.</p></div>
+        <div class="fx"><div class="n">05</div><div class="t">Estrada como driving road</div><p>A via de acesso desenhada com curvas de prazer. A chegada vira experiência.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PHASES -->
+  <section id="fases">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Como construir sem quebrar</p>
+        <h2>O plano em fases</h2>
+        <p>Modular: cada fase é usável e financiada pelo excedente da anterior.</p>
+      </div>
+      <div class="rail">
+        <div class="stop"><div class="ph">FASE 0 · meses 0–6</div><div class="ti">Fundação legal</div><div class="de">Achar a terra (céu escuro, nascente na cota alta, APP verificada), due diligence, holding rural. <b>Compre a terra à vista.</b></div></div>
+        <div class="stop"><div class="ph">FASE 1 · ano 1</div><div class="ti">O núcleo habitável</div><div class="de">Infraestrutura primeiro (estrada, poço, solar, esgoto), depois a casa-sede + o deck de estrelas. Já é o paraíso.</div></div>
+        <div class="stop"><div class="ph">FASE 2 · ano 2</div><div class="ti">Autossuficiência</div><div class="de">Horta Fortier + estufa + galinhas + vinha/pomar plantados + sauna e cold plunge da nascente.</div></div>
+        <div class="stop"><div class="ph">FASE 3 · anos 2–5</div><div class="ti">O Wagyu</div><div class="de">Começar com F1, evoluir para fullblood Tajima; sala de dry-aging e queijaria da Jersey. Ciclo de 28–36 meses até o primeiro bife.</div></div>
+        <div class="stop"><div class="ph">FASE 4 · anos 3–6</div><div class="ti">Os brinquedos</div><div class="de">Com o excedente: brevê → pista + hangar-galeria; observatório com cúpula; 1 chalé/ano; spa completo; funicular.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <div class="wrap closing">
+      <p>"A montanha não é o luxo. O luxo é acordar todo dia diante dela, comer o que a sua própria terra produziu, e olhar as estrelas sabendo que aquele pedaço de céu, de silêncio e de vida rara é seu — e que você o construiu com intenção, não com pressa."</p>
+      <a class="cta" href="https://github.com/facchin17/ByLearnJornadaPythonFaixaPreta/blob/claude/luxury-experiences-60k-monthly-a8pwvc/PROJETO-PARAISO.md">Abrir o blueprint completo (todos os números e fontes) ↗</a>
+    </div>
+  </section>
+
+  <footer>Projeto Paraíso · um refúgio autossuficiente, cinematográfico e seguro · parte do life-design "Vida de Outro Nível" · 2026</footer>
+</main>
+
+<script>
+(function(){
+  var c=document.getElementById('scene'),x=c.getContext('2d'),W,H,t=0,stars=[];
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  // mountain ridge layers (back to front): [yFactor, amplitude, roughness, color]
+  var layers=[
+    {y:.52,a:70,r:.6,c:'#26362b'},
+    {y:.60,a:95,r:.9,c:'#1c2a21'},
+    {y:.70,a:120,r:1.3,c:'#131f18'},
+    {y:.82,a:150,r:1.8,c:'#0c1610'}
+  ];
+  function ridge(seedy,amp,rough,color){
+    x.beginPath();x.moveTo(0,H);
+    var step=Math.max(6,W/220);
+    for(var px=0;px<=W;px+=step){
+      var n=Math.sin(px*0.004*rough+seedy)*0.5
+           +Math.sin(px*0.011*rough+seedy*2)*0.32
+           +Math.sin(px*0.023*rough+seedy*4)*0.18;
+      var y=seedy*0+ (H*layers._yf) + n*amp;
+      x.lineTo(px,y);
+    }
+    x.lineTo(W,H);x.closePath();x.fillStyle=color;x.fill();
+  }
+  function size(){W=c.width=innerWidth;H=c.height=innerHeight;makeStars()}
+  function makeStars(){
+    stars=[];var n=Math.round(W*H/9000);
+    for(var i=0;i<n;i++){stars.push({x:Math.random()*W,y:Math.random()*H*0.5,r:Math.random()*1.2+.2,a:Math.random()*.5+.2,ph:Math.random()*6.28,tw:Math.random()*.02+.004});}
+  }
+  function draw(){
+    // dawn sky gradient
+    var g=x.createLinearGradient(0,0,0,H);
+    g.addColorStop(0,'#0a1522');g.addColorStop(.32,'#16243a');
+    g.addColorStop(.55,'#3a3a4e');g.addColorStop(.72,'#8a6a5a');
+    g.addColorStop(.85,'#c98f5e');g.addColorStop(1,'#e8b06a');
+    x.fillStyle=g;x.fillRect(0,0,W,H);
+    // sun glow low on horizon
+    var sx=W*0.72, sy=H*0.66;
+    var sg=x.createRadialGradient(sx,sy,0,sx,sy,H*0.5);
+    sg.addColorStop(0,'rgba(255,214,150,.55)');sg.addColorStop(.4,'rgba(240,170,110,.20)');sg.addColorStop(1,'rgba(240,170,110,0)');
+    x.fillStyle=sg;x.fillRect(0,0,W,H);
+    // stars (upper sky only)
+    for(var i=0;i<stars.length;i++){var s=stars[i];
+      var fade=1-(s.y/(H*0.5));
+      var a=(reduce?s.a:s.a*(0.6+0.4*Math.sin(t*s.tw*30+s.ph)))*fade*0.9;
+      if(a>0){x.beginPath();x.arc(s.x,s.y,s.r,0,6.28);x.fillStyle='rgba(255,248,235,'+a+')';x.fill();}
+    }
+    // mountain layers with drifting mist between
+    for(var L=0;L<layers.length;L++){
+      var ly=layers[L];layers._yf=ly.y;
+      ridge(L*1.7+1, ly.a, ly.r, ly.c);
+      // mist band above each ridge
+      if(L<layers.length-1&&!reduce){
+        var my=H*ly.y - ly.a*0.3;
+        var mg=x.createLinearGradient(0,my-40,0,my+70);
+        var drift=Math.sin(t*0.003+L)*0.06;
+        mg.addColorStop(0,'rgba(200,214,205,0)');
+        mg.addColorStop(.5,'rgba(200,214,205,'+(0.10+drift)+')');
+        mg.addColorStop(1,'rgba(200,214,205,0)');
+        x.fillStyle=mg;x.fillRect(0,my-40,W,110);
+      }
+    }
+    t++;requestAnimationFrame(draw);
+  }
+  addEventListener('resize',size);size();draw();
+})();
+</script>
