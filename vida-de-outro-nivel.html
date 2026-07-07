@@ -1,0 +1,463 @@
+<title>Vida de Outro Nível</title>
+<style>
+  :root{
+    --bg:#0a0e17; --bg2:#0d121e; --surf:#141a28; --surf2:#1a2130;
+    --line:rgba(201,162,75,.16); --line2:rgba(255,255,255,.07);
+    --ink:#ece8dd; --mut:#9aa2b4; --mut2:#6d768a;
+    --gold:#c9a24b; --gold-2:#e0c076; --aur:#5fd0bf; --rose:#d98a86;
+    --maxw:1140px;
+    --serif:Georgia,"Times New Roman",serif;
+    --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--sans);
+    line-height:1.6;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  .wrap{max-width:var(--maxw);margin:0 auto;padding:0 24px}
+  h1,h2,h3{font-family:var(--serif);font-weight:400;text-wrap:balance;letter-spacing:.01em}
+  a{color:var(--gold-2);text-decoration:none}
+  .eyebrow{font-family:var(--sans);text-transform:uppercase;letter-spacing:.34em;
+    font-size:.66rem;color:var(--gold);font-weight:600}
+  .num{font-variant-numeric:tabular-nums}
+
+  /* ---------- HERO ---------- */
+  #sky{position:fixed;inset:0;z-index:0;display:block}
+  .hero{position:relative;z-index:2;min-height:100svh;display:flex;flex-direction:column;
+    justify-content:center;align-items:center;text-align:center;padding:120px 24px 90px}
+  .hero::after{content:"";position:absolute;left:0;right:0;bottom:0;height:38%;z-index:-1;
+    background:linear-gradient(to bottom,transparent,var(--bg))}
+  .hero .eyebrow{margin-bottom:26px}
+  .hero h1{font-size:clamp(2.9rem,9vw,6.4rem);line-height:.98;margin:0;
+    letter-spacing:-.01em;text-shadow:0 2px 40px rgba(0,0,0,.6)}
+  .hero h1 em{font-style:italic;color:var(--gold-2)}
+  .lede{max-width:620px;margin:30px auto 0;color:#cdd2de;font-size:1.12rem}
+  .kicker{margin-top:14px;color:var(--mut);font-size:.94rem}
+  .scroll-cue{margin-top:52px;font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;
+    color:var(--mut2);animation:float 2.6s ease-in-out infinite}
+  @keyframes float{0%,100%{transform:translateY(0);opacity:.5}50%{transform:translateY(7px);opacity:1}}
+
+  /* ---------- SECTION SHELL ---------- */
+  main{position:relative;z-index:2;background:linear-gradient(to bottom,var(--bg),var(--bg2) 40%,var(--bg));
+    border-top:1px solid var(--line)}
+  section{padding:84px 0}
+  .sec-head{max-width:720px;margin-bottom:46px}
+  .sec-head h2{font-size:clamp(1.9rem,4.4vw,2.9rem);margin:.35em 0 0}
+  .sec-head p{color:var(--mut);margin:.7em 0 0;font-size:1.03rem}
+
+  /* ---------- CATEGORY POSTERS ---------- */
+  .cats{display:grid;grid-template-columns:repeat(auto-fill,minmax(310px,1fr));gap:20px}
+  .cat{position:relative;border:1px solid var(--line2);border-radius:16px;overflow:hidden;
+    background:var(--surf);min-height:270px;display:flex;flex-direction:column;
+    transition:transform .35s cubic-bezier(.2,.7,.2,1),border-color .35s}
+  .cat:hover{transform:translateY(-6px);border-color:var(--line)}
+  .cat .art{position:absolute;inset:0;opacity:.9;transition:opacity .35s}
+  .cat:hover .art{opacity:1}
+  .cat .art::after{content:"";position:absolute;inset:0;
+    background:linear-gradient(to top,rgba(8,11,18,.96) 12%,rgba(8,11,18,.55) 55%,rgba(8,11,18,.2))}
+  .cat .body{position:relative;z-index:2;margin-top:auto;padding:22px}
+  .cat .idx{font-family:var(--serif);font-size:.85rem;color:var(--gold);letter-spacing:.1em}
+  .cat h3{font-size:1.42rem;margin:.15em 0 .5em}
+  .cat ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:5px}
+  .cat li{font-size:.86rem;color:#c4cad6;padding-left:16px;position:relative}
+  .cat li::before{content:"";position:absolute;left:0;top:.62em;width:5px;height:5px;
+    border-radius:50%;background:var(--gold)}
+
+  /* atmospheres */
+  .a-sky{background:radial-gradient(120% 90% at 70% 10%,#1b2a55,#0a1330 55%,#05060f)}
+  .a-avi{background:linear-gradient(160deg,#0e2a3a,#123a4a 45%,#f0a25e 140%)}
+  .a-hotel{background:linear-gradient(155deg,#2a1c3a,#3d2450 60%,#0c0a14)}
+  .a-casal{background:linear-gradient(155deg,#4a1c2e,#7a2f3d 55%,#1a0d12)}
+  .a-fam{background:linear-gradient(155deg,#123a2e,#1f6b4a 60%,#08160f)}
+  .a-carro{background:linear-gradient(155deg,#2b2b30,#4a1518 60%,#0c0c0e)}
+  .a-nat{background:linear-gradient(155deg,#0f2f3a,#1d6b6b 55%,#071417)}
+  .a-cult{background:linear-gradient(155deg,#2e2410,#7a5a1c 60%,#120e06)}
+  .a-film{background:radial-gradient(120% 100% at 30% 20%,#243, #102a24 50%,#050a08)}
+  .a-proj{background:linear-gradient(155deg,#101828,#26324a 60%,#070a12)}
+  .stars-mini{position:absolute;inset:0;background-image:
+    radial-gradient(1px 1px at 20% 30%,#fff,transparent),
+    radial-gradient(1px 1px at 70% 20%,#fff,transparent),
+    radial-gradient(1px 1px at 40% 70%,#dfe,transparent),
+    radial-gradient(1px 1px at 85% 60%,#fff,transparent),
+    radial-gradient(1px 1px at 55% 45%,#fff,transparent);opacity:.7}
+
+  /* ---------- RANKINGS ---------- */
+  .rank-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:26px}
+  .panel{background:var(--surf);border:1px solid var(--line2);border-radius:16px;padding:26px 28px}
+  .panel h3{font-size:1.3rem;margin:0 0 4px}
+  .panel .sub{color:var(--mut2);font-size:.78rem;text-transform:uppercase;letter-spacing:.2em;margin-bottom:16px}
+  ol.rank{margin:0;padding:0;list-style:none;counter-reset:r}
+  ol.rank li{counter-increment:r;display:flex;gap:14px;align-items:baseline;
+    padding:9px 0;border-bottom:1px solid var(--line2);font-size:.94rem}
+  ol.rank li:last-child{border-bottom:0}
+  ol.rank li::before{content:counter(r,decimal-leading-zero);font-family:var(--serif);
+    color:var(--gold);font-size:.9rem;min-width:26px;font-variant-numeric:tabular-nums}
+  ol.rank .tag{margin-left:auto;font-size:.68rem;color:var(--mut2);text-transform:uppercase;
+    letter-spacing:.12em;white-space:nowrap;padding-left:10px}
+  .mini-ranks{display:flex;flex-direction:column;gap:20px}
+  .mini h4{font-family:var(--serif);font-weight:400;margin:0 0 8px;font-size:1.08rem;color:var(--gold-2)}
+  .mini ol{margin:0;padding-left:1.1em;color:#c4cad6;font-size:.86rem;display:flex;flex-direction:column;gap:3px}
+  .mini ol li::marker{color:var(--gold);font-variant-numeric:tabular-nums}
+
+  /* ---------- 12 MONTH TIMELINE ---------- */
+  .rail{display:flex;flex-direction:column;gap:0;border-left:1px solid var(--line);margin-left:8px}
+  .stop{position:relative;padding:16px 0 16px 30px}
+  .stop::before{content:"";position:absolute;left:-5px;top:24px;width:9px;height:9px;border-radius:50%;
+    background:var(--gold);box-shadow:0 0 0 4px rgba(201,162,75,.14)}
+  .stop .mo{font-family:var(--serif);color:var(--gold-2);font-size:.82rem;letter-spacing:.08em}
+  .stop .ex{font-size:1.06rem;margin:2px 0 3px}
+  .stop .meta{font-size:.8rem;color:var(--mut)}
+  .stop .meta b{color:#cdd2de;font-weight:600}
+  .total-note{margin-top:26px;padding:18px 22px;border:1px dashed var(--line);border-radius:12px;
+    color:var(--mut);font-size:.92rem;background:rgba(201,162,75,.04)}
+  .total-note b{color:var(--gold-2)}
+
+  /* ---------- FINANCE ---------- */
+  .alloc{display:flex;flex-direction:column;gap:14px;margin-top:8px}
+  .bar-row{display:grid;grid-template-columns:210px 1fr auto;align-items:center;gap:16px}
+  .bar-row .lbl{font-size:.92rem}
+  .bar-row .lbl span{display:block;color:var(--mut2);font-size:.74rem;margin-top:1px}
+  .track{height:12px;background:var(--surf2);border-radius:99px;overflow:hidden}
+  .fill{height:100%;border-radius:99px;background:linear-gradient(90deg,var(--gold),var(--gold-2))}
+  .fill.f2{background:linear-gradient(90deg,#3a5f8a,#5fd0bf)}
+  .bar-row .val{font-variant-numeric:tabular-nums;font-size:.92rem;color:#cdd2de;min-width:118px;text-align:right}
+  .principles{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px;margin-top:36px}
+  .prin{background:var(--surf);border:1px solid var(--line2);border-radius:13px;padding:20px}
+  .prin .n{font-family:var(--serif);color:var(--gold);font-size:1.1rem}
+  .prin p{margin:6px 0 0;font-size:.9rem;color:#c4cad6}
+
+  /* ---------- CLOSING ---------- */
+  .closing{text-align:center;max-width:760px;margin:0 auto;padding:20px 0 10px}
+  .closing p{font-family:var(--serif);font-size:clamp(1.2rem,2.6vw,1.6rem);line-height:1.5;color:#dfe3ec;font-style:italic}
+  .cta{display:inline-flex;align-items:center;gap:10px;margin-top:34px;padding:15px 28px;
+    border:1px solid var(--gold);border-radius:99px;color:var(--gold-2);font-family:var(--sans);
+    font-size:.92rem;letter-spacing:.02em;transition:background .3s,color .3s}
+  .cta:hover{background:var(--gold);color:#0a0e17}
+  footer{text-align:center;padding:60px 24px 80px;color:var(--mut2);font-size:.82rem}
+  .photo-note{max-width:640px;margin:40px auto 0;padding:20px 24px;border:1px solid var(--line2);
+    border-radius:12px;color:var(--mut);font-size:.86rem;background:var(--surf);text-align:left}
+  .photo-note b{color:var(--gold-2)}
+
+  @media(max-width:820px){
+    .rank-grid{grid-template-columns:1fr}
+    .bar-row{grid-template-columns:1fr;gap:6px}
+    .bar-row .val{text-align:left;min-width:0}
+    .bar-row .track{order:3}
+  }
+  @media(prefers-reduced-motion:reduce){
+    *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  }
+</style>
+
+<canvas id="sky" aria-hidden="true"></canvas>
+
+<header class="hero">
+  <p class="eyebrow">Um life-design para US$60.000 / mês limpos</p>
+  <h1>Vida de<br><em>Outro Nível</em></h1>
+  <p class="lede">Experiências raras, cinematográficas e seguras — o luxo silencioso de sair da vida comum sem nunca arriscar a vida.</p>
+  <p class="kicker">Céu · Aviação · Hotéis únicos · Casal · Família · Máquinas · Natureza · Cultura · Cinema · Legado</p>
+  <p class="scroll-cue">role para descer à Terra ↓</p>
+</header>
+
+<main>
+  <!-- CATEGORIES -->
+  <section id="cats">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">As dez frentes</p>
+        <h2>Dez maneiras de viver o improvável</h2>
+        <p>Cada frente é um mundo. Aqui vão os destaques — o documento completo traz custo, risco, nível de memória e as versões “econômica” e “premium” de cada ideia.</p>
+      </div>
+      <div class="cats">
+
+        <article class="cat"><div class="art a-sky"><div class="stars-mini"></div></div>
+          <div class="body"><span class="idx">01 — Céu & Astronomia</span>
+            <h3>O universo, privado</h3>
+            <ul>
+              <li>Atacama com astrônomo particular</li>
+              <li>Aurora flutuando na piscina do Deplar Farm</li>
+              <li>Eclipse solar total · jantar sob as estrelas no deserto</li>
+            </ul></div></article>
+
+        <article class="cat"><div class="art a-avi"></div>
+          <div class="body"><span class="idx">02 — Aviação</span>
+            <h3>Tudo que voa</h3>
+            <ul>
+              <li>Tirar o brevê — o projeto do ano</li>
+              <li>Heli-picnic numa geleira · planador em silêncio</li>
+              <li>Balão privado ao amanhecer · hidroavião</li>
+            </ul></div></article>
+
+        <article class="cat"><div class="art a-hotel"><div class="stars-mini"></div></div>
+          <div class="body"><span class="idx">03 — Hotéis Únicos</span>
+            <h3>Onde dormir é a atração</h3>
+            <ul>
+              <li>Ilha privada · Amangiri no deserto de Utah</li>
+              <li>Castelo com falcoaria · villa subaquática</li>
+              <li>Orient-Express de gala pela Europa</li>
+            </ul></div></article>
+
+        <article class="cat"><div class="art a-casal"></div>
+          <div class="body"><span class="idx">04 — Casal</span>
+            <h3>“A vida realmente mudou”</h3>
+            <ul>
+              <li>Veleiro privado pelas ilhas gregas</li>
+              <li>Renovação de votos surpresa num pico isolado</li>
+              <li>Overwater villa · café flutuante ao amanhecer</li>
+            </ul></div></article>
+
+        <article class="cat"><div class="art a-fam"></div>
+          <div class="body"><span class="idx">05 — Família</span>
+            <h3>Orgulho e memória</h3>
+            <ul>
+              <li>Realizar a viagem dos sonhos dos seus pais</li>
+              <li>Reunião numa villa com cinegrafista</li>
+              <li>Safári de luxo · retiro familiar anual</li>
+            </ul></div></article>
+
+        <article class="cat"><div class="art a-carro"></div>
+          <div class="body"><span class="idx">06 — Máquinas</span>
+            <h3>Velocidade sob controle</h3>
+            <ul>
+              <li>Track day de supercarro com instrutor</li>
+              <li>Porsche Experience · snow driving no Ártico</li>
+              <li>Road trip de supercarro pelo Passo Stelvio</li>
+            </ul></div></article>
+
+        <article class="cat"><div class="art a-nat"></div>
+          <div class="body"><span class="idx">07 — Natureza</span>
+            <h3>Paisagens absurdas, risco baixo</h3>
+            <ul>
+              <li>Antártica em navio de expedição de luxo</li>
+              <li>Namíbia · Deadvlei e dunas de avião</li>
+              <li>Patagônia com lodge de janelas gigantes</li>
+            </ul></div></article>
+
+        <article class="cat"><div class="art a-cult"></div>
+          <div class="body"><span class="idx">08 — Cultura</span>
+            <h3>Status discreto</h3>
+            <ul>
+              <li>Vinho na origem em Borgonha</li>
+              <li>GP de Mônaco de um iate no porto</li>
+              <li>Terno bespoke em Nápoles · chef’s table Michelin</li>
+            </ul></div></article>
+
+        <article class="cat"><div class="art a-film"><div class="stars-mini"></div></div>
+          <div class="body"><span class="idx">09 — Vida de Filme</span>
+            <h3>Cenas de cinema, reais</h3>
+            <ul>
+              <li>Pousar de heli numa vinícola para almoçar</li>
+              <li>Glacier Express Excellence Class → Matterhorn</li>
+              <li>Jantar no topo de uma montanha alpina</li>
+            </ul></div></article>
+
+        <article class="cat"><div class="art a-proj"><div class="stars-mini"></div></div>
+          <div class="body"><span class="idx">10 — Legado</span>
+            <h3>O que o dinheiro constrói</h3>
+            <ul>
+              <li>Seu observatório astronômico pessoal</li>
+              <li>Sala de cinema absurda · a casa com A vista</li>
+              <li>O documentário anual da sua vida</li>
+            </ul></div></article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- RANKINGS -->
+  <section id="rank">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">Curadoria</p>
+        <h2>Os rankings</h2>
+        <p>Se você só pudesse escolher poucas, comece por estas.</p>
+      </div>
+      <div class="rank-grid">
+        <div class="panel">
+          <h3>As 20 mais memoráveis</h3>
+          <div class="sub">memória 9–10 · geral</div>
+          <ol class="rank">
+            <li>Aurora flutuando na piscina do Deplar Farm<span class="tag">Céu</span></li>
+            <li>Eclipse solar total na faixa da totalidade<span class="tag">Céu</span></li>
+            <li>Céus escuros do Atacama + astrônomo<span class="tag">Céu</span></li>
+            <li>Tirar o brevê de piloto<span class="tag">Aviação</span></li>
+            <li>Antártica em expedição de luxo<span class="tag">Natureza</span></li>
+            <li>Heli-picnic numa geleira isolada<span class="tag">Aviação</span></li>
+            <li>A viagem dos sonhos dos seus pais<span class="tag">Família</span></li>
+            <li>Jantar sob as estrelas no deserto<span class="tag">Céu</span></li>
+            <li>Ilha privada com quem você ama<span class="tag">Hotéis</span></li>
+            <li>Deadvlei + dunas da Namíbia de avião<span class="tag">Natureza</span></li>
+            <li>Amangiri + balão sobre os cânions<span class="tag">Hotéis</span></li>
+            <li>Safári de luxo no Serengeti<span class="tag">Família</span></li>
+            <li>Balão privado ao amanhecer<span class="tag">Aviação</span></li>
+            <li>Renovação de votos surpresa<span class="tag">Casal</span></li>
+            <li>Seu observatório pessoal<span class="tag">Legado</span></li>
+            <li>Ilhas gregas de veleiro privado<span class="tag">Casal</span></li>
+            <li>Orient-Express de gala<span class="tag">Hotéis</span></li>
+            <li>Patagônia com lodge de luxo<span class="tag">Natureza</span></li>
+            <li>GP de Mônaco de um iate<span class="tag">Cultura</span></li>
+            <li>Voo em planador nos Alpes / NZ<span class="tag">Aviação</span></li>
+          </ol>
+        </div>
+        <div class="mini-ranks">
+          <div class="panel mini">
+            <h4>Top 10 · Casal</h4>
+            <ol>
+              <li>Aurora + iglu de vidro</li>
+              <li>Veleiro pelas ilhas gregas</li>
+              <li>Renovação de votos surpresa</li>
+              <li>Overwater villa nas Maldivas</li>
+              <li>Villa toscana com chef</li>
+              <li>Jantar sob as estrelas no deserto</li>
+              <li>Orient-Express de gala</li>
+              <li>Amangiri, spa na rocha</li>
+              <li>Ryokan japonês com onsen privativo</li>
+              <li>Glacier Express → Matterhorn</li>
+            </ol>
+          </div>
+          <div class="panel mini">
+            <h4>Top 10 · Família</h4>
+            <ol>
+              <li>A viagem dos sonhos dos pais</li>
+              <li>Reunião numa villa com cinegrafista</li>
+              <li>Safári de luxo no Serengeti</li>
+              <li>Retiro familiar anual (tradição)</li>
+              <li>Cruzeiro de expedição — Galápagos</li>
+              <li>Dar conforto à casa dos pais</li>
+              <li>Sala de cinema em casa</li>
+              <li>Observatório para noites em família</li>
+              <li>Disney/Universal em modo VIP</li>
+              <li>Trem panorâmico pela Suíça</li>
+            </ol>
+          </div>
+          <div class="panel mini">
+            <h4>Top 10 · Avião · Céu · Estrelas</h4>
+            <ol>
+              <li>Tirar o brevê de piloto</li>
+              <li>Aurora boreal com luxo</li>
+              <li>Atacama + astrônomo privado</li>
+              <li>Eclipse solar total</li>
+              <li>Heli-picnic num pico isolado</li>
+              <li>Planador — silêncio total</li>
+              <li>Balão privado ao amanhecer</li>
+              <li>Sobrevoo das dunas da Namíbia</li>
+              <li>Voo em jato de acrobacia / L-39</li>
+              <li>Seu observatório pessoal</li>
+            </ol>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 12 MONTHS -->
+  <section id="year">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">O calendário</p>
+        <h2>Doze meses, doze âncoras</h2>
+        <p>Uma grande experiência por mês, variando companhia e estação. Brevê, documentário e observatório correm em paralelo o ano inteiro.</p>
+      </div>
+      <div class="rail">
+        <div class="stop"><div class="mo">JANEIRO</div><div class="ex">Aurora boreal + iglu de vidro</div><div class="meta"><b>Esposa</b> · Lapônia / Islândia · ~US$ 12k</div></div>
+        <div class="stop"><div class="mo">FEVEREIRO</div><div class="ex">Snow / ice driving school</div><div class="meta"><b>Amigos</b> · Lapônia · ~US$ 6k</div></div>
+        <div class="stop"><div class="mo">MARÇO</div><div class="ex">Começar o brevê de piloto</div><div class="meta"><b>Sozinho</b> · projeto do ano · ~US$ 15k</div></div>
+        <div class="stop"><div class="mo">ABRIL</div><div class="ex">Villa toscana + imersão de vinho</div><div class="meta"><b>Esposa</b> · Toscana · ~US$ 8k</div></div>
+        <div class="stop"><div class="mo">MAIO</div><div class="ex">GP de Mônaco / temporada europeia</div><div class="meta"><b>Amigos</b> · Riviera · ~US$ 12k</div></div>
+        <div class="stop"><div class="mo">JUNHO</div><div class="ex">Ilhas gregas de veleiro privado</div><div class="meta"><b>Esposa</b> · Cíclades · ~US$ 15k</div></div>
+        <div class="stop"><div class="mo">JULHO</div><div class="ex">Retiro de família numa villa</div><div class="meta"><b>Família</b> · com cinegrafista · ~US$ 25k</div></div>
+        <div class="stop"><div class="mo">AGOSTO</div><div class="ex">Safári no Serengeti + balão privado</div><div class="meta"><b>Família</b> · migração · ~US$ 20k</div></div>
+        <div class="stop"><div class="mo">SETEMBRO</div><div class="ex">Atacama: céus escuros + astrônomo</div><div class="meta"><b>Esposa / Amigos</b> · Chile · ~US$ 7k</div></div>
+        <div class="stop"><div class="mo">OUTUBRO</div><div class="ex">A viagem dos sonhos dos seus pais</div><div class="meta"><b>Pais</b> · destino deles · ~US$ 20k</div></div>
+        <div class="stop"><div class="mo">NOVEMBRO</div><div class="ex">Patagônia ou Namíbia</div><div class="meta"><b>Amigos / Esposa</b> · paisagens absurdas · ~US$ 12k</div></div>
+        <div class="stop"><div class="mo">DEZEMBRO</div><div class="ex">Antártica de expedição de luxo</div><div class="meta"><b>Esposa</b> · verão austral · ~US$ 30k</div></div>
+      </div>
+      <div class="total-note">Total do ano em experiências: <b>~US$ 180–200k</b> — cerca de <b>25–28%</b> da renda líquida anual (~US$ 720k). Confortável, deixando muito para investir e construir.</div>
+    </div>
+  </section>
+
+  <!-- FINANCE -->
+  <section id="fin">
+    <div class="wrap">
+      <div class="sec-head">
+        <p class="eyebrow">O primeiro ano</p>
+        <h2>Equilíbrio, não excesso</h2>
+        <p>O erro clássico é gastar 100% em experiências e não construir base. A meta do primeiro ano: provar que a vida mudou — com liberdade garantida para depois.</p>
+      </div>
+      <div class="panel">
+        <div class="alloc">
+          <div class="bar-row"><div class="lbl">Segurança &amp; Investimento<span>reserva + carteira diversificada</span></div><div class="track"><div class="fill f2" style="width:40%"></div></div><div class="val">40% · ~US$ 288k</div></div>
+          <div class="bar-row"><div class="lbl">Base de vida / patrimônio<span>a casa com a vista, garagem, cinema</span></div><div class="track"><div class="fill" style="width:20%"></div></div><div class="val">20% · ~US$ 144k</div></div>
+          <div class="bar-row"><div class="lbl">Experiências<span>o calendário de 12 meses</span></div><div class="track"><div class="fill" style="width:20%"></div></div><div class="val">20% · ~US$ 144k</div></div>
+          <div class="bar-row"><div class="lbl">Família &amp; generosidade<span>conforto aos pais, retiro, presentes</span></div><div class="track"><div class="fill" style="width:12%"></div></div><div class="val">12% · ~US$ 86k</div></div>
+          <div class="bar-row"><div class="lbl">Você / projetos<span>brevê, saúde, masterclasses, filme</span></div><div class="track"><div class="fill" style="width:8%"></div></div><div class="val">8% · ~US$ 58k</div></div>
+        </div>
+      </div>
+      <div class="principles">
+        <div class="prin"><div class="n">Não inflar o custo fixo</div><p>Experiências são pontuais e reversíveis. Carro financiado e mansão viram prisão mensal. Compre liberdade, não obrigações.</p></div>
+        <div class="prin"><div class="n">Base antes de escalar</div><p>Com reserva e investimentos travados cedo, tudo depois fica leve — você nunca sente medo.</p></div>
+        <div class="prin"><div class="n">Priorize o que não volta</div><p>Pais e avós com saúde, filhos pequenos, momentos com a esposa. O material espera; as pessoas não.</p></div>
+        <div class="prin"><div class="n">Documente tudo</div><p>O ROI emocional de fotos e filmes cinematográficos é o maior de todos — e cresce com o tempo.</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section>
+    <div class="wrap closing">
+      <p>“A vida rara de verdade não é a das etiquetas de preço mais altas — é a das histórias mais improváveis de contar, com as pessoas certas dentro delas. E quase nada disso exige coragem para o perigo. Só coragem para a intenção.”</p>
+      <a class="cta" href="https://github.com/facchin17/ByLearnJornadaPythonFaixaPreta/blob/claude/luxury-experiences-60k-monthly-a8pwvc/VIDA-DE-OUTRO-NIVEL.md">Abrir o documento completo (todas as ~60 experiências) ↗</a>
+
+      <div class="photo-note">
+        <b>Sobre as fotos:</b> as atmosferas desta página são geradas por código (por segurança, ela não carrega imagens externas). Para ver as fotos reais de cada lugar, procure por: <i>Deplar Farm Iceland</i>, <i>Amangiri Utah</i>, <i>Deadvlei Namibia</i>, <i>Kakslauttanen glass igloo</i>, <i>Explora Atacama</i>, <i>Glacier Express Excellence</i>, <i>Laucala Island</i> e <i>Torres del Paine lodge</i> — cada um é um universo visual à parte.
+      </div>
+    </div>
+  </section>
+
+  <footer>Vida de Outro Nível · um life-design cinematográfico e seguro · 2026</footer>
+</main>
+
+<script>
+(function(){
+  var c=document.getElementById('sky'),x=c.getContext('2d'),stars=[],shoot=null,t=0;
+  var reduce=matchMedia('(prefers-reduced-motion:reduce)').matches;
+  function size(){c.width=innerWidth;c.height=innerHeight;build()}
+  function build(){
+    stars=[];var n=Math.round(innerWidth*innerHeight/6500);
+    for(var i=0;i<n;i++){stars.push({
+      x:Math.random()*c.width,y:Math.random()*c.height,
+      r:Math.random()*1.3+.2,
+      a:Math.random()*.6+.2,
+      tw:Math.random()*.02+.004,
+      ph:Math.random()*6.28
+    });}
+  }
+  function draw(){
+    x.clearRect(0,0,c.width,c.height);
+    // faint milky-way band
+    var g=x.createLinearGradient(0,0,c.width,c.height);
+    g.addColorStop(0,'rgba(30,42,90,0.0)');g.addColorStop(.5,'rgba(60,70,130,0.10)');g.addColorStop(1,'rgba(30,42,90,0.0)');
+    x.fillStyle=g;x.fillRect(0,0,c.width,c.height);
+    for(var i=0;i<stars.length;i++){var s=stars[i];
+      var a=reduce?s.a:s.a*(0.6+0.4*Math.sin(t*s.tw*40+s.ph));
+      x.beginPath();x.arc(s.x,s.y,s.r,0,6.283);
+      x.fillStyle='rgba(255,252,240,'+a+')';x.fill();
+    }
+    if(!reduce){
+      if(!shoot&&Math.random()<0.004){
+        shoot={x:Math.random()*c.width*.7,y:Math.random()*c.height*.4,len:0,life:0,
+          vx:6+Math.random()*4,vy:2+Math.random()*2};
+      }
+      if(shoot){
+        shoot.life++;shoot.x+=shoot.vx;shoot.y+=shoot.vy;shoot.len=Math.min(shoot.len+8,140);
+        var gx=x.createLinearGradient(shoot.x,shoot.y,shoot.x-shoot.len,shoot.y-shoot.len*.4);
+        gx.addColorStop(0,'rgba(255,250,235,.9)');gx.addColorStop(1,'rgba(255,250,235,0)');
+        x.strokeStyle=gx;x.lineWidth=1.6;x.beginPath();
+        x.moveTo(shoot.x,shoot.y);x.lineTo(shoot.x-shoot.len,shoot.y-shoot.len*.4);x.stroke();
+        if(shoot.life>60||shoot.x>c.width)shoot=null;
+      }
+    }
+    t++;requestAnimationFrame(draw);
+  }
+  addEventListener('resize',size);size();draw();
+})();
+</script>
