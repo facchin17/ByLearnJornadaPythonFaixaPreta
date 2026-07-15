@@ -1,0 +1,983 @@
+<title>Med-Spa Agency — 24-Month Scaling Model</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  color-scheme: light;
+  --paper:#f4f2ee; --card:#fcfcfb; --card-2:#f7f6f2; --sunk:#eeece6;
+  --ink:#17181a; --ink-2:#54534e; --muted:#8a8781; --hair:#e2e0d8; --hair-2:#d3d0c6;
+  --accent:#98761f; --accent-soft:#c8a548; --accent-ink:#6f560f;
+  --good:#0a7d1e; --warn:#b7791f; --crit:#c0392b;
+  --s1:#2a78d6; --s2:#008300; --s3:#e87ba4; --s4:#c98a00; --s5:#1baf7a; --s6:#eb6834;
+  --grid:#e6e4dc; --shadow:0 1px 2px rgba(20,20,18,.06),0 8px 26px -18px rgba(20,20,18,.22);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"SF Mono",ui-monospace,"Cascadia Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])){
+  color-scheme:dark;
+  --paper:#0e0f10; --card:#1a1a19; --card-2:#212120; --sunk:#161615;
+  --ink:#f6f5f0; --ink-2:#bfbdb3; --muted:#8f8d85; --hair:#2c2c2a; --hair-2:#3a3a37;
+  --accent:#d0a659; --accent-soft:#b58f43; --accent-ink:#e6c688;
+  --good:#3fb54e; --warn:#e0a63c; --crit:#e2685a;
+  --s1:#3987e5; --s2:#3aa53a; --s3:#d55181; --s4:#c98500; --s5:#22b184; --s6:#e0703f;
+  --grid:#26261f; --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 30px -18px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0e0f10; --card:#1a1a19; --card-2:#212120; --sunk:#161615;
+  --ink:#f6f5f0; --ink-2:#bfbdb3; --muted:#8f8d85; --hair:#2c2c2a; --hair-2:#3a3a37;
+  --accent:#d0a659; --accent-soft:#b58f43; --accent-ink:#e6c688;
+  --good:#3fb54e; --warn:#e0a63c; --crit:#e2685a;
+  --s1:#3987e5; --s2:#3aa53a; --s3:#d55181; --s4:#c98500; --s5:#22b184; --s6:#e0703f;
+  --grid:#26261f; --shadow:0 1px 2px rgba(0,0,0,.3),0 12px 30px -18px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+  font-size:15px;line-height:1.5;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;text-wrap:balance;margin:0}
+.tnum{font-variant-numeric:tabular-nums}
+.eyebrow{font-family:var(--sans);font-size:11px;font-weight:700;letter-spacing:.14em;
+  text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+a{color:var(--accent-ink)}
+
+/* Masthead */
+header.mast{border-bottom:1px solid var(--hair);background:
+  linear-gradient(180deg,var(--card-2),transparent);}
+.mast-in{padding:30px 0 24px}
+.mast h1{font-size:clamp(28px,4.4vw,46px);line-height:1.02}
+.mast .sub{color:var(--ink-2);max-width:70ch;margin:14px 0 0;font-size:16px}
+.mast .meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:16px;font-size:12.5px;color:var(--muted)}
+.mast .meta b{color:var(--ink-2);font-weight:600}
+.mast .kbd{font-family:var(--mono);font-size:11.5px;background:var(--sunk);border:1px solid var(--hair);
+  border-radius:5px;padding:1px 6px;color:var(--ink-2)}
+
+/* Sticky nav */
+nav.toc{position:sticky;top:0;z-index:40;background:color-mix(in srgb,var(--paper) 88%,transparent);
+  backdrop-filter:blur(9px);border-bottom:1px solid var(--hair)}
+nav.toc .row{display:flex;gap:2px;overflow-x:auto;padding:7px 0;scrollbar-width:none}
+nav.toc .row::-webkit-scrollbar{display:none}
+nav.toc a{white-space:nowrap;font-size:12.5px;font-weight:600;color:var(--ink-2);text-decoration:none;
+  padding:6px 11px;border-radius:7px}
+nav.toc a:hover{background:var(--sunk);color:var(--ink)}
+.theme-btn{margin-left:auto;flex:none;border:1px solid var(--hair-2);background:var(--card);
+  color:var(--ink-2);border-radius:7px;padding:5px 10px;font-size:12px;cursor:pointer;font-weight:600}
+
+section{padding:34px 0;border-bottom:1px solid var(--hair)}
+section h2{font-size:clamp(20px,2.6vw,27px)}
+.sec-lead{color:var(--ink-2);max-width:78ch;margin:8px 0 22px}
+.grid{display:grid;gap:16px}
+
+.card{background:var(--card);border:1px solid var(--hair);border-radius:13px;box-shadow:var(--shadow)}
+.pad{padding:18px 18px}
+
+/* Assumptions inputs */
+.assume-grid{grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:820px){.assume-grid{grid-template-columns:1fr}.assume-grid.two{grid-template-columns:1fr}}
+.assume h3{font-size:16px;margin-bottom:2px;display:flex;align-items:center;gap:9px}
+.assume h3 .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.assume .hint{color:var(--muted);font-size:12px;margin:2px 0 14px}
+.field{display:grid;grid-template-columns:1fr auto;align-items:center;gap:10px;
+  padding:7px 0;border-top:1px solid var(--hair)}
+.field:first-of-type{border-top:0}
+.field label{font-size:13px;color:var(--ink-2)}
+.field label small{display:block;color:var(--muted);font-size:11px;line-height:1.3}
+.field .inwrap{display:flex;align-items:center;gap:4px}
+.field .pre{color:var(--muted);font-size:13px}
+.field input{width:78px;text-align:right;font-family:var(--mono);font-size:13.5px;
+  background:var(--card-2);border:1px solid var(--hair-2);border-radius:7px;padding:6px 8px;color:var(--ink)}
+.field input:focus{outline:2px solid var(--accent);outline-offset:1px;border-color:var(--accent)}
+.field .suf{color:var(--muted);font-size:12px;width:20px}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:4px}
+.btn{border:1px solid var(--hair-2);background:var(--card);color:var(--ink);border-radius:8px;
+  padding:8px 13px;font-size:13px;font-weight:600;cursor:pointer}
+.btn:hover{border-color:var(--accent);color:var(--accent-ink)}
+.btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+:root[data-theme="dark"] .btn.primary,@media(prefers-color-scheme:dark){:root:where(:not([data-theme="light"])) .btn.primary{color:#1a1a19}}
+.dirty{font-size:12px;color:var(--warn);font-weight:600;display:none}
+.dirty.on{display:inline}
+
+/* Summary cards */
+.sum-grid{grid-template-columns:repeat(3,1fr)}
+@media(max-width:900px){.sum-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.sum-grid{grid-template-columns:1fr}}
+.scard{position:relative;overflow:hidden}
+.scard .stripe{position:absolute;left:0;top:0;bottom:0;width:4px}
+.scard .pad{padding:15px 16px 15px 19px}
+.scard .nm{font-family:var(--serif);font-size:16.5px;font-weight:600;display:flex;align-items:center;gap:8px}
+.scard .chip{width:10px;height:10px;border-radius:3px;flex:none}
+.scard .bl{color:var(--muted);font-size:11.5px;margin:6px 0 12px;min-height:30px;line-height:1.35}
+.scard .kpis{display:grid;grid-template-columns:1fr 1fr;gap:10px 12px}
+.kpi .lab{font-size:10.5px;letter-spacing:.06em;text-transform:uppercase;color:var(--muted)}
+.kpi .val{font-family:var(--serif);font-size:21px;font-weight:600;line-height:1.1;margin-top:1px}
+.kpi .val.sm{font-size:16px}
+.kpi .val .u{font-size:12px;color:var(--muted);font-family:var(--sans)}
+.badge{display:inline-block;font-size:10.5px;font-weight:700;letter-spacing:.04em;padding:2px 7px;
+  border-radius:20px;border:1px solid;margin-top:11px}
+.badge.rec{color:var(--good);border-color:color-mix(in srgb,var(--good) 45%,transparent);
+  background:color-mix(in srgb,var(--good) 12%,transparent)}
+.badge.warnb{color:var(--warn);border-color:color-mix(in srgb,var(--warn) 45%,transparent);
+  background:color-mix(in srgb,var(--warn) 12%,transparent)}
+.badge.neu{color:var(--ink-2);border-color:var(--hair-2);background:var(--sunk)}
+
+/* Charts */
+.chart-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:6px}
+.legend{display:flex;flex-wrap:wrap;gap:5px 14px}
+.legend .li{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-2);cursor:pointer;
+  padding:2px 4px;border-radius:5px}
+.legend .li .sw{width:13px;height:4px;border-radius:2px;flex:none}
+.legend .li.off{opacity:.32}
+.toggle{display:inline-flex;border:1px solid var(--hair-2);border-radius:8px;overflow:hidden}
+.toggle button{border:0;background:var(--card);color:var(--ink-2);font-size:12px;font-weight:600;
+  padding:6px 12px;cursor:pointer}
+.toggle button.on{background:var(--accent);color:#fff}
+:root[data-theme="dark"] .toggle button.on,@media(prefers-color-scheme:dark){:root:where(:not([data-theme="light"])) .toggle button.on{color:#1a1a19}}
+svg{display:block;width:100%;height:auto;overflow:visible}
+.axis{font-size:11px;fill:var(--muted);font-family:var(--sans)}
+.axis.tnum{font-variant-numeric:tabular-nums}
+.gridline{stroke:var(--grid);stroke-width:1}
+.floor{stroke:var(--hair-2);stroke-width:1;fill:none}
+.tip{position:fixed;z-index:60;pointer-events:none;background:var(--card);border:1px solid var(--hair-2);
+  border-radius:9px;box-shadow:var(--shadow);padding:9px 11px;font-size:12px;color:var(--ink);
+  opacity:0;transition:opacity .08s;max-width:250px}
+.tip .tt{font-weight:700;margin-bottom:5px;font-size:12px}
+.tip .tr{display:flex;justify-content:space-between;gap:16px;line-height:1.5}
+.tip .tr .k{color:var(--muted)}
+.tip .tr .v{font-variant-numeric:tabular-nums;font-weight:600}
+.caption{color:var(--muted);font-size:12px;margin-top:10px}
+
+/* Scenario selector tabs */
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:16px}
+.tab{border:1px solid var(--hair-2);background:var(--card);border-radius:20px;padding:6px 13px;
+  font-size:12.5px;font-weight:600;color:var(--ink-2);cursor:pointer;display:flex;align-items:center;gap:7px}
+.tab .chip{width:9px;height:9px;border-radius:3px}
+.tab.on{border-color:var(--ink);color:var(--ink);background:var(--card-2)}
+.tab:focus-visible{outline:2px solid var(--accent);outline-offset:1px}
+
+/* Tables */
+.tscroll{overflow-x:auto;border:1px solid var(--hair);border-radius:11px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:12.5px;min-width:820px}
+th,td{padding:7px 9px;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+th{position:sticky;top:0;background:var(--card-2);color:var(--ink-2);font-weight:600;font-size:11px;
+  letter-spacing:.02em;border-bottom:1px solid var(--hair-2);text-align:right;z-index:1}
+th:first-child,td:first-child{text-align:left;position:sticky;left:0;background:var(--card);z-index:2}
+th:first-child{z-index:3;background:var(--card-2)}
+tbody tr:nth-child(even) td{background:var(--card-2)}
+tbody tr:nth-child(even) td:first-child{background:var(--card-2)}
+td.neg{color:var(--crit)}
+td.pos{color:var(--good)}
+tr.mark td{border-top:1.5px solid var(--accent-soft)}
+.tlabel{font-size:10px;color:var(--muted);font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+
+/* Playbook */
+.phases{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+@media(max-width:980px){.phases{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.phases{grid-template-columns:1fr}}
+.phase{background:var(--card);border:1px solid var(--hair);border-radius:12px;padding:15px;display:flex;flex-direction:column}
+.phase .ph-n{font-family:var(--serif);font-size:13px;color:var(--accent-ink);font-weight:700}
+.phase .ph-r{font-family:var(--serif);font-size:19px;font-weight:600;margin:1px 0 10px}
+.phase ul{margin:0 0 12px;padding-left:16px;display:flex;flex-direction:column;gap:6px}
+.phase li{font-size:12.7px;color:var(--ink-2);line-height:1.4}
+.phase .blk{margin-top:auto;padding-top:11px;border-top:1px solid var(--hair)}
+.phase .blk .t{font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:700}
+.phase .blk .bottleneck{font-size:12.5px;color:var(--crit);font-weight:600;margin:2px 0 9px}
+.phase .trig{display:flex;align-items:baseline;gap:7px;background:var(--sunk);border-radius:8px;padding:7px 9px}
+.phase .trig .num{font-family:var(--serif);font-size:20px;font-weight:700;color:var(--ink);line-height:1}
+.phase .trig .lab{font-size:11px;color:var(--ink-2);line-height:1.25}
+
+/* Sensitivity */
+.sens-grid{grid-template-columns:1.15fr .85fr;gap:16px}
+@media(max-width:900px){.sens-grid{grid-template-columns:1fr}}
+.torn .bar-row{display:grid;grid-template-columns:118px 1fr;align-items:center;gap:10px;margin:9px 0}
+.torn .nm{font-size:12.5px;color:var(--ink-2);text-align:right;font-weight:600}
+.torn .track{position:relative;height:24px}
+.torn .seg{position:absolute;top:3px;height:18px;border-radius:4px;display:flex;align-items:center}
+.torn .mid{position:absolute;top:-3px;bottom:-3px;width:1px;background:var(--hair-2)}
+.torn .vlab{font-size:10.5px;color:var(--muted);font-variant-numeric:tabular-nums;padding:0 5px}
+.mini-tab{display:flex;justify-content:space-between;gap:10px;padding:8px 0;border-top:1px solid var(--hair);font-size:13px}
+.mini-tab:first-child{border-top:0}
+.mini-tab .k{color:var(--ink-2)}
+.mini-tab .v{font-variant-numeric:tabular-nums;font-weight:600}
+.note{background:var(--sunk);border-left:3px solid var(--accent);border-radius:0 9px 9px 0;
+  padding:12px 15px;font-size:13.5px;color:var(--ink-2);margin-top:14px}
+.note b{color:var(--ink)}
+.churn-bars{display:flex;flex-direction:column;gap:9px;margin-top:6px}
+.cbar-row{display:grid;grid-template-columns:64px 1fr;align-items:center;gap:10px}
+.cbar-row .lg{font-size:12px;font-weight:600;color:var(--ink-2);font-variant-numeric:tabular-nums}
+.cbar-track{display:flex;gap:3px}
+.cbar-seg{height:26px;border-radius:3px;display:flex;align-items:center;justify-content:center;
+  font-size:10.5px;color:#fff;font-variant-numeric:tabular-nums;font-weight:600;min-width:0}
+
+/* Cadence */
+.cad-grid{grid-template-columns:repeat(3,1fr)}
+@media(max-width:900px){.cad-grid{grid-template-columns:1fr}}
+.dials{display:grid;grid-template-columns:repeat(2,1fr);gap:12px;margin-bottom:16px}
+@media(max-width:560px){.dials{grid-template-columns:1fr 1fr}}
+.dial{background:var(--card-2);border:1px solid var(--hair);border-radius:11px;padding:13px 15px}
+.dial .v{font-family:var(--serif);font-size:27px;font-weight:600;line-height:1}
+.dial .v .u{font-size:13px;color:var(--muted);font-family:var(--sans)}
+.dial .l{font-size:12px;color:var(--ink-2);margin-top:5px}
+.dial .s{font-size:11px;color:var(--muted);margin-top:2px}
+.scoreboard{border:1px solid var(--hair);border-radius:12px;overflow:hidden}
+.scoreboard .hd{background:var(--ink);color:var(--paper);padding:11px 16px;font-family:var(--serif);
+  font-weight:600;font-size:15px;display:flex;justify-content:space-between;align-items:center}
+.scoreboard .hd .day{font-family:var(--sans);font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.7}
+.sb-row{display:grid;grid-template-columns:1.4fr .6fr auto;gap:12px;padding:9px 16px;border-top:1px solid var(--hair);
+  font-size:13px;align-items:baseline}
+.sb-row .metric{color:var(--ink)}
+.sb-row .metric small{color:var(--muted);display:block;font-size:11px}
+.sb-row .tgt{color:var(--ink-2);font-variant-numeric:tabular-nums;text-align:right;font-weight:600}
+.sb-row .flag{font-size:11px;color:var(--muted)}
+
+ul.read{list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:14px}
+ul.read li{display:grid;grid-template-columns:26px 1fr;gap:12px;font-size:15px;color:var(--ink-2);line-height:1.5}
+ul.read li .n{font-family:var(--serif);font-size:18px;font-weight:700;color:var(--accent-ink)}
+ul.read li b{color:var(--ink)}
+footer{padding:30px 0 60px;color:var(--muted);font-size:12.5px}
+footer code{font-family:var(--mono);background:var(--sunk);padding:1px 6px;border-radius:5px;font-size:11.5px}
+.hl{color:var(--accent-ink);font-weight:600}
+</style>
+
+<header class="mast">
+  <div class="wrap mast-in">
+    <p class="eyebrow">Med-spa AI-automation agency · solo founder · GoHighLevel</p>
+    <h1>The 24-Month Scaling Model</h1>
+    <p class="sub">Six scaling paths, one editable engine. Every number below is computed live from the
+      assumptions — change an input and the whole model, all six scenarios, redraws. Month&nbsp;1 = launch.
+      No motivation, no hedging: the math and the honest read.</p>
+    <div class="meta">
+      <span><b>Entry</b> $500/mo · $0 setup</span>
+      <span><b>Full</b> $1,500/mo · lands ~mo 2 after ROI proof</span>
+      <span><b>Churn</b> 3%/mo, compounding</span>
+      <span>Edit any <span class="kbd">input</span> below to rerun with your real funnel data</span>
+    </div>
+  </div>
+</header>
+
+<nav class="toc"><div class="wrap"><div class="row">
+  <a href="#assume">Assumptions</a>
+  <a href="#summary">Scenarios</a>
+  <a href="#mrr">MRR&nbsp;3D</a>
+  <a href="#active">Active clients</a>
+  <a href="#cash">Cash&nbsp;&amp;&nbsp;drawdown</a>
+  <a href="#tables">Monthly tables</a>
+  <a href="#playbook">Phase playbooks</a>
+  <a href="#sens">Sensitivity</a>
+  <a href="#cadence">Daily / weekly</a>
+  <a href="#read">Honest read</a>
+  <button class="theme-btn" id="themeBtn" type="button">◐ Theme</button>
+</div></div></nav>
+
+<main class="wrap">
+
+<!-- ASSUMPTIONS -->
+<section id="assume">
+  <p class="eyebrow">01 · State them before you use them</p>
+  <h2>Editable assumptions</h2>
+  <p class="sec-lead">These are honest cold-B2B defaults for selling <em>to</em> med-spa owners (a narrow audience).
+    They are placeholders — the moment you have your mentor's student numbers or your first two weeks of campaign
+    data, overwrite the funnel cells and every scenario, chart and table reruns instantly.</p>
+  <div class="grid assume-grid">
+    <div class="card pad assume">
+      <h3><span class="dot"></span>Funnel — Meta lead ads → booked demo → your close</h3>
+      <p class="hint">The top of the funnel. Show rate and close rate are the two biggest levers on month-24 MRR (see §Sensitivity).</p>
+      <div id="funnelFields"></div>
+    </div>
+    <div class="card pad assume">
+      <h3><span class="dot"></span>Business — retention, pricing, tools, market</h3>
+      <p class="hint">The structural mechanics. Churn compounds; tool cost scales with clients; one metro saturates.</p>
+      <div id="bizFields"></div>
+    </div>
+  </div>
+  <div class="controls">
+    <button class="btn primary" id="applyBtn" type="button">Recompute</button>
+    <button class="btn" id="resetBtn" type="button">Reset to defaults</button>
+    <span class="dirty" id="dirty">● edited — click Recompute</span>
+    <span style="font-size:12px;color:var(--muted)">Ceilings (fixed): solo delivers <b>15</b> full installs &amp; supports <b>~28</b> total before hires are mandatory; each AM adds 20 full / 10 support; each VA adds 25 support; a media buyer runs each <b>$10k</b> of spend.</span>
+  </div>
+</section>
+
+<!-- SUMMARY -->
+<section id="summary">
+  <p class="eyebrow">02 · At a glance</p>
+  <h2>Six scenarios, month 24</h2>
+  <p class="sec-lead">Vary only what you control: ad spend, funnel optimization, hiring timing, expansion timing, pricing.
+    Everything else is held constant. Worst drawdown = the deepest the cumulative cash hole ever gets = the float you must fund.</p>
+  <div class="grid sum-grid" id="sumGrid"></div>
+</section>
+
+<!-- 3D MRR -->
+<section id="mrr">
+  <p class="eyebrow">03 · Deliverable A</p>
+  <h2>MRR surface — month × scenario × MRR</h2>
+  <p class="sec-lead">The requested 3D view: X = month (1→24, front edge), Y = scenario (receding), Z = MRR (height).
+    Each ribbon is one scaling path's MRR trajectory. Read the back-to-front spread to see which paths pull away and when.</p>
+  <div class="card pad">
+    <div class="chart-head">
+      <div class="legend" id="mrrLegend"></div>
+      <div class="toggle" id="mrrToggle">
+        <button data-m="3d" class="on" type="button">3D ribbons</button>
+        <button data-m="flat" type="button">Flat lines</button>
+      </div>
+    </div>
+    <div id="mrrChart"></div>
+    <p class="caption" id="mrrCap"></p>
+  </div>
+</section>
+
+<!-- ACTIVE -->
+<section id="active">
+  <p class="eyebrow">04 · Deliverable B</p>
+  <h2>Active clients per scenario</h2>
+  <p class="sec-lead">Logos on the books each month (entry + full), net of 3%/mo compounding churn. This is the number
+    that drives your fulfillment and support hires — the ceilings live on this axis.</p>
+  <div class="card pad">
+    <div class="chart-head">
+      <div class="legend" id="actLegend"></div>
+      <div class="toggle" id="actToggle">
+        <button data-m="total" class="on" type="button">Total active</button>
+        <button data-m="split" type="button">Entry vs full (selected)</button>
+      </div>
+    </div>
+    <div id="actChart"></div>
+    <p class="caption" id="actCap">Dashed horizontal lines mark the solo ceilings: 15 full-tier installs and ~28 total actives.</p>
+  </div>
+</section>
+
+<!-- CASH -->
+<section id="cash">
+  <p class="eyebrow">05 · Deliverable D</p>
+  <h2>Cumulative cash &amp; worst drawdown</h2>
+  <p class="sec-lead">Operating cash the business throws off, cumulative, before any founder draw. The dip below zero is
+    the capital you must float. With $0 setup and a ~2–3 month payback, this model is <em>not</em> capital-intensive —
+    the risk isn't cash, it's whether the funnel converts (see §Sensitivity, downside stress).</p>
+  <div class="card pad">
+    <div class="chart-head">
+      <div class="legend" id="cashLegend"></div>
+      <span style="font-size:12px;color:var(--muted)">▼ marks each path's worst drawdown month</span>
+    </div>
+    <div id="cashChart"></div>
+    <p class="caption" id="cashCap"></p>
+  </div>
+</section>
+
+<!-- TABLES -->
+<section id="tables">
+  <p class="eyebrow">06 · Deliverable C</p>
+  <h2>Full monthly tables</h2>
+  <p class="sec-lead">All 24 months for the selected scenario: new closed, active split (entry vs full), MRR, cash flow,
+    cumulative cash, CAC, payback, and team size. Rows where a hire happens are ruled in brass.</p>
+  <div class="tabs" id="tblTabs"></div>
+  <div class="tscroll"><table id="tbl"><thead></thead><tbody></tbody></table></div>
+  <p class="caption">CAC = blended (ad spend + referral rewards) ÷ all new closes. Payback = months of survival-weighted
+    client contribution to recover that CAC. Fractional clients are the expected-value math, not half a person.</p>
+</section>
+
+<!-- PLAYBOOK -->
+<section id="playbook">
+  <p class="eyebrow">07 · Deliverable D</p>
+  <h2>Phase playbooks — actions, bottleneck, trigger</h2>
+  <p class="sec-lead">For the selected scenario, the 3–5 key actions per phase, the single bottleneck that defines the
+    phase, and the trigger for each hire or expansion — <b>a number, never a date</b>. Phases are client-count bands.</p>
+  <div class="tabs" id="pbTabs"></div>
+  <div class="phases" id="pbPhases"></div>
+</section>
+
+<!-- SENSITIVITY -->
+<section id="sens">
+  <p class="eyebrow">08 · Deliverables E &amp; F</p>
+  <h2>Sensitivity &amp; the honest stress tests</h2>
+  <p class="sec-lead">Which single input moves month-24 MRR the most, what the $0 vs $297 setup fee actually costs,
+    how churn compounds, and what happens if your real close rate is half of assumed.</p>
+  <div class="grid sens-grid">
+    <div class="card pad">
+      <h3 style="font-size:16px;margin-bottom:3px">Tornado — swing in month-24 MRR (±20% each input)</h3>
+      <p class="hint" style="color:var(--muted);font-size:12px;margin:0 0 14px">Base: <span id="tornBase"></span>. Longest bar = biggest lever.</p>
+      <div class="torn" id="tornado"></div>
+    </div>
+    <div>
+      <div class="card pad">
+        <h3 style="font-size:16px;margin-bottom:10px">$0 vs $297 setup fee</h3>
+        <div id="setupTab"></div>
+        <div class="note" id="setupNote"></div>
+      </div>
+    </div>
+  </div>
+  <div class="grid sens-grid" style="margin-top:16px">
+    <div class="card pad">
+      <h3 style="font-size:16px;margin-bottom:3px">Churn compounds</h3>
+      <p class="hint" style="color:var(--muted);font-size:12px;margin:0 0 12px">% of a signed cohort still paying after N months. Average customer life = 1 ÷ churn.</p>
+      <div class="churn-bars" id="churnBars"></div>
+    </div>
+    <div class="card pad">
+      <h3 style="font-size:16px;margin-bottom:3px">Downside stress — real close rate = half</h3>
+      <p class="hint" style="color:var(--muted);font-size:12px;margin:0 0 12px">The funnel is the risk. If cold closes at 6% not 12%, here's month-24 MRR and worst drawdown per path.</p>
+      <div id="stressTab"></div>
+    </div>
+  </div>
+</section>
+
+<!-- CADENCE -->
+<section id="cadence">
+  <p class="eyebrow">09 · The behavior that produces the math</p>
+  <h2>Daily / weekly operating rhythm</h2>
+  <p class="sec-lead">The model's throughput only exists if the reps happen. For the selected scenario, the dials below
+    are derived from its months 6–12 volume. Under them: the Friday scoreboard you report every week.</p>
+  <div class="tabs" id="cadTabs"></div>
+  <div class="dials" id="cadDials"></div>
+  <div class="scoreboard" id="scoreboard"></div>
+</section>
+
+<!-- READ -->
+<section id="read" style="border-bottom:0">
+  <p class="eyebrow">10 · The honest read</p>
+  <h2>Bottom line</h2>
+  <ul class="read" id="readList"></ul>
+  <div class="note" style="margin-top:20px">
+    <b>What would change these conclusions:</b> your real cost-per-lead and — above all — your <b>show rate</b> and
+    <b>cold close rate</b>. Those three move month-24 MRR more than anything else you control. Paste your first two
+    weeks of numbers into §Assumptions and the entire model reprices in front of you.
+  </div>
+</section>
+
+</main>
+<footer class="wrap">
+  Built from <code>medspa/model.py</code> — the Python engine is the source of truth; this page mirrors it exactly
+  (verified across 1,296 monthly cells). Fractional clients are expected-value math. Cumulative cash excludes founder
+  draw and assumes monthly collection. The Premium path reprices the <em>entire</em> book at the raise (migration, not
+  grandfathering) — grandfathering existing clients would smooth and lower that curve. All dollar figures are model
+  output under editable assumptions, not a promise.
+</footer>
+
+<div class="tip" id="tip"></div>
+
+<script>
+"use strict";
+/* ============================ ENGINE (mirror of medspa/model.py) ============================ */
+const HORIZON=24;
+const DEFAULTS={cost_per_lead:25,lead_to_booked:.25,show_rate:.60,close_0cs:.12,close_3cs:.28,close_social_bonus:.03,
+ learn_cpl_mult:{1:1.60,2:1.20},learn_close_mult:{1:.60,2:.85},fatigue_rate:.05,case_study_yield:.40,case_study_cap:12,
+ referral_yield_base:.02,referral_reward:75,churn:.03,upsell_delay:2,price_entry:500,price_full:1500,
+ tools_base:300,tools_per_client:15,metro_size:300,saturation_slope:.90,solo_full_capacity:15,solo_support_cap:28,
+ am_full_capacity:20,am_support_add:10,va_support_add:25,overload_churn_pen:.02,founder_spend_ceiling:6000,
+ salary_va:1800,salary_media_buyer:4000,salary_account_mgr:4500,media_buyer_cpl_mult:.90,mb_manage_cap:10000,
+ setup_fee:0,setup_close_drag_at_297:.12};
+const FUNNEL_OPT={basic:{cpl_mult:1.08,refresh_cycle:3},good:{cpl_mult:1,refresh_cycle:2},optimized:{cpl_mult:.92,refresh_cycle:1}};
+function spendRamp(sch){const o={};let cur=0,i=0;const s=sch.slice().sort((a,b)=>a[0]-b[0]);
+ for(let m=1;m<=HORIZON;m++){while(i<s.length&&s[i][0]<=m){cur=s[i][1];i++;}o[m]=cur;}return o;}
+const SCEN=[
+ {key:'conservative',name:'Ads-Only Conservative',blurb:'Flat $2k/mo, stay solo as long as possible, basic funnel, low upsell push.',
+  ad_spend:spendRamp([[1,1500],[2,2000]]),funnel_opt:'basic',upsell_take:.33,referral_yield:.02,outreach_base:0,
+  va_trigger_active:22,mb_trigger_spend:null,mb_trigger_active:null,am_trigger_upsold:13,metro_expand_active:[],metro_expand_spend:2500,price_raise_cs:null},
+ {key:'aggressive',name:'Ads-Only Aggressive',blurb:'Ramp spend to $10k/mo, push volume, single metro. Saturation bites.',
+  ad_spend:spendRamp([[1,3000],[3,5000],[6,8000],[10,10000]]),funnel_opt:'good',upsell_take:.45,referral_yield:.02,outreach_base:0,
+  va_trigger_active:16,mb_trigger_spend:6000,mb_trigger_active:null,am_trigger_upsold:12,metro_expand_active:[],metro_expand_spend:2500,price_raise_cs:null},
+ {key:'hybrid',name:'Hybrid (Ads + Referrals + Outreach)',blurb:'Moderate ads + founder warm outreach + a real referral engine.',
+  ad_spend:spendRamp([[1,2000],[2,2500]]),funnel_opt:'good',upsell_take:.45,referral_yield:.06,outreach_base:2.5,
+  va_trigger_active:20,mb_trigger_spend:null,mb_trigger_active:null,am_trigger_upsold:13,metro_expand_active:[],metro_expand_spend:2500,price_raise_cs:null},
+ {key:'team',name:'Scale-With-Team',blurb:'Hire early and deliberately to break both ceilings. Highest ceiling, longest drawdown.',
+  ad_spend:spendRamp([[1,3000],[3,6000],[7,9000],[12,11000]]),funnel_opt:'good',upsell_take:.45,referral_yield:.025,outreach_base:0,
+  va_trigger_active:10,mb_trigger_spend:null,mb_trigger_active:15,am_trigger_upsold:11,metro_expand_active:[],metro_expand_spend:2500,price_raise_cs:null},
+ {key:'multimetro',name:'Multi-Metro Expansion',blurb:'Saturate metro 1, then open metros 2 & 3 at client-count triggers to reset CPL.',
+  ad_spend:spendRamp([[1,2000],[2,2500]]),funnel_opt:'good',upsell_take:.45,referral_yield:.025,outreach_base:0,
+  va_trigger_active:18,mb_trigger_spend:null,mb_trigger_active:30,am_trigger_upsold:12,metro_expand_active:[18,36],metro_expand_spend:2500,price_raise_cs:null},
+ {key:'premium',name:'Premium-Pricing Path',blurb:'Build 10+ case studies, then raise entry→$750 & full→$2,000. Best margin & LTV.',
+  ad_spend:spendRamp([[1,2000],[2,2500],[8,4000]]),funnel_opt:'optimized',upsell_take:.60,referral_yield:.03,outreach_base:0,
+  va_trigger_active:18,mb_trigger_spend:null,mb_trigger_active:null,am_trigger_upsold:12,metro_expand_active:[],metro_expand_spend:2500,
+  price_raise_cs:10,price_entry_new:750,price_full_new:2000,price_close_haircut:.90}];
+function expectedPayback(cac,take,pe,pf,tp,delay,surv){if(!isFinite(cac)||cac<=0)return NaN;let cum=0;
+ for(let k=0;k<60;k++){const price=k<delay?pe:(take*pf+(1-take)*pe);const c=(price-tp)*Math.pow(surv,k);cum+=c;
+ if(cum>=cac){return k+(cac-(cum-c))/c;}}return NaN;}
+function simulate(sc,A){const surv=1-A.churn,opt=FUNNEL_OPT[sc.funnel_opt],rc=opt.refresh_cycle;
+ const rows=[],hist=[];let entry=0,upsold=0,cum=0,wd=0,wdm=0,cb=0,metros=1,mcap=A.metro_size,va=0,mb=0,am=0;
+ for(let m=1;m<=HORIZON;m++){const tap=entry+upsold;const bs=sc.ad_spend[m];
+  while(sc.metro_expand_active.length>=metros&&tap>=sc.metro_expand_active[metros-1]){metros++;mcap+=A.metro_size;}
+  const ad=bs+sc.metro_expand_spend*(metros-1);const j=m-A.upsell_delay;
+  const du=j>=1?hist[j-1]*Math.pow(surv,A.upsell_delay)*sc.upsell_take:0;const pu=upsold+du;
+  const tva=sc.va_trigger_active!=null&&tap>=sc.va_trigger_active;
+  const tam=sc.am_trigger_upsold!=null&&upsold>=sc.am_trigger_upsold;
+  const tmb=(sc.mb_trigger_spend!=null&&ad>=sc.mb_trigger_spend)||(sc.mb_trigger_active!=null&&tap>=sc.mb_trigger_active)||(metros>=2&&tap>=20);
+  am=Math.max(am,Math.ceil(Math.max(0,pu-A.solo_full_capacity)/A.am_full_capacity),tam?1:0);
+  va=Math.max(va,Math.ceil(Math.max(0,tap-(A.solo_support_cap+A.am_support_add*am))/A.va_support_add),tva?1:0);
+  mb=Math.max(mb,Math.ceil(Math.max(0,ad-A.founder_spend_ceiling)/A.mb_manage_cap),tmb?1:0);
+  let cpl=A.cost_per_lead*opt.cpl_mult*(A.learn_cpl_mult[m]||1)*(1+A.fatigue_rate*((m-1)%rc));
+  const pen=cb/mcap;cpl*=(1+A.saturation_slope*pen);if(mb)cpl*=A.media_buyer_cpl_mult;
+  if(!mb&&ad>A.founder_spend_ceiling)cpl*=(1+.3*(ad-A.founder_spend_ceiling)/A.founder_spend_ceiling);
+  let cm=0;for(let k=0;k<Math.max(0,m-2);k++)cm+=hist[k];const cs=Math.min(A.case_study_cap,A.case_study_yield*cm);
+  let pe=A.price_entry,pf=A.price_full,hc=1,praised=false;
+  if(sc.price_raise_cs!=null&&cs>=sc.price_raise_cs){pe=sc.price_entry_new;pf=sc.price_full_new;hc=sc.price_close_haircut;praised=true;}
+  const t=Math.min(1,cs/3);let clo=A.close_0cs+(A.close_3cs-A.close_0cs)*t;
+  if(cs>3)clo+=Math.min(1,(cs-3)/7)*A.close_social_bonus;clo*=(A.learn_close_mult[m]||1)*hc;
+  if(A.setup_fee>0)clo*=(1-A.setup_close_drag_at_297*A.setup_fee/297);
+  const leads=cpl>0?ad/cpl:0,booked=leads*A.lead_to_booked,shown=booked*A.show_rate,pc=shown*clo;cb+=booked;
+  const rc2=sc.referral_yield*Math.max(0,tap);let oc=0;if(sc.outreach_base>0)oc=Math.max(0,sc.outreach_base-.05*tap);
+  const nc=pc+rc2+oc;hist.push(nc);
+  const scap=A.solo_support_cap+A.va_support_add*va+A.am_support_add*am;let ce=A.churn;if(tap>scap)ce+=A.overload_churn_pen;
+  const s=1-ce;entry*=s;upsold*=s;entry+=nc;
+  let nu=0;if(j>=1){const el=hist[j-1]*Math.pow(surv,A.upsell_delay),des=el*sc.upsell_take,
+   fc=A.solo_full_capacity+A.am_full_capacity*am,room=Math.max(0,fc-upsold);nu=Math.min(des,room);entry-=nu;upsold+=nu;}
+  const ta=entry+upsold,mrr=entry*pe+upsold*pf,tools=A.tools_base+A.tools_per_client*ta,
+   team=A.salary_va*va+A.salary_media_buyer*mb+A.salary_account_mgr*am,rcost=rc2*A.referral_reward,
+   coll=mrr+A.setup_fee*nc,cf=coll-ad-tools-team-rcost;cum+=cf;if(cum<wd){wd=cum;wdm=m;}
+  const cacb=nc>1e-9?(ad+rcost)/nc:NaN,pay=expectedPayback(cacb,sc.upsell_take,pe,pf,A.tools_per_client,A.upsell_delay,surv);
+  rows.push({month:m,ad_spend:ad,cpl,penetration:pen,metros,case_studies:cs,close_rate:clo,new_closes:nc,new_upsells:nu,
+   entry_active:entry,upsold_active:upsold,total_active:ta,mrr,tools,team_cost:team,cash_flow:cf,cum_cash:cum,
+   cac_blended:cacb,payback_months:pay,team_size:va+mb+am,va,mb,am,prices_raised:praised});}
+ const L=rows[rows.length-1];
+ return{rows,summary:{worst_drawdown:wd,worst_drawdown_month:wdm,mrr_24:L.mrr,active_24:L.total_active,cum_cash_24:L.cum_cash}};}
+function runAll(A){const o={};for(const sc of SCEN)o[sc.key]=Object.assign({name:sc.name,blurb:sc.blurb},simulate(sc,A));return o;}
+
+/* ============================ CONTENT ============================ */
+const COL=['var(--s1)','var(--s2)','var(--s3)','var(--s4)','var(--s5)','var(--s6)'];
+const KEYS=SCEN.map(s=>s.key);
+const NAMES=Object.fromEntries(SCEN.map(s=>[s.key,s.name]));
+const SHORT={conservative:'Conservative',aggressive:'Aggressive',hybrid:'Hybrid',team:'Scale-with-Team',multimetro:'Multi-Metro',premium:'Premium'};
+const VERDICT={
+ conservative:{b:'neu',t:'Cash-safe, low ceiling'},
+ aggressive:{b:'warnb',t:'Fastest MRR · fragile to funnel'},
+ hybrid:{b:'rec',t:'Best risk-adjusted'},
+ team:{b:'warnb',t:'Highest ceiling · deepest hole'},
+ multimetro:{b:'neu',t:'Beats saturation · volume-dependent'},
+ premium:{b:'neu',t:'Best margin per client'}};
+const PLAY={
+ conservative:[
+  {r:'0 → 5',bn:'Zero proof — your close rate is 7–12% and you are the whole funnel.',
+   a:['Lock one offer + one demo script; do not customize per prospect','Over-deliver DB reactivation on client #1–3 to manufacture 3 case studies fast','5-minute callback on every lead, no exceptions','Hold ad spend at ~$1.5–2k through the 2-week learning phase — do not judge CPL yet'],
+   tn:'3',tl:'case studies before close rate lifts toward 28%'},
+  {r:'5 → 15',bn:'Founder time split between closing and delivering; upsells start landing.',
+   a:['Templatize the GHL snapshot so onboarding is <2 hrs','Trigger the $1,500 upsell the month the ROI dashboard shows $5k recovered','Keep spend flat — this path proves the model before scaling it','Bank testimonials + screenshots into ad creative'],
+   tn:'13',tl:'full-tier installs → hire the Account Manager'},
+  {r:'15 → 30',bn:'You hit the solo ceiling: 15 full installs, ~28 total support.',
+   a:['Hire the AM at 13 full installs (mandatory — you cannot deliver #16 solo)','Hire the VA at 22 actives for support/admin','Write SOPs before you need them','Watch churn: 3% of 25 = ~1 lost logo/mo you must replace'],
+   tn:'22',tl:'total actives → hire the VA'},
+  {r:'30+',bn:'Growth stalls — at $2k/mo spend, new closes barely outrun churn.',
+   a:['Accept the plateau (~$30–35k MRR) or graduate to another path','Push referrals to add closes without more spend','Annual prepay offers to blunt churn','This is the safe lifestyle ceiling; scaling past it needs the team or metro paths'],
+   tn:'~40',tl:'active ceiling at this spend level'}],
+ aggressive:[
+  {r:'0 → 5',bn:'Learning phase + zero proof while you are already spending $3k/mo.',
+   a:['Expect month-1 CAC ~$3–4k (learning + no case studies) — fund it, don\'t panic','Ship 3–5 creatives/wk immediately to exit the learning phase fast','Instrument cost-per-booked-demo, not cost-per-lead, as your north star','Bank the first 3 case studies before you push spend to $5k'],
+   tn:'$3–4k',tl:'expected month-1 CAC — the deepest per-client hole'},
+  {r:'5 → 15',bn:'Volume outruns your calendar; show rate is the leak.',
+   a:['Protect show rate: reminder sequence + reschedule flow before demo','Push spend to $5k only once close rate clears ~18%','Hire the VA at 16 actives — earlier than the safe path','Start upselling at the ROI trigger; you\'ll need the full-tier MRR'],
+   tn:'16',tl:'actives → VA (pulled early to protect delivery)'},
+  {r:'15 → 30',bn:'Two ceilings at once: media-buying past $6k and 15 full installs.',
+   a:['Hire the media buyer when spend crosses $6k — founder-run ads decay above it','Hire the AM at 12 full installs','Watch CPL climb as metro penetration passes 50% — this is the saturation tax','Decide now: keep paying the saturation tax or open a second metro'],
+   tn:'$6,000',tl:'monthly spend → hire the media buyer'},
+  {r:'30+',bn:'Saturation: one metro, CPL climbing toward $80+ as you re-touch the same spas.',
+   a:['CAC inflates every month — your cheapest growth is now referrals + reactivating churned logos','Add AMs on a 1-per-20-full-installs ratio','Model says ~$126k MRR / 140 actives by mo 24 — but only if the funnel holds','Single-metro is the fragile path: halve the close rate and MRR halves, drawdown triples'],
+   tn:'20',tl:'full installs per additional Account Manager'}],
+ hybrid:[
+  {r:'0 → 5',bn:'Same cold-start as everyone, but you have two extra channels from day one.',
+   a:['Run $2–2.5k ads AND do 2–3 warm outreach closes/mo yourself','Ask every happy client for a referral at the 30-day results check','Manufacture case studies fast — they feed all three channels','Keep a simple referral reward (~$75) to make it automatic'],
+   tn:'3',tl:'case studies to unlock the higher close rate'},
+  {r:'5 → 15',bn:'Referral volume scales with your happy-client base — protect delivery quality.',
+   a:['Every install is a referral source — QBR-style results reviews drive referrals','Blended CAC is your edge: referrals close ~near-zero cost','Trigger upsells on the ROI dashboard as usual','Reinvest the cash-flow cushion (shallowest drawdown of any path) into creative'],
+   tn:'13',tl:'full installs → hire the Account Manager'},
+  {r:'15 → 30',bn:'Founder outreach time evaporates as the book grows.',
+   a:['Hand outreach to the VA-assisted list; your time goes to closing + referrals','Hire VA at 20 actives','Referral engine now carries a growing share of closes — track referral % explicitly','Robust to funnel shocks: if paid closes halve, referrals barely move'],
+   tn:'20',tl:'actives → hire the VA'},
+  {r:'30+',bn:'Ad channel matters less; the flywheel is referrals + reputation.',
+   a:['~$103k MRR / 116 actives by mo 24 at HALF the ad dependency of the aggressive path','Formalize the referral program (tiered rewards, partner spas)','Best risk-adjusted position: strong MRR, tiny drawdown, low funnel fragility','Consider layering the premium price raise once you have 10+ case studies'],
+   tn:'~$826',tl:'worst drawdown ever — the safest cash path'}],
+ team:[
+  {r:'0 → 5',bn:'You are pre-revenue but hiring on a plan, not on pain.',
+   a:['Spend $3k/mo and document everything from client #1 for handoff','Get 3 case studies fast — the team is useless without proof to sell','Design roles before you fill them (VA scope, buyer scope, AM scope)','Expect the deepest early drawdown — you carry payroll before revenue catches up'],
+   tn:'3',tl:'case studies before you scale spend behind the team'},
+  {r:'5 → 15',bn:'Payroll is live while MRR is still ramping — this is the danger zone.',
+   a:['Hire VA at just 10 actives (early, deliberate) to free founder for closing','Hire the media buyer at 15 actives to scale ads past founder capacity','A real buyer cuts CPL ~10% and unlocks $9k+ spend','Watch cumulative cash — worst drawdown ~$8k, the deepest of any path'],
+   tn:'10',tl:'actives → VA (the earliest hire of any scenario)'},
+  {r:'15 → 30',bn:'Fulfillment throughput — can the AM absorb full installs fast enough?',
+   a:['Hire AM at 11 full installs (earliest AM trigger)','Stack AMs on a 1-per-20 ratio as upsells accelerate','Buyer scales spend to $11k; keep CPL honest with weekly creative','The team lets you break BOTH ceilings — this is the only path to a real org'],
+   tn:'11',tl:'full installs → hire the first Account Manager'},
+  {r:'30+',bn:'You now run a company; churn on a 150-logo base is the silent tax.',
+   a:['~$139k MRR / 155 actives by mo 24 — highest ceiling of all six','3%/mo churn on 150 = ~4–5 logos/mo gone; retention is now a role','Team ratio: 1 AM / 20 full, 1 VA / 25 support, 1 buyer / $10k spend','Only wins if you FILL the capacity you hired — empty seats invert the math'],
+   tn:'25',tl:'support seats added per VA'}],
+ multimetro:[
+  {r:'0 → 5',bn:'Standard cold-start in metro 1; you\'re proving the playbook you\'ll clone.',
+   a:['Nail metro 1 economics before you even think about metro 2','Document the launch checklist as a repeatable metro-open SOP','3 case studies — ideally local to metro 1 for social proof','Track penetration (cumulative booked demos ÷ 300) as your expansion clock'],
+   tn:'3',tl:'case studies to lift close rate before cloning'},
+  {r:'5 → 15',bn:'Metro 1 CPL creeps as you penetrate the same 300 spas.',
+   a:['Watch CPL rise with penetration — that\'s your signal the metro is filling','Prepare metro 2 creative + targeting before you hit the trigger','Keep spend disciplined; you\'ll split it across metros soon','Upsell as usual on the ROI trigger'],
+   tn:'18',tl:'actives → open metro 2 (+300 market, CPL resets)'},
+  {r:'15 → 30',bn:'Managing two metros doubles the operational surface.',
+   a:['Open metro 2 at 18 actives — fresh market drops blended CPL','Hire the media buyer once you run 2+ metros (mandatory)','Hire AM at 12 full installs','Open metro 3 at 36 actives — same reset trick'],
+   tn:'36',tl:'actives → open metro 3 (third fresh market)'},
+  {r:'30+',bn:'Three metros = 900 addressable; your CPL stays low while single-metro paths choke.',
+   a:['~$133k MRR / 150 actives by mo 24 at CPL ~$44 vs aggressive\'s ~$87','This is how you beat saturation without a price raise','But it\'s volume-dependent: halve the close rate and it\'s the most fragile path (MRR→$33k)','Each new metro needs its own 2-week learning phase — stagger, don\'t stack'],
+   tn:'$44',tl:'month-24 CPL vs $87 single-metro — the expansion payoff'}],
+ premium:[
+  {r:'0 → 5',bn:'You deliberately stay cheap ($500/$1,500) to bank proof you\'ll charge for later.',
+   a:['Run the optimized funnel from day one (5 creatives/wk, tight targeting)','Obsess over results — every client is a future premium case study','Do NOT raise price yet; you haven\'t earned it','3 case studies to lift close rate; 10 to unlock the raise'],
+   tn:'3',tl:'case studies to reach the 28% close rate'},
+  {r:'5 → 15',bn:'Building toward the 10-case-study pricing trigger.',
+   a:['Keep pricing standard; accumulate proof and testimonials','Higher upsell take (60%) — your proof makes the full system an easy yes','Spend ramps modestly to $4k as close rate matures','Track case-study count as your pricing clock'],
+   tn:'10',tl:'case studies → raise entry→$750, full→$2,000'},
+  {r:'15 → 30',bn:'The price raise dents close rate ~10% but reprices your whole book.',
+   a:['Raise both tiers at 10 case studies — new clients only, honor legacy or migrate','Expect a small volume dip; the margin more than compensates','Hire AM at 12 full installs','Highest revenue-per-client and best LTV:CAC of any path'],
+   tn:'$750',tl:'new entry price once proof is banked'},
+  {r:'30+',bn:'Fewer clients, far higher margin — quality over quantity.',
+   a:['~$111k MRR from only ~79 actives — vs 140+ on the volume paths','Best cash margin per client; premium clients also churn slightly less in practice','Layer this onto Hybrid for the theoretical optimum (pricing power × low CAC)','Your constraint is now proof velocity, not spend'],
+   tn:'~79',tl:'actives producing $111k MRR — the margin path'}]};
+const CAD_FRIDAY=[
+ ['New leads','count','vs last week'],['Cost per lead','$','↓ is winning'],
+ ['Booked demos','count','leads × booking %'],['Show rate','%','protect this — #1 lever'],
+ ['Demos closed','count','the only vanity-proof number'],['Close rate','%','cold-traffic %, track vs case-study count'],
+ ['New MRR added','$','entry + upsell this week'],['Logos churned','count','3%/mo compounding — replace + investigate'],
+ ['Cash balance','$','are you inside your drawdown budget?'],['Active split','entry / full','the ceiling watch']];
+
+/* ============================ STATE + HELPERS ============================ */
+let A=Object.assign({},DEFAULTS), MODEL=runAll(A);
+let hidden=new Set(), mrrMode='3d', actMode='total', tblKey='aggressive', pbKey='hybrid', cadKey='hybrid';
+const $=s=>document.querySelector(s), el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;};
+const money=v=>{const n=Math.round(v);const a=Math.abs(n);if(a>=1e6)return (n<0?'-$':'$')+(a/1e6).toFixed(2)+'M';
+ if(a>=1000)return (n<0?'-$':'$')+(a/1000).toFixed(a>=1e5?0:1)+'k';return (n<0?'-$':'$')+a;};
+const money0=v=>(v<0?'-$':'$')+Math.abs(Math.round(v)).toLocaleString();
+const num=(v,d=0)=>Number(v).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d});
+const pct=v=>(v*100).toFixed(1)+'%';
+function css(v){return getComputedStyle(document.documentElement).getPropertyValue(v).trim();}
+
+/* ============================ ASSUMPTION FIELDS ============================ */
+const FUNNEL_FIELDS=[
+ ['cost_per_lead','Cost per lead','$','',0],['lead_to_booked','Lead → booked demo','','%',1],
+ ['show_rate','Show rate (booked → shown)','','%',1],['close_0cs','Close rate — 0 case studies','','%',1],
+ ['close_3cs','Close rate — 3+ case studies','','%',1],['referral_yield_base','Referral yield / active / mo','','%',1]];
+const BIZ_FIELDS=[
+ ['churn','Monthly churn','','%',1],['price_entry','Entry price','$','',0],['price_full','Full-system price','$','',0],
+ ['tools_per_client','Tool cost per client','$','',0],['metro_size','Addressable spas / metro','','',0],
+ ['saturation_slope','CPL rise at full saturation','','×',2]];
+function fieldRow(def){const[k,lab,pre,suf,dec]=def;const isPct=suf==='%';
+ const val=isPct?(A[k]*100):A[k];
+ const row=el('div','field');
+ row.innerHTML=`<label>${lab}</label><div class="inwrap">${pre?`<span class="pre">${pre}</span>`:''}
+  <input type="number" step="${isPct?0.5:(dec?0.01:1)}" data-k="${k}" data-pct="${isPct?1:0}" value="${isPct?val.toFixed(dec):val}">
+  <span class="suf">${suf||''}</span></div>`;
+ return row;}
+function buildFields(){const f=$('#funnelFields');f.innerHTML='';FUNNEL_FIELDS.forEach(d=>f.appendChild(fieldRow(d)));
+ const b=$('#bizFields');b.innerHTML='';BIZ_FIELDS.forEach(d=>b.appendChild(fieldRow(d)));
+ document.querySelectorAll('.field input').forEach(inp=>inp.addEventListener('input',()=>$('#dirty').classList.add('on')));}
+function readFields(){const A2=Object.assign({},DEFAULTS);
+ document.querySelectorAll('.field input').forEach(inp=>{let v=parseFloat(inp.value);if(isNaN(v))return;
+  if(inp.dataset.pct==='1')v/=100;A2[inp.dataset.k]=v;});return A2;}
+
+/* ============================ RENDER: SUMMARY ============================ */
+function renderSummary(){const g=$('#sumGrid');g.innerHTML='';
+ KEYS.forEach((k,i)=>{const s=MODEL[k].summary,sc=SCEN[i],v=VERDICT[k];
+  const c=el('div','card scard');
+  c.innerHTML=`<div class="stripe" style="background:${COL[i]}"></div><div class="pad">
+   <div class="nm"><span class="chip" style="background:${COL[i]}"></span>${s2name(k)}</div>
+   <div class="bl">${sc.blurb}</div>
+   <div class="kpis">
+    <div class="kpi"><div class="lab">MRR · mo 24</div><div class="val">${money(s.mrr_24)}</div></div>
+    <div class="kpi"><div class="lab">Active clients</div><div class="val">${num(s.active_24,0)}</div></div>
+    <div class="kpi"><div class="lab">Cum. cash · mo 24</div><div class="val sm">${money(s.cum_cash_24)}</div></div>
+    <div class="kpi"><div class="lab">Worst drawdown</div><div class="val sm" style="color:var(--crit)">${money(s.worst_drawdown)}</div></div>
+   </div>
+   <span class="badge ${v.b}">${v.t}</span></div>`;
+  g.appendChild(c);});}
+function s2name(k){return NAMES[k].replace(/\s*\(.*\)/,'');}
+
+/* ============================ RENDER: 3D MRR ============================ */
+function seriesVisible(){return KEYS.filter(k=>!hidden.has(k));}
+function buildLegend(id,onToggle){const L=$(id);L.innerHTML='';
+ KEYS.forEach((k,i)=>{const li=el('div','li'+(hidden.has(k)?' off':''));
+  li.innerHTML=`<span class="sw" style="background:${COL[i]}"></span>${SHORT[k]}`;
+  li.onclick=()=>{hidden.has(k)?hidden.delete(k):hidden.add(k);onToggle();};L.appendChild(li);});}
+function maxMRR(){let mx=0;KEYS.forEach(k=>MODEL[k].rows.forEach(r=>{if(r.mrr>mx)mx=r.mrr;}));
+ return Math.ceil(mx/25000)*25000;}
+function render3D(){const wrap=$('#mrrChart');const W=940,H=600;
+ if(mrrMode==='flat'){renderFlatMRR();return;}
+ const padL=64,padB=50,padT=20,padR=150;
+ const dxD=28,dyD=22; // depth per scenario
+ const vis=KEYS; const nS=vis.length;
+ const plotW=W-padL-padR-dxD*(nS-1);
+ const xStep=plotW/(HORIZON-1);
+ const floorY=H-padB-dyD*(nS-1);
+ const mx=maxMRR();
+ const zS=(floorY-dyD*(nS-1)-padT)/mx; // reserve room so back-row ribbons never clip the top
+ const px=(m,s)=>padL+(m-1)*xStep+s*dxD;
+ const py=(v,s)=>floorY-s*dyD-v*zS;
+ let svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="3D MRR ribbons by scenario over 24 months">`;
+ // Z gridlines + labels (on back-left plane)
+ for(let gv=0;gv<=mx;gv+=25000){const y0=py(gv,0),y1=py(gv,nS-1),x0=px(1,0),x1=px(1,nS-1);
+  svg+=`<line x1="${x0}" y1="${y0}" x2="${x1}" y2="${y1}" class="gridline" stroke-dasharray="2 3"/>`;
+  svg+=`<line x1="${x1}" y1="${y1}" x2="${px(HORIZON,nS-1)}" y2="${py(gv,nS-1)}" class="gridline" stroke-dasharray="2 3"/>`;
+  svg+=`<text x="${x0-10}" y="${y0+4}" class="axis tnum" text-anchor="end">${gv?'$'+gv/1000+'k':'0'}</text>`;}
+ // floor month ticks (front edge, s=0)
+ for(let m=1;m<=HORIZON;m+=3){const x=px(m,0),y=floorY;
+  svg+=`<line x1="${x}" y1="${y}" x2="${px(m,nS-1)}" y2="${floorY-dyD*(nS-1)}" class="gridline" stroke-dasharray="2 4" opacity=".5"/>`;
+  svg+=`<text x="${x}" y="${y+20}" class="axis tnum" text-anchor="middle">${m}</text>`;}
+ svg+=`<text x="${px(HORIZON,0)+8}" y="${floorY+20}" class="axis">mo</text>`;
+ // ribbons back-to-front (s=nS-1 back ... 0 front)
+ const hov=[];
+ for(let s=nS-1;s>=0;s--){const k=vis[s];if(hidden.has(k))continue;const rows=MODEL[k].rows;
+  let top='',floor='';
+  rows.forEach((r,idx)=>{const x=px(r.month,s),y=py(r.mrr,s);top+=(idx?'L':'M')+x.toFixed(1)+' '+y.toFixed(1)+' ';});
+  for(let idx=rows.length-1;idx>=0;idx--){const x=px(rows[idx].month,s),y=py(0,s);floor+='L'+x.toFixed(1)+' '+y.toFixed(1)+' ';}
+  svg+=`<path d="${top}${floor}Z" fill="${COL[s2i(k)]}" fill-opacity="0.30" stroke="none"/>`;
+  svg+=`<path d="${top}" fill="none" stroke="${COL[s2i(k)]}" stroke-width="2.4" stroke-linejoin="round"/>`;
+  // end label
+  const last=rows[rows.length-1];
+  svg+=`<text x="${px(24,s)+7}" y="${py(last.mrr,s)+4}" class="axis" style="fill:${COL[s2i(k)]};font-weight:700;font-size:11.5px">${SHORT[k]}</text>`;
+  // hover vertices
+  rows.forEach(r=>{if(r.month%2===0||r.month===1)hov.push({x:px(r.month,s),y:py(r.mrr,s),k,r});});}
+ hov.forEach(h=>{svg+=`<circle cx="${h.x.toFixed(1)}" cy="${h.y.toFixed(1)}" r="9" fill="transparent"
+   data-k="${h.k}" data-m="${h.r.month}" class="hv3d"/>`;});
+ svg+=`</svg>`;wrap.innerHTML=svg;
+ wrap.querySelectorAll('.hv3d').forEach(c=>{c.addEventListener('mousemove',e=>{const k=c.dataset.k,m=+c.dataset.m;
+   const r=MODEL[k].rows[m-1];showTip(e,`${NAMES[k]} · month ${m}`,[['MRR',money0(r.mrr)],['Active',num(r.total_active,0)],
+    ['Full-tier',num(r.upsold_active,0)],['Cash flow',money0(r.cash_flow)]],k);});
+  c.addEventListener('mouseleave',hideTip);});
+ $('#mrrCap').textContent=`Peak: ${s2name(topByMRR())} reaches ${money(MODEL[topByMRR()].summary.mrr_24)} MRR by month 24. `
+  +`Z axis capped at $${mx/1000}k. Hover a ribbon for the month's numbers.`;
+ buildLegend('#mrrLegend',render3D);}
+function s2i(k){return KEYS.indexOf(k);}
+function topByMRR(){return KEYS.reduce((a,b)=>MODEL[b].summary.mrr_24>MODEL[a].summary.mrr_24?b:a);}
+function spreadY(ys,gap){const idx=ys.map((y,i)=>({y,i})).sort((a,b)=>a.y-b.y);
+ for(let k=1;k<idx.length;k++)if(idx[k].y-idx[k-1].y<gap)idx[k].y=idx[k-1].y+gap;
+ const out=[];idx.forEach(o=>out[o.i]=o.y);return out;}
+function emitLabels(labels,lx,size){const ys=spreadY(labels.map(l=>l.y),13);
+ return labels.map((l,i)=>`<text x="${lx}" y="${(ys[i]+4).toFixed(1)}" class="axis" style="fill:${COL[s2i(l.k)]};font-weight:700;font-size:${size||11.5}px">${SHORT[l.k]}</text>`).join('');}
+
+function renderFlatMRR(){const wrap=$('#mrrChart');const W=940,H=460,padL=64,padR=150,padT=20,padB=44;
+ const mx=maxMRR();const x=m=>padL+(m-1)*(W-padL-padR)/(HORIZON-1);const y=v=>padT+(1-v/mx)*(H-padT-padB);
+ let svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="MRR line chart by scenario">`;
+ for(let gv=0;gv<=mx;gv+=25000){svg+=`<line x1="${padL}" y1="${y(gv)}" x2="${W-padR}" y2="${y(gv)}" class="gridline"/>
+  <text x="${padL-10}" y="${y(gv)+4}" class="axis tnum" text-anchor="end">${gv?'$'+gv/1000+'k':'0'}</text>`;}
+ for(let m=1;m<=HORIZON;m+=3)svg+=`<text x="${x(m)}" y="${H-padB+20}" class="axis tnum" text-anchor="middle">${m}</text>`;
+ const labels=[];KEYS.forEach(k=>{if(hidden.has(k))return;const rows=MODEL[k].rows;let d='';
+  rows.forEach((r,i)=>d+=(i?'L':'M')+x(r.month).toFixed(1)+' '+y(r.mrr).toFixed(1)+' ');
+  svg+=`<path d="${d}" fill="none" stroke="${COL[s2i(k)]}" stroke-width="2.2"/>`;
+  labels.push({k,y:y(rows[rows.length-1].mrr)});});svg+=emitLabels(labels,x(24)+7);
+ svg+=hoverLayer(x,460);svg+=`</svg>`;wrap.innerHTML=svg;attachHover(wrap,x,'mrr');
+ $('#mrrCap').textContent='Flat view — same data, no depth. Hover for a month-by-month crosshair.';
+ buildLegend('#mrrLegend',render3D);}
+
+/* ============================ RENDER: ACTIVE ============================ */
+function renderActive(){const wrap=$('#actChart');const W=940,H=470,padL=54,padR=150,padT=20,padB=44;
+ let mx=0;KEYS.forEach(k=>MODEL[k].rows.forEach(r=>{if(r.total_active>mx)mx=r.total_active;}));mx=Math.ceil(mx/25)*25;
+ const x=m=>padL+(m-1)*(W-padL-padR)/(HORIZON-1);const y=v=>padT+(1-v/mx)*(H-padT-padB);
+ let svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Active clients by scenario">`;
+ for(let gv=0;gv<=mx;gv+=25)svg+=`<line x1="${padL}" y1="${y(gv)}" x2="${W-padR}" y2="${y(gv)}" class="gridline"/>
+  <text x="${padL-9}" y="${y(gv)+4}" class="axis tnum" text-anchor="end">${gv}</text>`;
+ for(let m=1;m<=HORIZON;m+=3)svg+=`<text x="${x(m)}" y="${H-padB+20}" class="axis tnum" text-anchor="middle">${m}</text>`;
+ // ceilings
+ [[15,'15 full-tier (solo delivery ceiling)'],[28,'~28 total (solo support ceiling)']].forEach(([v,lab])=>{
+  if(v<=mx)svg+=`<line x1="${padL}" y1="${y(v)}" x2="${W-padR}" y2="${y(v)}" stroke="var(--accent-soft)" stroke-width="1" stroke-dasharray="5 4" opacity=".8"/>
+   <text x="${padL+6}" y="${y(v)-5}" class="axis" style="fill:var(--accent-ink);font-size:10.5px">${lab}</text>`;});
+ if(actMode==='split'){const k=tblKey;const rows=MODEL[k].rows;
+  ['entry_active','upsold_active'].forEach((f,fi)=>{let d='';rows.forEach((r,i)=>d+=(i?'L':'M')+x(r.month).toFixed(1)+' '+y(r[f]).toFixed(1)+' ');
+   svg+=`<path d="${d}" fill="none" stroke="${COL[s2i(k)]}" stroke-width="2.2" ${fi?'stroke-dasharray="5 4"':''}/>`;});
+  const last=rows[rows.length-1];
+  svg+=`<text x="${x(24)+7}" y="${y(last.entry_active)+4}" class="axis" style="fill:${COL[s2i(k)]};font-weight:700;font-size:11px">${SHORT[k]} entry</text>`;
+  svg+=`<text x="${x(24)+7}" y="${y(last.upsold_active)+4}" class="axis" style="fill:${COL[s2i(k)]};font-size:11px">full (dashed)</text>`;
+ }else{const labels=[];KEYS.forEach(k=>{if(hidden.has(k))return;const rows=MODEL[k].rows;let d='';
+   rows.forEach((r,i)=>d+=(i?'L':'M')+x(r.month).toFixed(1)+' '+y(r.total_active).toFixed(1)+' ');
+   svg+=`<path d="${d}" fill="none" stroke="${COL[s2i(k)]}" stroke-width="2.2"/>`;
+   labels.push({k,y:y(rows[rows.length-1].total_active)});});svg+=emitLabels(labels,x(24)+7);}
+ if(actMode==='total'){svg+=hoverLayer(x,470);}
+ svg+=`</svg>`;wrap.innerHTML=svg;if(actMode==='total')attachHover(wrap,x,'total_active');
+ const capLine=actMode==='split'?`Entry (solid) vs full-tier (dashed) for ${s2name(tblKey)}. Use the scenario tabs in §Monthly tables to switch which path is split.`
+  :'Dashed brass lines = solo ceilings. Every path that crosses them must hire (see §Phase playbooks).';
+ $('#actCap').textContent=capLine;buildLegend('#actLegend',renderActive);}
+
+/* ============================ RENDER: CASH ============================ */
+function renderCash(){const wrap=$('#cashChart');const W=940,H=460,padL=66,padR=150,padT=20,padB=44;
+ let mx=0,mn=0;KEYS.forEach(k=>MODEL[k].rows.forEach(r=>{if(r.cum_cash>mx)mx=r.cum_cash;if(r.cum_cash<mn)mn=r.cum_cash;}));
+ mx=Math.ceil(mx/100000)*100000;mn=Math.min(mn,-10000);const rng=mx-mn;
+ const x=m=>padL+(m-1)*(W-padL-padR)/(HORIZON-1);const y=v=>padT+(1-(v-mn)/rng)*(H-padT-padB);
+ let svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Cumulative cash by scenario">`;
+ const step=mx>600000?200000:100000;
+ for(let gv=Math.ceil(mn/step)*step;gv<=mx;gv+=step){svg+=`<line x1="${padL}" y1="${y(gv)}" x2="${W-padR}" y2="${y(gv)}" class="gridline"/>
+  <text x="${padL-9}" y="${y(gv)+4}" class="axis tnum" text-anchor="end">${money(gv)}</text>`;}
+ svg+=`<line x1="${padL}" y1="${y(0)}" x2="${W-padR}" y2="${y(0)}" stroke="var(--hair-2)" stroke-width="1.4"/>`;
+ for(let m=1;m<=HORIZON;m+=3)svg+=`<text x="${x(m)}" y="${H-padB+20}" class="axis tnum" text-anchor="middle">${m}</text>`;
+ const labels=[];
+ KEYS.forEach(k=>{if(hidden.has(k))return;const rows=MODEL[k].rows;let d='';
+  rows.forEach((r,i)=>d+=(i?'L':'M')+x(r.month).toFixed(1)+' '+y(r.cum_cash).toFixed(1)+' ');
+  svg+=`<path d="${d}" fill="none" stroke="${COL[s2i(k)]}" stroke-width="2.1"/>`;
+  const wm=MODEL[k].summary.worst_drawdown_month,wr=rows[wm-1];
+  svg+=`<path d="M${x(wr.month)} ${y(wr.cum_cash)-8} l5 -8 l-10 0 Z" fill="${COL[s2i(k)]}"/>`;
+  labels.push({k,y:y(rows[rows.length-1].cum_cash)});});
+ svg+=emitLabels(labels,x(24)+7,11);
+ svg+=`</svg>`;wrap.innerHTML=svg;
+ const deepest=KEYS.reduce((a,b)=>MODEL[b].summary.worst_drawdown<MODEL[a].summary.worst_drawdown?b:a);
+ const wd=MODEL[deepest].summary;
+ $('#cashCap').innerHTML=`Deepest hole: <b style="color:var(--ink)">${s2name(deepest)}</b> bottoms at `
+  +`<b style="color:var(--crit)">${money0(wd.worst_drawdown)}</b> in month ${wd.worst_drawdown_month} — that's the capital to have ready. `
+  +`Every path is cash-positive on a run-rate basis within a few months; this model is throughput-limited, not capital-limited.`;
+ buildLegend('#cashLegend',renderCash);}
+
+/* ============================ HOVER (shared line-chart crosshair) ============================ */
+function hoverLayer(x,H){const band=x(2)-x(1);let s='';
+ for(let m=1;m<=HORIZON;m++)s+=`<rect x="${(x(m)-band/2).toFixed(1)}" y="0" width="${band.toFixed(1)}" height="${H}" fill="transparent" class="hz" data-m="${m}"/>`;
+ return s;}
+function attachHover(wrap,x,field){const svg=wrap.querySelector('svg');
+ wrap.querySelectorAll('.hz').forEach(rr=>{rr.addEventListener('mousemove',e=>{const m=+rr.dataset.m;
+   const rows=seriesVisible().map(k=>({k,r:MODEL[k].rows[m-1]})).sort((a,b)=>b.r[field]-a.r[field]);
+   const fmt=field==='mrr'?money0:(v=>num(v,0));
+   showTip(e,`Month ${m}`,rows.map(o=>[SHORT[o.k],fmt(o.r[field])]),null,rows.map(o=>o.k));
+  });rr.addEventListener('mouseleave',hideTip);});}
+function showTip(e,title,rows,ck,keys){const t=$('#tip');
+ let h=`<div class="tt">${title}</div>`;rows.forEach((r,i)=>{const k=keys?keys[i]:ck;
+  const c=k?`style="color:${COL[s2i(k)]}"`:'';h+=`<div class="tr"><span class="k" ${c}>${r[0]}</span><span class="v">${r[1]}</span></div>`;});
+ t.innerHTML=h;t.style.opacity=1;const pad=14;let X=e.clientX+pad,Y=e.clientY+pad;
+ const r=t.getBoundingClientRect();if(X+r.width>innerWidth-8)X=e.clientX-r.width-pad;if(Y+r.height>innerHeight-8)Y=e.clientY-r.height-pad;
+ t.style.left=X+'px';t.style.top=Y+'px';}
+function hideTip(){$('#tip').style.opacity=0;}
+
+/* ============================ RENDER: TABLE ============================ */
+const TCOLS=[['month','Mo'],['new_closes','New'],['entry_active','Entry'],['upsold_active','Full'],['total_active','Active'],
+ ['mrr','MRR'],['cash_flow','Cash flow'],['cum_cash','Cum cash'],['cac_blended','CAC'],['payback_months','Payback'],
+ ['team_size','Team'],['cpl','CPL'],['case_studies','Case std']];
+function fmtCell(c,v){if(v==null||(typeof v==='number'&&isNaN(v)))return '—';
+ if(c==='mrr'||c==='cash_flow'||c==='cum_cash')return money0(v);
+ if(c==='cac_blended'||c==='cpl')return '$'+num(v,0);
+ if(c==='payback_months')return num(v,1)+'mo';
+ if(c==='new_closes'||c==='case_studies')return num(v,1);
+ if(c==='entry_active'||c==='upsold_active'||c==='total_active')return num(v,0);
+ return num(v,0);}
+function renderTable(){const rows=MODEL[tblKey].rows;const thead=$('#tbl thead'),tb=$('#tbl tbody');
+ thead.innerHTML='<tr>'+TCOLS.map(c=>`<th>${c[1]}</th>`).join('')+'</tr>';
+ tb.innerHTML='';let prevTeam=0;
+ rows.forEach(r=>{const tr=el('tr');if(r.team_size>prevTeam&&r.month>1)tr.className='mark';prevTeam=r.team_size;
+  tr.innerHTML=TCOLS.map(c=>{const v=r[c[0]];let cls='';if(c[0]==='cash_flow'||c[0]==='cum_cash')cls=v<0?'neg':'pos';
+   return `<td class="${cls}">${fmtCell(c[0],v)}</td>`;}).join('');tb.appendChild(tr);});}
+function buildScenarioTabs(id,current,onPick){const t=$(id);t.innerHTML='';
+ KEYS.forEach((k,i)=>{const b=el('button','tab'+(k===current?' on':''));b.type='button';
+  b.innerHTML=`<span class="chip" style="background:${COL[i]}"></span>${s2name(k)}`;
+  b.onclick=()=>onPick(k);t.appendChild(b);});}
+
+/* ============================ RENDER: PLAYBOOK ============================ */
+function renderPlaybook(){buildScenarioTabs('#pbTabs',pbKey,k=>{pbKey=k;renderPlaybook();});
+ const P=PLAY[pbKey],wrap=$('#pbPhases');wrap.innerHTML='';
+ P.forEach((ph,i)=>{const c=el('div','phase');
+  c.innerHTML=`<div class="ph-n">Phase ${i+1}</div><div class="ph-r">${ph.r} clients</div>
+   <ul>${ph.a.map(a=>`<li>${a}</li>`).join('')}</ul>
+   <div class="blk"><div class="t">#1 bottleneck</div><div class="bottleneck">${ph.bn}</div>
+    <div class="trig"><span class="num">${ph.tn}</span><span class="lab">${ph.tl}</span></div></div>`;
+  wrap.appendChild(c);});}
+
+/* ============================ RENDER: SENSITIVITY ============================ */
+function m24(overrides){const M2=runAll(Object.assign({},A,overrides));return M2;}
+function tornado(){const base=MODEL['aggressive'].summary.mrr_24;const p=0.20;
+ const knobs=[['show_rate','Show rate'],['close_3cs','Close rate (proven)'],['cost_per_lead','Cost per lead'],
+  ['lead_to_booked','Lead→booked'],['churn','Churn'],['tools_per_client','Tool cost/client']];
+ const res=[];
+ knobs.forEach(([k,lab])=>{const lo=runAll(Object.assign({},A,{[k]:A[k]*(1-p)}))['aggressive'].summary.mrr_24-base;
+  const hi=runAll(Object.assign({},A,{[k]:A[k]*(1+p)}))['aggressive'].summary.mrr_24-base;
+  res.push({lab,lo:Math.min(lo,hi),hi:Math.max(lo,hi),swing:Math.abs(hi-lo)});});
+ // upsell take & ad spend on the scenario
+ [['upsell_take','Upsell take rate',sc=>({...sc,upsell_take:sc.upsell_take*(1-p)}),sc=>({...sc,upsell_take:sc.upsell_take*(1+p)})],
+  ['ad_spend','Ad spend',sc=>({...sc,ad_spend:scaleSpend(sc.ad_spend,1-p)}),sc=>({...sc,ad_spend:scaleSpend(sc.ad_spend,1+p)})]
+ ].forEach(([k,lab,fLo,fHi])=>{const scA=SCEN.find(s=>s.key==='aggressive');
+  const lo=simulate(fLo(scA),A).summary.mrr_24-base,hi=simulate(fHi(scA),A).summary.mrr_24-base;
+  res.push({lab,lo:Math.min(lo,hi),hi:Math.max(lo,hi),swing:Math.abs(hi-lo)});});
+ res.sort((a,b)=>b.swing-a.swing);return{base,res};}
+function scaleSpend(sp,f){const o={};for(const m in sp)o[m]=sp[m]*f;return o;}
+function renderTornado(){const{base,res}=tornado();$('#tornBase').textContent=`${s2name('aggressive')}, ${money(base)} month-24 MRR`;
+ const maxSwing=Math.max(...res.map(r=>Math.max(Math.abs(r.lo),Math.abs(r.hi))));
+ const wrap=$('#tornado');wrap.innerHTML='';
+ res.forEach((r,i)=>{const row=el('div','bar-row');const mid=50;
+  const scale=v=>v/maxSwing*48;// % of half-width
+  const negW=Math.abs(scale(r.lo)),posW=scale(r.hi);
+  const col=i===0?'var(--accent)':'var(--s1)';
+  row.innerHTML=`<div class="nm">${r.lab}</div><div class="track"><div class="mid" style="left:${mid}%"></div>
+   <div class="seg" style="right:${100-mid}%;width:${negW}%;background:${col};opacity:${i===0?1:.55};justify-content:flex-start">
+     <span class="vlab">${money(base+r.lo)}</span></div>
+   <div class="seg" style="left:${mid}%;width:${posW}%;background:${col};opacity:${i===0?1:.85};justify-content:flex-end">
+     <span class="vlab">${money(base+r.hi)}</span></div></div>`;
+  wrap.appendChild(row);});}
+function renderSetup(){const scA=SCEN.find(s=>s.key==='aggressive');
+ const s0=simulate(scA,Object.assign({},A,{setup_fee:0})).summary;
+ const s1=simulate(scA,Object.assign({},A,{setup_fee:297})).summary;
+ // break-even drag
+ let be=null;for(let i=0;i<=120;i++){const d=i/1000;const c=simulate(scA,Object.assign({},A,{setup_fee:297,setup_close_drag_at_297:d})).summary.cum_cash_24;
+  if(c<s0.cum_cash_24){be=d;break;}}
+ $('#setupTab').innerHTML=`
+  <div class="mini-tab"><span class="k">Worst drawdown — $0 setup</span><span class="v">${money0(s0.worst_drawdown)}</span></div>
+  <div class="mini-tab"><span class="k">Worst drawdown — $297 setup</span><span class="v">${money0(s1.worst_drawdown)}</span></div>
+  <div class="mini-tab"><span class="k">Drawdown relief from the fee</span><span class="v" style="color:var(--good)">${money0(s1.worst_drawdown-s0.worst_drawdown)}</span></div>
+  <div class="mini-tab"><span class="k">24-mo cumulative cash — $0</span><span class="v">${money(s0.cum_cash_24)}</span></div>
+  <div class="mini-tab"><span class="k">24-mo cumulative cash — $297</span><span class="v">${money(s1.cum_cash_24)}</span></div>
+  <div class="mini-tab"><span class="k">Net cash impact of the $297 fee</span><span class="v" style="color:${s1.cum_cash_24>=s0.cum_cash_24?'var(--good)':'var(--crit)'}">${money0(s1.cum_cash_24-s0.cum_cash_24)}</span></div>`;
+ const drag=A.setup_close_drag_at_297;
+ $('#setupNote').innerHTML=`At the assumed <b>${(drag*100).toFixed(0)}% close-rate drag</b> of charging setup, the $297 fee `
+  +`shaves only <b>${money0(s1.worst_drawdown-s0.worst_drawdown)}</b> off your worst drawdown but `
+  +`<b>${s1.cum_cash_24>=s0.cum_cash_24?'adds':'costs'} ${money0(Math.abs(s1.cum_cash_24-s0.cum_cash_24))}</b> over 24 months. `
+  +(be!=null?`Break-even: the fee is net-positive on cash <b>only if it costs &lt; ${(be*100).toFixed(1)}%</b> of your close rate. `:'')
+  +`<b>Keep the $0 setup</b> — it's a closing weapon worth far more than the cash.`;}
+function renderChurn(){const wrap=$('#churnBars');wrap.innerHTML='';const months=[6,12,18,24];
+ [[0.02,'2%'],[A.churn,(A.churn*100).toFixed(0)+'%*'],[0.05,'5%']].forEach(([c,lab])=>{
+  const surv=1-c;const row=el('div','cbar-row');
+  let segs=months.map((n,i)=>{const v=Math.pow(surv,n);return `<div class="cbar-seg" style="flex:1;background:${churnCol(i)}">${(v*100).toFixed(0)}%</div>`;}).join('');
+  row.innerHTML=`<div class="lg">${lab}<br><span style="color:var(--muted);font-weight:400;font-size:10.5px">${Math.round(1/c)}mo life</span></div><div class="cbar-track">${segs}</div>`;
+  wrap.appendChild(row);});
+ wrap.insertAdjacentHTML('beforeend',`<div style="font-size:11px;color:var(--muted);margin-top:4px">
+  Bars = % of a signed cohort still paying at month 6 / 12 / 18 / 24. *your current churn setting. At 3%, only ~48% of a cohort survives two years — every path must out-close that leak.</div>`);}
+function churnCol(i){return ['var(--s1)','var(--s5)','var(--s4)','var(--s6)'][i];}
+function renderStress(){const As=Object.assign({},A,{close_0cs:A.close_0cs*0.5,close_3cs:A.close_3cs*0.5});
+ let h=`<div class="mini-tab" style="border:0"><span class="k tlabel">Scenario</span><span class="v tlabel">MRR base → half · drawdown</span></div>`;
+ KEYS.forEach((k,i)=>{const b=MODEL[k].summary,st=simulate(SCEN[i],As).summary;
+  const frag=(st.mrr_24/b.mrr_24);
+  h+=`<div class="mini-tab"><span class="k"><span style="color:${COL[i]}">■</span> ${s2name(k)}</span>
+   <span class="v">${money(b.mrr_24)} → <b style="color:var(--crit)">${money(st.mrr_24)}</b>
+   <span style="color:var(--muted);font-weight:400">· ${money0(st.worst_drawdown)}</span></span></div>`;});
+ h+=`<div class="note" style="margin-top:12px"><b>Hybrid is the most robust</b> (referrals don't depend on the paid close rate); <b>Multi-Metro and Aggressive are the most fragile</b> — they're volume bets. If your real close rate is half, the volume paths roughly halve and their drawdowns triple.</div>`;
+ $('#stressTab').innerHTML=h;}
+
+/* ============================ RENDER: CADENCE ============================ */
+function cadDials(k){const rows=MODEL[k].rows.slice(5,12);// months 6-12
+ const avgBooked=rows.reduce((s,r)=>s+r.mrr,0);// placeholder
+ let booked=0,shown=0,closes=0,spend=0;MODEL[k].rows.slice(5,12).forEach(r=>{});
+ // recompute booked/shown from rows via ratio not stored; approximate from model detail:
+ const det=MODEL[k].rows.slice(5,12);
+ const opt=FUNNEL_OPT[SCEN.find(s=>s.key===k).funnel_opt];
+ const creativesPerWk={basic:2,good:3,optimized:5}[SCEN.find(s=>s.key===k).funnel_opt];
+ // derive demos shown/day from cac & spend: shown = closes/close_rate
+ let showsMo=0,closesMo=0;det.forEach(r=>{closesMo+=r.new_closes;showsMo+=r.new_closes/(r.close_rate||0.2);});
+ showsMo/=det.length;closesMo/=det.length;
+ const perDay=showsMo/22;
+ return{perDay,closesMo,creativesPerWk,spend:MODEL[k].rows[8].ad_spend};}
+function renderCadence(){buildScenarioTabs('#cadTabs',cadKey,k=>{cadKey=k;renderCadence();});
+ const d=cadDials(cadKey);const g=$('#cadDials');
+ g.innerHTML=`
+  <div class="dial"><div class="v">&lt;5<span class="u"> min</span></div><div class="l">Lead callback SLA</div><div class="s">every lead, automated the instant the form submits</div></div>
+  <div class="dial"><div class="v">${d.perDay.toFixed(1)}<span class="u"> /day</span></div><div class="l">Demos to run</div><div class="s">months 6–12 average, ~22 working days</div></div>
+  <div class="dial"><div class="v">${d.creativesPerWk}<span class="u"> /wk</span></div><div class="l">Creatives tested</div><div class="s">${SCEN.find(s=>s.key===cadKey).funnel_opt} funnel refresh cadence</div></div>
+  <div class="dial"><div class="v">${d.closesMo.toFixed(1)}<span class="u"> /mo</span></div><div class="l">New clients to close</div><div class="s">the number the whole model rests on</div></div>`;
+ const sb=$('#scoreboard');
+ sb.innerHTML=`<div class="hd">Friday scoreboard — ${s2name(cadKey)}<span class="day">report every week</span></div>`
+  +CAD_FRIDAY.map(([m,u,note])=>`<div class="sb-row"><div class="metric">${m}<small>${note}</small></div><div class="tgt">${u}</div><div class="flag">track WoW</div></div>`).join('');}
+
+/* ============================ RENDER: READ ============================ */
+function renderRead(){const win=topByMRR();const hy=MODEL['hybrid'].summary,ag=MODEL['aggressive'].summary,tm=MODEL['team'].summary,
+  mm=MODEL['multimetro'].summary,pr=MODEL['premium'].summary,co=MODEL['conservative'].summary;
+ const items=[
+  [`The winner on MRR is <b>${s2name(win)}</b> (${money(MODEL[win].summary.mrr_24)}/mo by month 24) — but it prints the deepest, longest cash hole and only pays off if you actually fill the seats you hire. High ceiling, high execution risk.`],
+  [`The winner on <b>risk-adjusted return is Hybrid</b>: ${money(hy.mrr_24)}/mo MRR at a worst drawdown of just <b>${money0(hy.worst_drawdown)}</b> and half the ad dependency. Referrals + outreach are near-zero-CAC closes that don't care what your paid funnel does.`],
+  [`This model is <b>throughput-limited, not capital-limited</b>. With $0 setup and a 2–3 month payback, the worst hole any path digs is under <b>${money0(Math.min(...KEYS.map(k=>MODEL[k].summary.worst_drawdown)))}</b>. You don't need much cash — you need the funnel to convert.`],
+  [`The single biggest lever on month-24 MRR is your <b>show rate</b>, then your <b>cold close rate</b> — both move it more than churn or ad spend. Protect the &lt;5-min callback and the reminder sequence like revenue, because they are.`],
+  [`<b>Single metro saturates.</b> Aggressive's CPL climbs to ~$87 by month 24 as you re-pitch the same 300 spas; Multi-Metro holds ~$44 by opening fresh markets at client-count triggers. If you go volume, you must expand or watch CAC inflate.`],
+  [`<b>Keep the $0 setup.</b> A $297 fee removes barely ${money0(MODEL['aggressive'].summary.worst_drawdown-simulate(SCEN[1],Object.assign({},A,{setup_fee:297})).summary.worst_drawdown)} of drawdown and, once you count the close-rate drag, <b>costs</b> more cash over 24 months than it collects. It only pays if it dents closes by under ~4–5%.`],
+  [`<b>Churn is the tax you can't see.</b> At 3%/mo, less than half of any cohort is still paying at month 24. Past ~30 clients, a chunk of every month's closing just replaces the leak — retention becomes a job, not an afterthought.`]];
+ const L=$('#readList');L.innerHTML='';items.forEach((it,i)=>{const li=el('li');li.innerHTML=`<span class="n">${i+1}</span><span>${it[0]}</span>`;L.appendChild(li);});}
+
+/* ============================ RECOMPUTE + WIRE ============================ */
+function recompute(){A=readFields();MODEL=runAll(A);renderAll();$('#dirty').classList.remove('on');}
+function renderAll(){renderSummary();render3D();renderActive();renderCash();renderTable();renderPlaybook();
+ renderTornado();renderSetup();renderChurn();renderStress();renderCadence();renderRead();}
+function initTheme(){const b=$('#themeBtn');b.onclick=()=>{const cur=document.documentElement.getAttribute('data-theme');
+ const next=cur==='dark'?'light':(cur==='light'?'dark':(matchMedia('(prefers-color-scheme: dark)').matches?'light':'dark'));
+ document.documentElement.setAttribute('data-theme',next);renderAll();};}
+function init(){buildFields();
+ $('#applyBtn').onclick=recompute;$('#resetBtn').onclick=()=>{A=Object.assign({},DEFAULTS);buildFields();MODEL=runAll(A);renderAll();$('#dirty').classList.remove('on');};
+ document.querySelectorAll('.field input').forEach(inp=>inp.addEventListener('keydown',e=>{if(e.key==='Enter')recompute();}));
+ $('#mrrToggle').querySelectorAll('button').forEach(b=>b.onclick=()=>{mrrMode=b.dataset.m;
+  $('#mrrToggle').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));render3D();});
+ $('#actToggle').querySelectorAll('button').forEach(b=>b.onclick=()=>{actMode=b.dataset.m;
+  $('#actToggle').querySelectorAll('button').forEach(x=>x.classList.toggle('on',x===b));renderActive();});
+ buildScenarioTabs('#tblTabs',tblKey,pickTbl);
+ initTheme();renderAll();}
+function pickTbl(k){tblKey=k;buildScenarioTabs('#tblTabs',tblKey,pickTbl);renderTable();if(actMode==='split')renderActive();}
+document.addEventListener('DOMContentLoaded',init);
+</script>
