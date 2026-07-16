@@ -1,0 +1,600 @@
+<title>Franchise-Anchored Growth — One Niche</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  color-scheme:light;
+  --paper:#f4f2ee;--card:#fcfcfb;--card-2:#f7f6f2;--sunk:#eeece6;
+  --ink:#17181a;--ink-2:#54534e;--muted:#8a8781;--hair:#e2e0d8;--hair-2:#d3d0c6;
+  --accent:#98761f;--accent-soft:#c8a548;--accent-ink:#6f560f;
+  --good:#0a7d1e;--warn:#b7791f;--crit:#c0392b;
+  --indie-entry:#9ec5f4;--indie-full:#2a78d6;--franchise:#b8893f;
+  --grid:#e6e4dc;--shadow:0 1px 2px rgba(20,20,18,.06),0 8px 26px -18px rgba(20,20,18,.22);
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"SF Mono",ui-monospace,"Cascadia Mono",Menlo,Consolas,monospace;
+}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])){
+  color-scheme:dark;
+  --paper:#0e0f10;--card:#1a1a19;--card-2:#212120;--sunk:#161615;
+  --ink:#f6f5f0;--ink-2:#bfbdb3;--muted:#8f8d85;--hair:#2c2c2a;--hair-2:#3a3a37;
+  --accent:#d0a659;--accent-soft:#b58f43;--accent-ink:#e6c688;
+  --good:#3fb54e;--warn:#e0a63c;--crit:#e2685a;
+  --indie-entry:#5598e7;--indie-full:#3987e5;--franchise:#d0a659;
+  --grid:#26261f;--shadow:0 1px 2px rgba(0,0,0,.3),0 12px 30px -18px rgba(0,0,0,.6);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0e0f10;--card:#1a1a19;--card-2:#212120;--sunk:#161615;
+  --ink:#f6f5f0;--ink-2:#bfbdb3;--muted:#8f8d85;--hair:#2c2c2a;--hair-2:#3a3a37;
+  --accent:#d0a659;--accent-soft:#b58f43;--accent-ink:#e6c688;
+  --good:#3fb54e;--warn:#e0a63c;--crit:#e2685a;
+  --indie-entry:#5598e7;--indie-full:#3987e5;--franchise:#d0a659;
+  --grid:#26261f;--shadow:0 1px 2px rgba(0,0,0,.3),0 12px 30px -18px rgba(0,0,0,.6);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15px;line-height:1.5;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden}
+.wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+h1,h2,h3{font-family:var(--serif);font-weight:600;letter-spacing:-.01em;text-wrap:balance;margin:0}
+.tnum{font-variant-numeric:tabular-nums}
+.eyebrow{font-size:11px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+
+header.mast{border-bottom:1px solid var(--hair);background:linear-gradient(180deg,var(--card-2),transparent)}
+.mast-in{padding:30px 0 24px}
+.mast h1{font-size:clamp(27px,4.2vw,44px);line-height:1.03}
+.mast .sub{color:var(--ink-2);max-width:74ch;margin:14px 0 0;font-size:16px}
+.mast .meta{display:flex;flex-wrap:wrap;gap:8px 18px;margin-top:15px;font-size:12.5px;color:var(--muted)}
+.mast .meta b{color:var(--ink-2);font-weight:600}
+.theme-btn{border:1px solid var(--hair-2);background:var(--card);color:var(--ink-2);border-radius:7px;
+  padding:5px 10px;font-size:12px;cursor:pointer;font-weight:600}
+
+section{padding:32px 0;border-bottom:1px solid var(--hair)}
+section h2{font-size:clamp(20px,2.6vw,26px)}
+.sec-lead{color:var(--ink-2);max-width:80ch;margin:8px 0 20px}
+.card{background:var(--card);border:1px solid var(--hair);border-radius:13px;box-shadow:var(--shadow)}
+.pad{padding:18px}
+.grid{display:grid;gap:16px}
+
+/* controls */
+.ctrl-grid{grid-template-columns:1fr 1fr 1fr;gap:16px}
+@media(max-width:900px){.ctrl-grid{grid-template-columns:1fr}}
+.ctrl h3{font-size:14px;margin-bottom:3px;display:flex;align-items:center;gap:8px}
+.ctrl h3 .dot{width:8px;height:8px;border-radius:50%;background:var(--accent)}
+.ctrl .hint{color:var(--muted);font-size:11.5px;margin:2px 0 12px}
+.field{display:grid;grid-template-columns:1fr auto;align-items:center;gap:8px;padding:6px 0;border-top:1px solid var(--hair)}
+.field:first-of-type{border-top:0}
+.field label{font-size:12.5px;color:var(--ink-2)}
+.field label small{display:block;color:var(--muted);font-size:10.5px;line-height:1.25}
+.field .inwrap{display:flex;align-items:center;gap:3px}
+.field .pre{color:var(--muted);font-size:12px}
+.field input,.field select{width:66px;text-align:right;font-family:var(--mono);font-size:13px;background:var(--card-2);
+  border:1px solid var(--hair-2);border-radius:6px;padding:5px 7px;color:var(--ink)}
+.field select{width:auto;font-family:var(--sans)}
+.field input:focus,.field select:focus{outline:2px solid var(--accent);outline-offset:1px}
+.field .suf{color:var(--muted);font-size:11px;width:16px}
+.anchor-row{display:grid;grid-template-columns:auto 1fr 1fr;gap:8px;align-items:center;padding:6px 0;border-top:1px solid var(--hair)}
+.anchor-row .lbl{font-size:12px;color:var(--ink-2);font-weight:600}
+.anchor-row .mini{display:flex;align-items:center;gap:4px;font-size:11px;color:var(--muted)}
+.anchor-row input{width:52px;text-align:right;font-family:var(--mono);font-size:12.5px;background:var(--card-2);
+  border:1px solid var(--hair-2);border-radius:6px;padding:4px 6px;color:var(--ink)}
+.controls{display:flex;flex-wrap:wrap;gap:10px;align-items:center;margin-top:14px}
+.btn{border:1px solid var(--hair-2);background:var(--card);color:var(--ink);border-radius:8px;padding:8px 13px;
+  font-size:13px;font-weight:600;cursor:pointer}
+.btn:hover{border-color:var(--accent);color:var(--accent-ink)}
+
+/* KPIs */
+.kpis{grid-template-columns:repeat(6,1fr)}
+@media(max-width:900px){.kpis{grid-template-columns:repeat(3,1fr)}}
+@media(max-width:520px){.kpis{grid-template-columns:repeat(2,1fr)}}
+.kpi{background:var(--card);border:1px solid var(--hair);border-radius:12px;padding:14px 15px;box-shadow:var(--shadow)}
+.kpi .lab{font-size:10.5px;letter-spacing:.05em;text-transform:uppercase;color:var(--muted)}
+.kpi .val{font-family:var(--serif);font-size:26px;font-weight:600;line-height:1.05;margin-top:3px}
+.kpi .val .u{font-size:13px;color:var(--muted);font-family:var(--sans)}
+.kpi .sub{font-size:11px;color:var(--muted);margin-top:3px}
+.kpi.flag .val{color:var(--crit)}
+.kpi.okc .val{color:var(--good)}
+
+.chart-head{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;margin-bottom:8px}
+.chart-head h3{font-size:16px}
+.legend{display:flex;flex-wrap:wrap;gap:5px 14px}
+.legend .li{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--ink-2)}
+.legend .li .sw{width:13px;height:11px;border-radius:3px;flex:none}
+svg{display:block;width:100%;height:auto;overflow:visible}
+.axis{font-size:11px;fill:var(--muted);font-family:var(--sans)}
+.axis.tnum{font-variant-numeric:tabular-nums}
+.gridline{stroke:var(--grid);stroke-width:1}
+.caption{color:var(--muted);font-size:12px;margin-top:10px}
+.caption b{color:var(--ink-2)}
+.tip{position:fixed;z-index:60;pointer-events:none;background:var(--card);border:1px solid var(--hair-2);border-radius:9px;
+  box-shadow:var(--shadow);padding:9px 11px;font-size:12px;color:var(--ink);opacity:0;transition:opacity .08s;max-width:240px}
+.tip .tt{font-weight:700;margin-bottom:5px}
+.tip .tr{display:flex;justify-content:space-between;gap:16px;line-height:1.5}
+.tip .tr .k{color:var(--muted)}
+.tip .tr .v{font-variant-numeric:tabular-nums;font-weight:600}
+
+.tscroll{overflow-x:auto;border:1px solid var(--hair);border-radius:11px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:12.5px;min-width:760px}
+th,td{padding:7px 9px;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+th{position:sticky;top:0;background:var(--card-2);color:var(--ink-2);font-weight:600;font-size:11px;
+  border-bottom:1px solid var(--hair-2);z-index:1}
+th:first-child,td:first-child{text-align:left;position:sticky;left:0;background:var(--card);z-index:2}
+th:first-child{z-index:3;background:var(--card-2)}
+tbody tr:nth-child(even) td{background:var(--card-2)}
+td.neg{color:var(--crit)}td.pos{color:var(--good)}
+td.conc-hi{color:var(--crit);font-weight:700}
+tr.mark td{border-top:1.5px solid var(--accent-soft)}
+
+.stress-panel{display:grid;grid-template-columns:1fr 1fr;gap:16px;align-items:center}
+@media(max-width:760px){.stress-panel{grid-template-columns:1fr}}
+.stress-read{background:var(--sunk);border-radius:11px;padding:16px}
+.stress-read .big{font-family:var(--serif);font-size:30px;font-weight:700;color:var(--crit);line-height:1}
+.stress-read .lab{font-size:12.5px;color:var(--ink-2);margin-top:6px}
+.stress-controls{display:flex;flex-direction:column;gap:10px}
+.stress-controls .field{border:0;padding:4px 0}
+
+.note{background:var(--sunk);border-left:3px solid var(--accent);border-radius:0 9px 9px 0;padding:13px 16px;
+  font-size:13.5px;color:var(--ink-2);margin-top:14px}
+.note b{color:var(--ink)}
+.note.crit{border-left-color:var(--crit)}
+
+.bp-grid{grid-template-columns:1fr 1fr;gap:16px}
+@media(max-width:820px){.bp-grid{grid-template-columns:1fr}}
+.bp{background:var(--card);border:1px solid var(--hair);border-radius:12px;padding:16px}
+.bp h3{font-size:15px;margin-bottom:4px}
+.bp .k{font-size:11px;text-transform:uppercase;letter-spacing:.05em;color:var(--accent);font-weight:700;margin-bottom:9px}
+.bp ol,.bp ul{margin:0;padding-left:17px;display:flex;flex-direction:column;gap:7px}
+.bp li{font-size:13px;color:var(--ink-2);line-height:1.42}
+.bp li b{color:var(--ink)}
+.seq{list-style:none;padding:0;counter-reset:s}
+.seq li{display:grid;grid-template-columns:24px 1fr;gap:10px;align-items:start}
+.seq li .n{font-family:var(--serif);font-weight:700;color:var(--accent-ink);font-size:16px}
+.sb{border:1px solid var(--hair);border-radius:12px;overflow:hidden;margin-top:16px}
+.sb .hd{background:var(--ink);color:var(--paper);padding:11px 16px;font-family:var(--serif);font-weight:600;font-size:15px;
+  display:flex;justify-content:space-between;align-items:center}
+.sb .hd .day{font-family:var(--sans);font-size:11px;letter-spacing:.1em;text-transform:uppercase;opacity:.7}
+.sb-row{display:grid;grid-template-columns:1.5fr auto;gap:12px;padding:9px 16px;border-top:1px solid var(--hair);font-size:13px;align-items:baseline}
+.sb-row .m{color:var(--ink)}.sb-row .m small{display:block;color:var(--muted);font-size:11px}
+.sb-row .u{color:var(--ink-2);font-variant-numeric:tabular-nums;font-weight:600;text-align:right}
+.sb-row.hero{background:color-mix(in srgb,var(--accent) 10%,transparent)}
+footer{padding:26px 0 60px;color:var(--muted);font-size:12.5px}
+footer code{font-family:var(--mono);background:var(--sunk);padding:1px 6px;border-radius:5px;font-size:11.5px}
+</style>
+
+<header class="mast"><div class="wrap mast-in">
+  <div style="display:flex;justify-content:space-between;align-items:start;gap:16px">
+    <div>
+      <p class="eyebrow">One niche · franchise-anchored · referrals + ads</p>
+      <h1>Franchise-Anchored Growth Cockpit</h1>
+    </div>
+    <button class="theme-btn" id="themeBtn" type="button">◐ Theme</button>
+  </div>
+  <p class="sub">Your chosen path: stay in one niche, do elite work for franchise operators, and grow with the two
+    channels that compound each other — network referrals + scaling ads. Franchises are the accelerant on top of the
+    ads engine, not a replacement. Every number recomputes live. The chart that matters most is
+    <b style="color:var(--ink)">Concentration risk</b> — it's the one thing that can kill this play.</p>
+  <div class="meta">
+    <span><b>Franchise price</b> compressed (volume)</span>
+    <span><b>Franchise churn</b> lower than solo (multi-unit)</span>
+    <span><b>Network referrals</b> scale with live locations</span>
+    <span><b>Guardrail</b> no brand &gt; 25% of MRR</span>
+  </div>
+</div></header>
+
+<main class="wrap">
+
+<section id="controls-sec">
+  <p class="eyebrow">01 · Your levers</p>
+  <h2>Inputs — edit anything, everything reruns</h2>
+  <p class="sec-lead">Base funnel defaults are honest cold-B2B placeholders — drop in your real numbers. The franchise
+    levers and anchors are the strategy itself.</p>
+  <div class="grid ctrl-grid">
+    <div class="card pad ctrl">
+      <h3><span class="dot"></span>Base funnel</h3>
+      <p class="hint">Same engine as the main model. Show rate &amp; close rate are your biggest levers.</p>
+      <div id="funnelFields"></div>
+    </div>
+    <div class="card pad ctrl">
+      <h3><span class="dot"></span>Franchise &amp; referrals</h3>
+      <p class="hint">Compressed price, stickier churn, and how fast the network refers.</p>
+      <div id="franFields"></div>
+    </div>
+    <div class="card pad ctrl">
+      <h3><span class="dot"></span>Ads ramp &amp; anchors</h3>
+      <p class="hint">Ads scale up as referrals cut CAC. Each anchor is a different brand (month it lands · # locations).</p>
+      <div id="adFields"></div>
+      <div id="anchorFields" style="margin-top:6px"></div>
+    </div>
+  </div>
+  <div class="controls">
+    <button class="btn" id="resetBtn" type="button">Reset to plan defaults</button>
+    <span style="font-size:12px;color:var(--muted)">Plan defaults: ads $2.5k→$4k→$6k, referral engine on, 3 anchors (8@mo4, 6@mo10, 6@mo16).</span>
+  </div>
+</section>
+
+<section id="kpi-sec">
+  <p class="eyebrow">02 · Month 24</p>
+  <h2>Where this lands</h2>
+  <div class="grid kpis" id="kpiGrid"></div>
+</section>
+
+<section id="mrr-sec">
+  <p class="eyebrow">03 · The composition</p>
+  <h2>MRR — indie engine + franchise layer</h2>
+  <p class="sec-lead">Stacked by revenue contribution. The blue is your ads+referral indie base; the gold is the franchise
+    layer riding on top. You want the gold meaningful but never the whole stack — that's diversification, visualized.</p>
+  <div class="card pad">
+    <div class="chart-head"><div class="legend" id="mrrLegend"></div></div>
+    <div id="mrrChart"></div>
+    <p class="caption" id="mrrCap"></p>
+  </div>
+</section>
+
+<section id="conc-sec">
+  <p class="eyebrow">04 · The defining risk</p>
+  <h2>Concentration — the one that can kill you</h2>
+  <p class="sec-lead">The largest single franchise brand as a share of total MRR. When an anchor lands it spikes — if that
+    one owner walks while they're 40%+ of your revenue, you lose it in one email. Diversify to the next brand before you
+    cross the line.</p>
+  <div class="card pad">
+    <div class="chart-head"><div class="legend">
+      <div class="li"><span class="sw" style="background:var(--franchise)"></span>Largest brand % of MRR</div>
+      <div class="li"><span class="sw" style="background:var(--crit);height:3px"></span>25% guardrail</div>
+    </div></div>
+    <div id="concChart"></div>
+    <p class="caption" id="concCap"></p>
+  </div>
+</section>
+
+<section id="cash-sec">
+  <p class="eyebrow">05 · Capital</p>
+  <h2>Cumulative cash &amp; anchor injections</h2>
+  <p class="sec-lead">The anchor front-loads cash — signing 8 locations at once is a step-change in month 4. That's why
+    this path barely dips below zero. ▲ marks each anchor landing.</p>
+  <div class="card pad">
+    <div id="cashChart"></div>
+    <p class="caption" id="cashCap"></p>
+  </div>
+</section>
+
+<section id="stress-sec">
+  <p class="eyebrow">06 · Stress test</p>
+  <h2>What if an anchor churns?</h2>
+  <p class="sec-lead">Concentration is only dangerous if the anchor leaves. Pick which brand walks and when — see the
+    instant hit and the month-24 damage. Early churn (while the anchor is a big share) is catastrophic; late churn barely registers.</p>
+  <div class="card pad">
+    <div class="stress-panel">
+      <div class="stress-controls">
+        <div class="field"><label>Which anchor churns</label><div class="inwrap">
+          <select id="churnBrand"><option value="-1">None</option><option value="0">Anchor #1</option><option value="1">Anchor #2</option><option value="2">Anchor #3</option></select></div></div>
+        <div class="field"><label>Churns in month</label><div class="inwrap">
+          <input type="number" id="churnMonth" min="2" max="24" value="5"></div></div>
+        <div class="note crit" style="margin:4px 0 0" id="stressNote"></div>
+      </div>
+      <div class="stress-read">
+        <div class="big" id="stressBig">—</div>
+        <div class="lab" id="stressLab"></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="table-sec">
+  <p class="eyebrow">07 · The detail</p>
+  <h2>Month by month</h2>
+  <div class="tscroll"><table id="tbl"><thead></thead><tbody></tbody></table></div>
+  <p class="caption">Rows where a hire happens are ruled in brass. "Big brand %" over 25% is flagged red — that's your diversify signal.</p>
+</section>
+
+<section id="bp-sec">
+  <p class="eyebrow">08 · Execution</p>
+  <h2>The operating blueprint</h2>
+  <p class="sec-lead">The math only happens if you run the motion. This is how you engineer franchise referrals and keep the two channels compounding.</p>
+  <div class="grid bp-grid">
+    <div class="bp">
+      <div class="k">Engineer the referral (don't wait for it)</div>
+      <h3 style="margin-bottom:10px">The ROI dashboard is the asset</h3>
+      <ul>
+        <li><b>The "$X recovered" number is what spreads.</b> Make it undeniable and shareable — screenshot/video, in the owner's own words.</li>
+        <li><b>Franchise networks have built-in distribution</b> the open market doesn't: owner Facebook/WhatsApp groups, regional meetings, the annual convention, franchisor newsletters, benchmarking calls.</li>
+        <li><b>Make the ask at the 60–90 day review:</b> (a) a 2-min video testimonial, (b) intros to 3 specific peers, (c) a slot to present at the next owner meeting.</li>
+        <li><b>Incentive that fits the culture:</b> free month / "founding partner" pricing / small rev-share for intros that close.</li>
+        <li><b>Endgame:</b> 3–5 winning locations in a brand → the franchisor makes you a preferred vendor → inbound to the whole system, on your terms.</li>
+      </ul>
+    </div>
+    <div class="bp">
+      <div class="k">Acquisition mix — referrals AND more ads</div>
+      <h3 style="margin-bottom:10px">They compound, they don't compete</h3>
+      <ul>
+        <li><b>Ads land the first anchor.</b> You can't referral your way to location zero — ads + outreach get you the first one.</li>
+        <li><b>Ads keep the indie base growing</b> so you're never dependent on one account.</li>
+        <li><b>As referrals cut your blended CAC, ads get more profitable</b> → pour more in. That's the $2.5k→$6k ramp.</li>
+        <li><b>Target ads at franchise owners:</b> multi-location business owners, franchise-brand interests, franchise-expo audiences, lookalikes of your anchor.</li>
+        <li><b>Franchise = multi-metro for free.</b> A brand's locations span cities, so the franchise channel sidesteps the single-metro saturation that caps a pure local-ads play.</li>
+      </ul>
+      <div class="note crit" style="margin-top:14px"><b>Guardrail:</b> never let one owner or brand exceed ~25% of MRR. Land the next anchor (different brand) before you cross it.</div>
+    </div>
+  </div>
+
+  <div class="bp" style="margin-top:16px">
+    <div class="k">The sequence — triggers are numbers, not dates</div>
+    <ol class="seq" style="margin-top:6px">
+      <li><span class="n">1</span><span><b>3–5 undeniable case studies</b> with hard ROI-dashboard numbers. No proof, no anchor.</span></li>
+      <li><span class="n">2</span><span><b>Close anchor #1</b> (one respected multi-unit operator) — even at a discount. You're buying network access, not just MRR.</span></li>
+      <li><span class="n">3</span><span><b>Hire the Account Manager immediately.</b> 8 locations burn 8 of your 15 solo install slots — you hit the fulfillment ceiling on day one.</span></li>
+      <li><span class="n">4</span><span><b>Harvest the network:</b> owner video + 3 peer intros + a slot at the next owner meeting.</span></li>
+      <li><span class="n">5</span><span><b>Land anchor #2 (different brand) before anchor #1 exceeds 25% of MRR.</b> This is the diversification move that de-risks everything.</span></li>
+      <li><span class="n">6</span><span><b>Hire the media buyer when ad spend crosses $6k</b> — founder-run ads decay above it.</span></li>
+      <li><span class="n">7</span><span><b>Pursue preferred-vendor status only after 3–5 locations in one brand are winning.</b> Then it's inbound.</span></li>
+    </ol>
+  </div>
+
+  <div class="sb">
+    <div class="hd">Friday scoreboard — franchise-anchored<span class="day">report every week</span></div>
+    <div class="sb-row hero"><div class="m">$ recovered on the anchor account<small>the single number that fuels every referral</small></div><div class="u">$ / week</div></div>
+    <div class="sb-row"><div class="m">Live franchise locations<small>the network-referral base</small></div><div class="u">count</div></div>
+    <div class="sb-row"><div class="m">% of MRR in the largest brand<small>the 25% guardrail — diversify if breached</small></div><div class="u">%</div></div>
+    <div class="sb-row"><div class="m">Owner intros asked vs closed<small>referrals are engineered, not hoped for</small></div><div class="u">n / n</div></div>
+    <div class="sb-row"><div class="m">Ad spend &amp; blended CAC<small>scale spend as CAC falls</small></div><div class="u">$ / $</div></div>
+    <div class="sb-row"><div class="m">Show rate &amp; close rate<small>protect the &lt;5-min callback</small></div><div class="u">% / %</div></div>
+    <div class="sb-row"><div class="m">New MRR: indie vs franchise<small>keep both channels alive</small></div><div class="u">$ / $</div></div>
+  </div>
+</section>
+
+</main>
+<footer class="wrap">
+  Model: <code>medspa/franchise.py</code> (source of truth) — this page mirrors it exactly, verified across 264 monthly
+  cells. Franchise locations are a compressed-price pool with lower churn and a network-referral yield that scales with
+  live locations. Fractional clients are expected-value math. The single-metro indie side saturates at high share — lean
+  on franchise (multi-metro by nature) as you scale. Model output under editable assumptions, not a promise.
+</footer>
+<div class="tip" id="tip"></div>
+
+<script>
+"use strict";
+/* ===================== ENGINE (mirror of medspa/franchise.py) ===================== */
+const HZN=24;
+const A0={cost_per_lead:25,lead_to_booked:.25,show_rate:.60,close_0cs:.12,close_3cs:.28,close_social_bonus:.03,
+ learn_cpl_mult:{1:1.60,2:1.20},learn_close_mult:{1:.60,2:.85},fatigue_rate:.05,case_study_yield:.40,case_study_cap:12,
+ referral_reward:75,churn:.03,upsell_delay:2,price_entry:500,price_full:1500,tools_base:300,tools_per_client:15,
+ metro_size:300,saturation_slope:.90,solo_full_capacity:15,solo_support_cap:28,am_full_capacity:20,am_support_add:10,
+ va_support_add:25,founder_spend_ceiling:6000,salary_va:1800,salary_media_buyer:4000,salary_account_mgr:4500,media_buyer_cpl_mult:.90};
+const OPT={cpl_mult:1.0,refresh_cycle:2};
+const FRAN0={fran_price:1100,fran_churn:.015,fran_ref:.055,fran_ref_step:.085,tip:15,indie_ref:.060,outreach:2.5,upsell_take:.45};
+const ADRAMP0=[[1,2500],[6,4000],[12,6000]];
+const ANCHORS0=[[4,8],[10,6],[16,6]];
+function ramp(sch,m){let cur=0;for(const p of [...sch].sort((x,y)=>x[0]-y[0])){if(p[0]<=m)cur=p[1];}return cur;}
+function simFranchise(a,F,adRamp,anchors,anchorChurn){
+ const surv_i=1-a.churn,surv_f=1-F.fran_churn;
+ const hist=[];let ie=0,iff=0,fran=0;let brand=anchors.map(()=>0);
+ let cum=0,wd=0,wdm=0,cb=0,am=0,va=0,mb=0;const rows=[];
+ for(let m=1;m<=HZN;m++){
+  const tap=ie+iff+fran,ad=ramp(adRamp,m);
+  let cpl=a.cost_per_lead*OPT.cpl_mult*(a.learn_cpl_mult[m]||1)*(1+a.fatigue_rate*((m-1)%OPT.refresh_cycle));
+  cpl*=(1+a.saturation_slope*(cb/a.metro_size));
+  if(ad>a.founder_spend_ceiling&&!mb)mb=1;
+  if(mb)cpl*=a.media_buyer_cpl_mult;
+  let cm=0;for(let k=0;k<Math.max(0,m-2);k++)cm+=hist[k];
+  const cs=Math.min(a.case_study_cap,a.case_study_yield*cm);
+  const t=Math.min(1,cs/3);let clo=a.close_0cs+(a.close_3cs-a.close_0cs)*t;
+  if(cs>3)clo+=Math.min(1,(cs-3)/7)*a.close_social_bonus;
+  clo*=(a.learn_close_mult[m]||1);
+  const leads=ad/cpl,booked=leads*a.lead_to_booked,shown=booked*a.show_rate;cb+=booked;
+  const indie_paid=shown*clo,indie_ref_c=F.indie_ref*(ie+iff),outreach_c=F.outreach?Math.max(0,F.outreach-0.05*tap):0;
+  const indie_new=indie_paid+indie_ref_c+outreach_c;hist.push(indie_new);
+  const fyield=fran>=F.tip?F.fran_ref_step:F.fran_ref,fran_new=fyield*fran;
+  ie*=surv_i;iff*=surv_i;fran*=surv_f;brand=brand.map(b=>b*surv_f);
+  if(anchorChurn&&m===anchorChurn[1]&&anchorChurn[0]>=0){fran-=brand[anchorChurn[0]];brand[anchorChurn[0]]=0;}
+  ie+=indie_new;fran+=fran_new;
+  anchors.forEach((an,bi)=>{if(m===an[0]){fran+=an[1];brand[bi]+=an[1];}});
+  const j=m-a.upsell_delay;
+  if(j>=1){const up=hist[j-1]*Math.pow(surv_i,a.upsell_delay)*F.upsell_take;ie-=up;iff+=up;}
+  const full=iff+fran;
+  am=Math.max(am,Math.ceil(Math.max(0,full-a.solo_full_capacity)/a.am_full_capacity));
+  va=Math.max(va,Math.ceil(Math.max(0,tap-(a.solo_support_cap+a.am_support_add*am))/a.va_support_add));
+  const mrr=ie*a.price_entry+iff*a.price_full+fran*F.fran_price;
+  const tools=a.tools_base+a.tools_per_client*(ie+iff+fran);
+  const team=a.salary_va*va+a.salary_account_mgr*am+a.salary_media_buyer*mb;
+  const ref_cost=(indie_ref_c+fran_new)*a.referral_reward,cf=mrr-ad-tools-team-ref_cost;
+  cum+=cf;if(cum<wd){wd=cum;wdm=m;}
+  const biggest=brand.length?Math.max(...brand):0;
+  rows.push({month:m,ad_spend:ad,indie_entry:ie,indie_full:iff,indie:ie+iff,fran,biggest_brand:biggest,
+   ent$:ie*a.price_entry,full$:iff*a.price_full,fran$:fran*F.fran_price,
+   mrr,fran_share:mrr>0?fran*F.fran_price/mrr:0,concentration:mrr>0?biggest*F.fran_price/mrr:0,
+   cash_flow:cf,cum_cash:cum,team:va+am+mb,va,am,mb,cpl});
+ }
+ const L=rows[rows.length-1];
+ return {rows,summary:{mrr_24:L.mrr,indie_24:L.indie,fran_24:L.fran,fran_share:L.fran_share,cum_24:L.cum_cash,
+  worst_drawdown:wd,worst_month:wdm,peak_conc:Math.max(...rows.slice(0,12).map(r=>r.concentration))}};
+}
+
+/* ===================== STATE ===================== */
+const $=s=>document.querySelector(s),el=(t,c,h)=>{const e=document.createElement(t);if(c)e.className=c;if(h!=null)e.innerHTML=h;return e;};
+let A=Object.assign({},A0),F=Object.assign({},FRAN0),adRamp=ADRAMP0.map(r=>r.slice()),anchors=ANCHORS0.map(r=>r.slice());
+let churn={brand:-1,month:5};
+let MODEL, STRESS;
+const money=v=>{const n=Math.round(v),x=Math.abs(n);if(x>=1e6)return (n<0?'-$':'$')+(x/1e6).toFixed(2)+'M';
+ if(x>=1000)return (n<0?'-$':'$')+(x/1000).toFixed(x>=1e5?0:1)+'k';return (n<0?'-$':'$')+x;};
+const money0=v=>(v<0?'-$':'$')+Math.abs(Math.round(v)).toLocaleString();
+const num=(v,d=0)=>Number(v).toLocaleString(undefined,{minimumFractionDigits:d,maximumFractionDigits:d});
+const COL={ent:'var(--indie-entry)',full:'var(--indie-full)',fran:'var(--franchise)'};
+
+/* ===================== FIELDS ===================== */
+const FUN=[['cost_per_lead','Cost / lead','$','',0],['lead_to_booked','Lead → booked','','%',1],['show_rate','Show rate','','%',1],
+ ['close_0cs','Close · 0 cases','','%',1],['close_3cs','Close · 3+ cases','','%',1],['churn','Indie churn / mo','','%',1]];
+const FRF=[['fran_price','Franchise price / loc','$','',0],['fran_churn','Franchise churn / mo','','%',1],
+ ['fran_ref','Network referral yield','','%',1],['indie_ref','Indie referral yield','','%',1],['outreach','Founder outreach / mo','','',1]];
+function fieldRow(obj,def){const[k,lab,pre,suf,dec]=def,isP=suf==='%',val=isP?obj[k]*100:obj[k];
+ const r=el('div','field');
+ r.innerHTML=`<label>${lab}</label><div class="inwrap">${pre?`<span class="pre">${pre}</span>`:''}
+  <input type="number" step="${isP?0.5:(dec?0.1:1)}" data-k="${k}" data-p="${isP?1:0}" data-obj="${obj===A?'A':'F'}" value="${isP?val.toFixed(dec):val}">
+  <span class="suf">${suf||''}</span></div>`;return r;}
+function buildFields(){
+ const f=$('#funnelFields');f.innerHTML='';FUN.forEach(d=>f.appendChild(fieldRow(A,d)));
+ const g=$('#franFields');g.innerHTML='';FRF.forEach(d=>g.appendChild(fieldRow(F,d)));
+ const ad=$('#adFields');ad.innerHTML='';
+ [['Ads · month 1',0],['Ads · month 6',1],['Ads · month 12',2]].forEach(([lab,i])=>{
+  const r=el('div','field');r.innerHTML=`<label>${lab}</label><div class="inwrap"><span class="pre">$</span>
+   <input type="number" step="500" data-ad="${i}" value="${adRamp[i][1]}"></div>`;ad.appendChild(r);});
+ const an=$('#anchorFields');an.innerHTML='<div style="font-size:11px;color:var(--muted);margin:4px 0 2px;font-weight:600">ANCHORS (brand · month · locations)</div>';
+ anchors.forEach((a,i)=>{const r=el('div','anchor-row');
+  r.innerHTML=`<span class="lbl">#${i+1}</span>
+   <span class="mini">mo <input type="number" min="1" max="24" data-an="${i}" data-f="0" value="${a[0]}"></span>
+   <span class="mini">loc <input type="number" min="0" max="30" data-an="${i}" data-f="1" value="${a[1]}"></span>`;an.appendChild(r);});
+ wireInputs();}
+function wireInputs(){
+ document.querySelectorAll('#funnelFields input,#franFields input').forEach(inp=>inp.addEventListener('input',()=>{
+  let v=parseFloat(inp.value);if(isNaN(v))return;if(inp.dataset.p==='1')v/=100;
+  (inp.dataset.obj==='A'?A:F)[inp.dataset.k]=v;recompute();}));
+ document.querySelectorAll('[data-ad]').forEach(inp=>inp.addEventListener('input',()=>{
+  const v=parseFloat(inp.value);if(!isNaN(v)){adRamp[+inp.dataset.ad][1]=v;recompute();}}));
+ document.querySelectorAll('[data-an]').forEach(inp=>inp.addEventListener('input',()=>{
+  const v=parseFloat(inp.value);if(!isNaN(v)){anchors[+inp.dataset.an][+inp.dataset.f]=v;recompute();}}));
+}
+
+/* ===================== RENDER ===================== */
+function recompute(){
+ MODEL=simFranchise(A,F,adRamp,anchors,null);
+ STRESS=churn.brand>=0?simFranchise(A,F,adRamp,anchors,[churn.brand,churn.month]):null;
+ renderKPIs();renderMRR();renderConc();renderCash();renderStress();renderTable();}
+function renderKPIs(){const s=MODEL.summary,g=$('#kpiGrid');
+ const conc=s.peak_conc,concFlag=conc>0.25;
+ g.innerHTML=`
+  <div class="kpi"><div class="lab">MRR · month 24</div><div class="val">${money(s.mrr_24)}</div><div class="sub">${num(s.indie_24,0)} indie + ${num(s.fran_24,0)} franchise loc</div></div>
+  <div class="kpi"><div class="lab">Franchise share</div><div class="val">${(s.fran_share*100).toFixed(0)}<span class="u">%</span></div><div class="sub">of month-24 MRR</div></div>
+  <div class="kpi ${concFlag?'flag':''}"><div class="lab">Peak concentration</div><div class="val">${(conc*100).toFixed(0)}<span class="u">%</span></div><div class="sub">${concFlag?'⚠ largest brand — diversify':'largest brand'}</div></div>
+  <div class="kpi ${s.worst_drawdown>-10000?'okc':''}"><div class="lab">Worst drawdown</div><div class="val">${money(s.worst_drawdown)}</div><div class="sub">capital to float (mo ${s.worst_month})</div></div>
+  <div class="kpi"><div class="lab">Cum. cash · 24mo</div><div class="val">${money(s.cum_24)}</div><div class="sub">pre-founder-draw</div></div>
+  <div class="kpi"><div class="lab">Team · month 24</div><div class="val">${MODEL.rows[23].team}</div><div class="sub">VA + AM + buyer</div></div>`;}
+
+function maxMRR(){let mx=0;const r=MODEL.rows[MODEL.rows.length-1];mx=r.mrr;return Math.ceil(mx/25000)*25000;}
+function renderMRR(){const wrap=$('#mrrChart'),W=940,H=440,padL=64,padR=140,padT=18,padB=42;
+ const rows=MODEL.rows,mx=maxMRR();
+ const x=m=>padL+(m-1)*(W-padL-padR)/(HZN-1),y=v=>padT+(1-v/mx)*(H-padT-padB);
+ let svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="MRR composition stacked area">`;
+ for(let gv=0;gv<=mx;gv+=25000)svg+=`<line x1="${padL}" y1="${y(gv)}" x2="${W-padR}" y2="${y(gv)}" class="gridline"/>
+  <text x="${padL-9}" y="${y(gv)+4}" class="axis tnum" text-anchor="end">${gv?'$'+gv/1000+'k':'0'}</text>`;
+ for(let m=1;m<=HZN;m+=3)svg+=`<text x="${x(m)}" y="${H-padB+20}" class="axis tnum" text-anchor="middle">${m}</text>`;
+ // stacked areas: entry (bottom), full, franchise (top). 2px gap via slight inset.
+ const bands=[['ent$',COL.ent],['full$',COL.full],['fran$',COL.fran]];
+ let baseArr=rows.map(()=>0);
+ bands.forEach(([f,c])=>{let top='',bot='';const newBase=[];
+  rows.forEach((r,i)=>{const b=baseArr[i],tv=b+r[f];newBase.push(tv);
+   top+=(i?'L':'M')+x(r.month).toFixed(1)+' '+y(tv).toFixed(1)+' ';});
+  for(let i=rows.length-1;i>=0;i--){bot+='L'+x(rows[i].month).toFixed(1)+' '+y(baseArr[i]).toFixed(1)+' ';}
+  svg+=`<path d="${top}${bot}Z" fill="${c}" fill-opacity="0.82" stroke="var(--card)" stroke-width="0.6"/>`;
+  baseArr=newBase;});
+ // total line
+ let tl='';rows.forEach((r,i)=>tl+=(i?'L':'M')+x(r.month).toFixed(1)+' '+y(r.mrr).toFixed(1)+' ');
+ svg+=`<path d="${tl}" fill="none" stroke="var(--franchise)" stroke-width="0" />`;
+ // labels at right
+ const last=rows[rows.length-1];
+ svg+=`<text x="${x(24)+7}" y="${y(last.mrr)+4}" class="axis" style="fill:var(--ink);font-weight:700">${money(last.mrr)}</text>`;
+ // hover
+ const band=(x(2)-x(1));for(let m=1;m<=HZN;m++)svg+=`<rect x="${(x(m)-band/2).toFixed(1)}" y="0" width="${band.toFixed(1)}" height="${H-padB}" fill="transparent" class="hz" data-m="${m}"/>`;
+ svg+=`</svg>`;wrap.innerHTML=svg;
+ wrap.querySelectorAll('.hz').forEach(rr=>{rr.addEventListener('mousemove',e=>{const r=rows[+rr.dataset.m-1];
+   showTip(e,`Month ${r.month}`,[['Franchise',money0(r.fran$)],['Indie full',money0(r.full$)],['Indie entry',money0(r.ent$)],['Total MRR',money0(r.mrr)]],
+    ['var(--franchise)','var(--indie-full)','var(--indie-entry)',null]);});
+  rr.addEventListener('mouseleave',hideTip);});
+ $('#mrrCap').innerHTML=`Month 24: <b>${money(last.mrr)}</b> MRR — <b>${money(last.fran$)}</b> franchise (${(last.fran_share*100).toFixed(0)}%) riding on <b>${money(last.ent$+last.full$)}</b> of indie base.`;
+ $('#mrrLegend').innerHTML=`<div class="li"><span class="sw" style="background:var(--franchise)"></span>Franchise</div>
+  <div class="li"><span class="sw" style="background:var(--indie-full)"></span>Indie full ($1.5k)</div>
+  <div class="li"><span class="sw" style="background:var(--indie-entry)"></span>Indie entry ($500)</div>`;}
+
+function renderConc(){const wrap=$('#concChart'),W=940,H=380,padL=52,padR=140,padT=18,padB=42;
+ const rows=MODEL.rows;let mx=Math.max(0.5,Math.ceil(Math.max(...rows.map(r=>r.concentration))*10)/10+0.05);
+ const x=m=>padL+(m-1)*(W-padL-padR)/(HZN-1),y=v=>padT+(1-v/mx)*(H-padT-padB);
+ let svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Concentration risk">`;
+ for(let gv=0;gv<=mx+1e-9;gv+=0.1)svg+=`<line x1="${padL}" y1="${y(gv)}" x2="${W-padR}" y2="${y(gv)}" class="gridline"/>
+  <text x="${padL-9}" y="${y(gv)+4}" class="axis tnum" text-anchor="end">${Math.round(gv*100)}%</text>`;
+ for(let m=1;m<=HZN;m+=3)svg+=`<text x="${x(m)}" y="${H-padB+20}" class="axis tnum" text-anchor="middle">${m}</text>`;
+ // 25% guardrail
+ svg+=`<line x1="${padL}" y1="${y(0.25)}" x2="${W-padR}" y2="${y(0.25)}" stroke="var(--crit)" stroke-width="1.4" stroke-dasharray="5 4"/>
+  <text x="${W-padR-4}" y="${y(0.25)-6}" class="axis" style="fill:var(--crit);font-weight:700" text-anchor="end">25% guardrail</text>`;
+ // area above 25% shaded
+ let d='';rows.forEach((r,i)=>d+=(i?'L':'M')+x(r.month).toFixed(1)+' '+y(r.concentration).toFixed(1)+' ');
+ let fillp=d;for(let i=rows.length-1;i>=0;i--)fillp+='L'+x(rows[i].month).toFixed(1)+' '+y(0).toFixed(1)+' ';
+ svg+=`<path d="${fillp}Z" fill="var(--franchise)" fill-opacity="0.14"/>`;
+ svg+=`<path d="${d}" fill="none" stroke="var(--franchise)" stroke-width="2.4"/>`;
+ // markers at anchor months
+ anchors.forEach(a=>{if(a[1]>0){const r=rows[a[0]-1];if(r)svg+=`<circle cx="${x(a[0])}" cy="${y(r.concentration)}" r="4.5" fill="var(--franchise)" stroke="var(--card)" stroke-width="1.5"/>`;}});
+ const band=(x(2)-x(1));for(let m=1;m<=HZN;m++)svg+=`<rect x="${(x(m)-band/2).toFixed(1)}" y="0" width="${band.toFixed(1)}" height="${H-padB}" fill="transparent" class="hz" data-m="${m}"/>`;
+ svg+=`</svg>`;wrap.innerHTML=svg;
+ wrap.querySelectorAll('.hz').forEach(rr=>{rr.addEventListener('mousemove',e=>{const r=rows[+rr.dataset.m-1];
+   showTip(e,`Month ${r.month}`,[['Largest brand',(r.concentration*100).toFixed(0)+'%'],['Franchise total',(r.fran_share*100).toFixed(0)+'%'],['# locations (biggest)',num(r.biggest_brand,0)]],['var(--franchise)',null,null]);});
+  rr.addEventListener('mouseleave',hideTip);});
+ const pk=MODEL.summary.peak_conc,pm=rows.findIndex(r=>r.concentration===pk)+1;
+ $('#concCap').innerHTML=pk>0.25
+  ?`Peak <b style="color:var(--crit)">${(pk*100).toFixed(0)}%</b> in month ${pm} — above the line. That's the window where losing the anchor guts you. Land the next brand to pull it back down.`
+  :`Peak <b>${(pk*100).toFixed(0)}%</b> — inside the guardrail. You're diversified enough that no single owner can sink you.`;}
+
+function renderCash(){const wrap=$('#cashChart'),W=940,H=380,padL=64,padR=140,padT=18,padB=42;
+ const rows=MODEL.rows;let mx=0,mn=0;rows.forEach(r=>{if(r.cum_cash>mx)mx=r.cum_cash;if(r.cum_cash<mn)mn=r.cum_cash;});
+ if(STRESS)STRESS.rows.forEach(r=>{if(r.cum_cash<mn)mn=r.cum_cash;});
+ mx=Math.ceil(mx/100000)*100000;mn=Math.min(mn,-10000);const rng=mx-mn;
+ const x=m=>padL+(m-1)*(W-padL-padR)/(HZN-1),y=v=>padT+(1-(v-mn)/rng)*(H-padT-padB);
+ let svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Cumulative cash">`;
+ const step=mx>800000?200000:100000;
+ for(let gv=Math.ceil(mn/step)*step;gv<=mx;gv+=step)svg+=`<line x1="${padL}" y1="${y(gv)}" x2="${W-padR}" y2="${y(gv)}" class="gridline"/>
+  <text x="${padL-9}" y="${y(gv)+4}" class="axis tnum" text-anchor="end">${money(gv)}</text>`;
+ svg+=`<line x1="${padL}" y1="${y(0)}" x2="${W-padR}" y2="${y(0)}" stroke="var(--hair-2)" stroke-width="1.3"/>`;
+ for(let m=1;m<=HZN;m+=3)svg+=`<text x="${x(m)}" y="${H-padB+20}" class="axis tnum" text-anchor="middle">${m}</text>`;
+ if(STRESS){let ds='';STRESS.rows.forEach((r,i)=>ds+=(i?'L':'M')+x(r.month).toFixed(1)+' '+y(r.cum_cash).toFixed(1)+' ');
+  svg+=`<path d="${ds}" fill="none" stroke="var(--crit)" stroke-width="1.8" stroke-dasharray="5 4"/>`;
+  svg+=`<text x="${x(24)+7}" y="${y(STRESS.rows[23].cum_cash)+4}" class="axis" style="fill:var(--crit);font-weight:700;font-size:11px">stressed</text>`;}
+ let d='';rows.forEach((r,i)=>d+=(i?'L':'M')+x(r.month).toFixed(1)+' '+y(r.cum_cash).toFixed(1)+' ');
+ svg+=`<path d="${d}" fill="none" stroke="var(--franchise)" stroke-width="2.3"/>`;
+ svg+=`<text x="${x(24)+7}" y="${y(rows[23].cum_cash)+4}" class="axis" style="fill:var(--ink);font-weight:700;font-size:11px">${money(rows[23].cum_cash)}</text>`;
+ anchors.forEach((a,i)=>{if(a[1]>0){const r=rows[a[0]-1];if(r){svg+=`<path d="M${x(a[0])} ${y(r.cum_cash)-9} l6 -9 l-12 0 Z" fill="var(--franchise)"/>
+   <text x="${x(a[0])}" y="${y(r.cum_cash)-22}" class="axis" style="fill:var(--franchise);font-weight:700" text-anchor="middle">#${i+1}</text>`;}}});
+ svg+=`</svg>`;wrap.innerHTML=svg;
+ $('#cashCap').innerHTML=`Worst drawdown <b style="color:var(--crit)">${money0(MODEL.summary.worst_drawdown)}</b> (month ${MODEL.summary.worst_month}). The anchor injections (▲) are why the hole is so shallow — this path nearly self-funds.`;}
+
+function renderStress(){const b=$('#churnBrand'),mo=$('#churnMonth');churn.brand=+b.value;churn.month=+mo.value;
+ const note=$('#stressNote'),big=$('#stressBig'),lab=$('#stressLab');
+ if(churn.brand<0||!anchors[churn.brand]||anchors[churn.brand][1]<=0){
+  big.textContent='—';lab.textContent='Pick an anchor and a churn month to see the damage.';
+  note.innerHTML='With no anchor churn, this is your base case. Concentration is only a risk if the owner actually leaves.';
+  if(STRESS){STRESS=null;renderCash();}return;}
+ STRESS=simFranchise(A,F,adRamp,anchors,[churn.brand,churn.month]);
+ const cm=churn.month;const before=cm>1?MODEL.rows[cm-2].mrr:MODEL.rows[0].mrr;
+ const afterBase=MODEL.rows[cm-1].mrr,afterStress=STRESS.rows[cm-1].mrr;
+ const instantHit=1-afterStress/afterBase;
+ const m24=MODEL.summary.mrr_24,m24s=STRESS.summary.mrr_24;
+ big.textContent='−'+(instantHit*100).toFixed(0)+'%';
+ lab.innerHTML=`instant MRR hit in month ${cm} if anchor #${churn.brand+1} walks<br>
+  <span style="color:var(--muted)">${money0(afterBase)} → <b style="color:var(--crit)">${money0(afterStress)}</b></span>`;
+ const early=instantHit>0.15;
+ note.innerHTML=`Month-24 MRR: ${money(m24)} → <b>${money(m24s)}</b>. `
+  +(early?`That's a <b>brutal</b> hit — the anchor was still a big share of MRR. This is exactly why you diversify to anchor #2 <b>before</b> #1 gets this big.`
+        :`Barely a scratch — by month ${cm} you'd diversified enough that one brand leaving doesn't sink you. This is the goal.`);
+ renderCash();}
+
+const TC=[['month','Mo'],['ad_spend','Ads'],['indie','Indie'],['fran','Franch'],['biggest_brand','Big brand'],
+ ['concentration','Big %'],['mrr','MRR'],['fran_share','Fr%'],['cash_flow','Cash'],['cum_cash','Cum'],['team','Team']];
+function fmt(c,v){if(c==='mrr'||c==='cash_flow'||c==='cum_cash')return money0(v);
+ if(c==='ad_spend')return '$'+num(v,0);if(c==='concentration'||c==='fran_share')return (v*100).toFixed(0)+'%';
+ if(c==='indie'||c==='fran'||c==='biggest_brand')return num(v,0);return num(v,0);}
+function renderTable(){const rows=MODEL.rows,th=$('#tbl thead'),tb=$('#tbl tbody');
+ th.innerHTML='<tr>'+TC.map(c=>`<th>${c[1]}</th>`).join('')+'</tr>';tb.innerHTML='';let pt=0;
+ rows.forEach(r=>{const tr=el('tr');if(r.team>pt&&r.month>1)tr.className='mark';pt=r.team;
+  tr.innerHTML=TC.map(c=>{const v=r[c[0]];let cls='';if(c[0]==='cash_flow'||c[0]==='cum_cash')cls=v<0?'neg':'pos';
+   if(c[0]==='concentration'&&v>0.25)cls='conc-hi';return `<td class="${cls}">${fmt(c[0],v)}</td>`;}).join('');tb.appendChild(tr);});}
+
+function showTip(e,title,rows,cols){const t=$('#tip');let h=`<div class="tt">${title}</div>`;
+ rows.forEach((r,i)=>{const c=cols&&cols[i]?`style="color:${cols[i]}"`:'';h+=`<div class="tr"><span class="k" ${c}>${r[0]}</span><span class="v">${r[1]}</span></div>`;});
+ t.innerHTML=h;t.style.opacity=1;const pad=14;let X=e.clientX+pad,Y=e.clientY+pad;const rc=t.getBoundingClientRect();
+ if(X+rc.width>innerWidth-8)X=e.clientX-rc.width-pad;if(Y+rc.height>innerHeight-8)Y=e.clientY-rc.height-pad;
+ t.style.left=X+'px';t.style.top=Y+'px';}
+function hideTip(){$('#tip').style.opacity=0;}
+
+function init(){buildFields();
+ $('#resetBtn').onclick=()=>{A=Object.assign({},A0);F=Object.assign({},FRAN0);adRamp=ADRAMP0.map(r=>r.slice());
+  anchors=ANCHORS0.map(r=>r.slice());churn={brand:-1,month:5};buildFields();$('#churnBrand').value='-1';$('#churnMonth').value='5';recompute();};
+ $('#churnBrand').onchange=renderStress;$('#churnMonth').oninput=renderStress;
+ $('#themeBtn').onclick=()=>{const cur=document.documentElement.getAttribute('data-theme');
+  const next=cur==='dark'?'light':(cur==='light'?'dark':(matchMedia('(prefers-color-scheme: dark)').matches?'light':'dark'));
+  document.documentElement.setAttribute('data-theme',next);recompute();};
+ recompute();}
+document.addEventListener('DOMContentLoaded',init);
+</script>
