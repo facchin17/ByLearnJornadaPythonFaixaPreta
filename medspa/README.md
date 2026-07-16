@@ -17,6 +17,7 @@ AI-automation agency serving **med spas only**. Six scaling paths, one engine,
 | `dashboard.html` | Interactive cockpit — same math in JS, live-editable, all charts + tables + playbooks. Open in any browser. |
 | `franchise_cockpit.html` | Interactive cockpit for the franchise-anchored strategy — live editable funnel/franchise/anchor levers, MRR composition, the concentration-risk chart, anchor-churn stress test, and the operating blueprint. Mirrors `franchise.py` (verified across 264 cells). |
 | `bolso.html` | The simple view (PT): company revenue vs. net profit "in your pocket" over 24 months — one clean chart, the money-split, and Year 1 vs Year 2. Based on the franchise plan. |
+| `aquisicao.html` | The acquisition plan (PT): new clients to close each month and how — stacked bars by source (ads / referral / anchor), the full monthly table with the ads-funnel requirement ($ → leads → demos → closes), and per-phase actions. Based on the franchise plan. |
 | `outputs/*.csv` | One CSV per scenario, all 24 months, every metric. |
 | `outputs/all_scenarios.json` | Machine-readable full output. |
 

@@ -1,0 +1,233 @@
+<title>Plano de Aquisição — mês a mês</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  color-scheme:light;
+  --paper:#f4f2ee;--card:#fcfcfb;--card-2:#f7f6f2;--sunk:#eeece6;
+  --ink:#17181a;--ink-2:#54534e;--muted:#8a8781;--hair:#e2e0d8;--hair-2:#d3d0c6;
+  --gold:#a8791e;--gold-soft:#c8a548;--good:#0a7d1e;--crit:#c0392b;
+  --ads:#2a78d6;--ref:#1baf7a;--anc:#b8893f;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"SF Mono",ui-monospace,"Cascadia Mono",Menlo,Consolas,monospace;
+  --shadow:0 1px 2px rgba(20,20,18,.06),0 10px 30px -20px rgba(20,20,18,.28);
+}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])){
+  color-scheme:dark;
+  --paper:#0e0f10;--card:#1a1a19;--card-2:#212120;--sunk:#161615;
+  --ink:#f6f5f0;--ink-2:#bfbdb3;--muted:#8f8d85;--hair:#2c2c2a;--hair-2:#3a3a37;
+  --gold:#d0a659;--gold-soft:#b58f43;--good:#3fb54e;--crit:#e2685a;
+  --ads:#3987e5;--ref:#22b184;--anc:#d0a659;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 14px 34px -20px rgba(0,0,0,.7);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0e0f10;--card:#1a1a19;--card-2:#212120;--sunk:#161615;
+  --ink:#f6f5f0;--ink-2:#bfbdb3;--muted:#8f8d85;--hair:#2c2c2a;--hair-2:#3a3a37;
+  --gold:#d0a659;--gold-soft:#b58f43;--good:#3fb54e;--crit:#e2685a;
+  --ads:#3987e5;--ref:#22b184;--anc:#d0a659;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 14px 34px -20px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15.5px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:960px;margin:0 auto;padding:36px 24px 70px}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(27px,4.6vw,40px);letter-spacing:-.015em;line-height:1.05;margin:0;text-wrap:balance}
+.eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:0 0 10px}
+.lead{color:var(--ink-2);font-size:16.5px;max-width:64ch;margin:14px 0 0}
+.tnum{font-variant-numeric:tabular-nums}
+.themebtn{position:absolute;top:20px;right:20px;border:1px solid var(--hair-2);background:var(--card);color:var(--ink-2);border-radius:8px;padding:6px 11px;font-size:12px;font-weight:600;cursor:pointer}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:26px 0 6px}
+@media(max-width:640px){.stats{grid-template-columns:repeat(2,1fr)}}
+.stat{background:var(--card);border:1px solid var(--hair);border-radius:14px;padding:15px 17px;box-shadow:var(--shadow)}
+.stat .v{font-family:var(--serif);font-weight:700;font-size:27px;line-height:1}
+.stat .v .u{font-size:13px;color:var(--muted);font-family:var(--sans)}
+.stat .l{font-size:12px;color:var(--ink-2);margin-top:6px;line-height:1.3}
+.card{background:var(--card);border:1px solid var(--hair);border-radius:16px;box-shadow:var(--shadow);padding:22px 24px;margin-top:22px}
+.card h2{font-family:var(--serif);font-weight:600;font-size:20px;margin:0 0 3px}
+.card .sub{color:var(--muted);font-size:13px;margin:0 0 16px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin-bottom:10px}
+.legend .li{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--ink-2)}
+.legend .li .sw{width:14px;height:12px;border-radius:3px}
+svg{display:block;width:100%;height:auto;overflow:visible}
+.axis{font-size:11px;fill:var(--muted);font-family:var(--sans)}
+.axis.tnum{font-variant-numeric:tabular-nums}
+.gridline{stroke:var(--hair);stroke-width:1}
+.tip{position:fixed;z-index:60;pointer-events:none;background:var(--card);border:1px solid var(--hair-2);border-radius:10px;box-shadow:var(--shadow);padding:10px 12px;font-size:12.5px;opacity:0;transition:opacity .08s}
+.tip .tt{font-weight:700;margin-bottom:6px}
+.tip .tr{display:flex;justify-content:space-between;gap:18px;line-height:1.55}
+.tip .tr .k{color:var(--muted)}.tip .tr .v{font-variant-numeric:tabular-nums;font-weight:700}
+.tscroll{overflow-x:auto;border:1px solid var(--hair);border-radius:12px;background:var(--card)}
+table{border-collapse:collapse;width:100%;font-size:12.5px;min-width:640px}
+th,td{padding:6px 9px;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+th{position:sticky;top:0;background:var(--card-2);color:var(--ink-2);font-weight:600;font-size:11px;border-bottom:1px solid var(--hair-2)}
+th:first-child,td:first-child{text-align:left}
+tbody tr:nth-child(even) td{background:var(--card-2)}
+td .dot{display:inline-block;width:7px;height:7px;border-radius:2px;margin-right:4px;vertical-align:middle}
+tr.anc td{background:color-mix(in srgb,var(--anc) 12%,transparent)!important}
+tr.anc td:first-child{font-weight:700}
+.meta-col{font-weight:700;color:var(--ink)}
+.how{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:820px){.how{grid-template-columns:1fr}}
+.hcard{background:var(--card);border:1px solid var(--hair);border-radius:14px;padding:18px;border-top:3px solid}
+.hcard.a{border-top-color:var(--ads)}.hcard.r{border-top-color:var(--ref)}.hcard.n{border-top-color:var(--anc)}
+.hcard .tag{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:6px}
+.hcard.a .tag{color:var(--ads)}.hcard.r .tag{color:var(--ref)}.hcard.n .tag{color:var(--anc)}
+.hcard h3{font-family:var(--serif);font-size:17px;margin:0 0 10px}
+.chain{font-family:var(--mono);font-size:12px;background:var(--sunk);border-radius:8px;padding:10px 12px;color:var(--ink-2);line-height:1.7;margin-bottom:12px}
+.chain b{color:var(--ink)}
+.hcard ul{margin:0;padding-left:16px;display:flex;flex-direction:column;gap:6px}
+.hcard li{font-size:13px;color:var(--ink-2);line-height:1.4}
+.hcard li b{color:var(--ink)}
+.phases{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-top:4px}
+@media(max-width:820px){.phases{grid-template-columns:1fr 1fr}}
+@media(max-width:520px){.phases{grid-template-columns:1fr}}
+.ph{background:var(--card-2);border:1px solid var(--hair);border-radius:12px;padding:14px}
+.ph .r{font-family:var(--serif);font-weight:700;font-size:15px}
+.ph .a{font-size:11px;color:var(--muted);margin:2px 0 9px}
+.ph ul{margin:0;padding-left:15px;display:flex;flex-direction:column;gap:5px}
+.ph li{font-size:12px;color:var(--ink-2);line-height:1.35}
+.note{background:var(--sunk);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:14px 17px;font-size:13.5px;color:var(--ink-2);margin-top:22px}
+.note b{color:var(--ink)}
+</style>
+
+<button class="themebtn" id="themeBtn" type="button">◐ Tema</button>
+<div class="wrap">
+  <p class="eyebrow">Plano de aquisição · plano franquia-âncora · 24 meses</p>
+  <h1>Quantos clientes fechar por mês — e como</h1>
+  <p class="lead">A meta não é fixa: ela sobe de <b>~3 para ~17 por mês</b>, e a <b>fonte muda</b>. Ads te dão ~5/mês
+    (a parte que você controla com dinheiro); indicação e âncoras levam o resto. Isso é o que faz o total escalar.</p>
+
+  <div class="stats" id="stats"></div>
+
+  <div class="card">
+    <h2>Novos clientes por mês, por fonte</h2>
+    <p class="sub">Cada barra = clientes fechados naquele mês. Azul = ads, verde = indicação, dourado = âncora de franquia.</p>
+    <div class="legend">
+      <div class="li"><span class="sw" style="background:var(--ads)"></span>Ads (você controla)</div>
+      <div class="li"><span class="sw" style="background:var(--ref)"></span>Indicação (o flywheel)</div>
+      <div class="li"><span class="sw" style="background:var(--anc)"></span>Âncora (bloco de franquia)</div>
+    </div>
+    <div id="chart"></div>
+    <p class="sub" style="margin-top:10px" id="chartCap"></p>
+  </div>
+
+  <div class="card">
+    <h2>Mês a mês — a tabela</h2>
+    <p class="sub">"Demos" = demos de ads que você roda pra fechar a parte paga. Linhas douradas = mês de âncora.</p>
+    <div class="tscroll"><table id="tbl"><thead></thead><tbody></tbody></table></div>
+  </div>
+
+  <div class="card">
+    <h2>Como bater — as 3 alavancas</h2>
+    <p class="sub">Cada fonte tem um "como" diferente.</p>
+    <div class="how">
+      <div class="hcard a">
+        <div class="tag">Ads · ~5/mês no cruzeiro</div>
+        <h3>Rodar o funil</h3>
+        <div class="chain">$4–6k em ads<br>÷ CPL → <b>~100 leads</b><br>× 25% → <b>~25 agendadas</b><br>× 60% → <b>~16 demos</b><br>× 30% close → <b>~5 clientes</b></div>
+        <ul>
+          <li><b>≈ 1 demo por dia</b> no cruzeiro (16/mês). No começo é meio disso.</li>
+          <li>Callback em <b>&lt;5 min</b> + lembretes = protege o show rate (60%).</li>
+          <li>CPL sobe com a saturação do metro ($40→$71) — por isso ads sozinho tem teto.</li>
+        </ul>
+      </div>
+      <div class="hcard r">
+        <div class="tag">Indicação · 2,5 → 13,5/mês</div>
+        <h3>Fabricar o pedido</h3>
+        <div class="chain">base de clientes felizes<br>× ~6%/mês<br>+ rede de franquia<br>= <b>o motor de cruzeiro</b></div>
+        <ul>
+          <li><b>Peça no review de 60–90 dias:</b> vídeo do dono + 3 intros + slot na reunião de donos.</li>
+          <li>O número <b>"$ recuperado"</b> no dashboard é o que espalha.</li>
+          <li>Cresce sozinho com a base — no mês 24 é <b>3,5× os ads</b>.</li>
+        </ul>
+      </div>
+      <div class="hcard n">
+        <div class="tag">Âncora · meses 4 · 10 · 16</div>
+        <h3>Fechar em bloco</h3>
+        <div class="chain">1 multi-unidade<br>= <b>8 / 6 / 6</b> unidades<br>de uma vez</div>
+        <ul>
+          <li>Feche <b>1 dono multi-unidade</b> por âncora — mesmo com desconto (acesso à rede).</li>
+          <li><b>Contrate o AM na hora:</b> 8 unidades queimam 8 das 15 vagas de instalação.</li>
+          <li>Marcas <b>diferentes</b> a cada âncora — pra não passar de 25% do MRR numa só.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <h2>O que fazer em cada fase</h2>
+    <p class="sub">Gatilhos por nº de clientes ativos, não por data.</p>
+    <div class="phases">
+      <div class="ph"><div class="r">0 → 12 ativos</div><div class="a">meses ~1–3 · foco: prova</div>
+        <ul><li>3–5 case studies com $ recuperado</li><li>~1 demo/dia, $2,5k em ads</li><li>Feche a âncora #1</li><li>Close baixo (7→19%): é a falta de prova, não o ad</li></ul></div>
+      <div class="ph"><div class="r">12 → 58 ativos</div><div class="a">meses ~4–9 · foco: entregar</div>
+        <ul><li>Âncora #1 caiu → contrate o AM</li><li>Ads sobe pra $4k (~5/mês)</li><li>Indicação começa (~3/mês)</li><li>Prepare a âncora #2 (mês 10)</li></ul></div>
+      <div class="ph"><div class="r">58 → 130 ativos</div><div class="a">meses ~10–16 · foco: escalar</div>
+        <ul><li>Âncoras #2 e #3 caem</li><li>Media buyer no mês 12 ($6k)</li><li>Indicação passa os ads</li><li>Vigie a concentração (&lt;25%)</li></ul></div>
+      <div class="ph"><div class="r">130 → 218 ativos</div><div class="a">meses ~17–24 · foco: flywheel</div>
+        <ul><li>Indicação domina (~13/mês)</li><li>Ads vira manutenção (~4/mês)</li><li>Time cresce (ratio 1 AM/20)</li><li>Fornecedor aprovado na rede</li></ul></div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>Resumo:</b> você fecha <b>275 clientes em 24 meses</b> (218 ativos no fim, o resto é churn de 3%/mês).
+    Os <b>ads são o motor de partida</b> (~5/mês, ~1 demo/dia) — eles fecham as âncoras e enchem a base. As
+    <b>indicações são o motor de cruzeiro</b> (2,5 → 13,5/mês) — é o que faz o total ir de 3 a 17. Se o seu close
+    real for pior que os 12→28% do modelo, o número de ads cai proporcional (e você compensa com mais demos ou mais spend).
+  </div>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+"use strict";
+const D=[{"m":1,"spend":2500,"cpl":40,"leads":62.5,"booked":15.6,"demos":9.4,"ads":0.7,"ref":2.5,"anchor":0,"total":3.2,"active":3.2},{"m":2,"spend":2500,"cpl":33,"leads":75.8,"booked":19.0,"demos":11.4,"ads":1.2,"ref":2.5,"anchor":0,"total":3.7,"active":6.8},{"m":3,"spend":2500,"cpl":28,"leads":90.6,"booked":22.7,"demos":13.6,"ads":2.6,"ref":2.6,"anchor":0,"total":5.1,"active":11.7},{"m":4,"spend":2500,"cpl":31,"leads":81.3,"booked":20.3,"demos":12.2,"ads":3.2,"ref":2.6,"anchor":8,"total":13.9,"active":25.2},{"m":5,"spend":2500,"cpl":31,"leads":81.1,"booked":20.3,"demos":12.2,"ads":3.5,"ref":2.7,"anchor":0,"total":6.2,"active":30.8},{"m":6,"spend":4000,"cpl":34,"leads":117.8,"booked":29.5,"demos":17.7,"ads":5.3,"ref":2.8,"anchor":0,"total":8.0,"active":38.0},{"m":7,"spend":4000,"cpl":35,"leads":115.8,"booked":28.9,"demos":17.4,"ads":5.3,"ref":2.8,"anchor":0,"total":8.2,"active":45.2},{"m":8,"spend":4000,"cpl":39,"leads":103.8,"booked":25.9,"demos":15.6,"ads":4.8,"ref":2.9,"anchor":0,"total":7.7,"active":51.7},{"m":9,"spend":4000,"cpl":39,"leads":103.5,"booked":25.9,"demos":15.5,"ads":4.8,"ref":3.1,"anchor":0,"total":7.9,"active":58.1},{"m":10,"spend":4000,"cpl":43,"leads":93.8,"booked":23.5,"demos":14.1,"ads":4.4,"ref":3.4,"anchor":6,"total":13.8,"active":70.3},{"m":11,"spend":4000,"cpl":42,"leads":94.4,"booked":23.6,"demos":14.2,"ads":4.4,"ref":4.6,"anchor":0,"total":9.0,"active":77.5},{"m":12,"spend":6000,"cpl":46,"leads":129.5,"booked":32.4,"demos":19.4,"ads":6.0,"ref":5.1,"anchor":0,"total":11.1,"active":86.5},{"m":13,"spend":6000,"cpl":47,"leads":128.9,"booked":32.2,"demos":19.3,"ads":6.0,"ref":5.7,"anchor":0,"total":11.6,"active":95.9},{"m":14,"spend":6000,"cpl":51,"leads":116.7,"booked":29.2,"demos":17.5,"ads":5.4,"ref":6.2,"anchor":0,"total":11.7,"active":104.9},{"m":15,"spend":6000,"cpl":51,"leads":117.3,"booked":29.3,"demos":17.6,"ads":5.5,"ref":6.8,"anchor":0,"total":12.3,"active":114.4},{"m":16,"spend":6000,"cpl":56,"leads":107.1,"booked":26.8,"demos":16.1,"ads":5.0,"ref":7.4,"anchor":6,"total":18.4,"active":129.7},{"m":17,"spend":6000,"cpl":55,"leads":108.4,"booked":27.1,"demos":16.3,"ads":5.0,"ref":8.5,"anchor":0,"total":13.6,"active":139.8},{"m":18,"spend":6000,"cpl":60,"leads":99.5,"booked":24.9,"demos":14.9,"ads":4.6,"ref":9.2,"anchor":0,"total":13.8,"active":150.0},{"m":19,"spend":6000,"cpl":59,"leads":101.2,"booked":25.3,"demos":15.2,"ads":4.7,"ref":9.9,"anchor":0,"total":14.6,"active":160.6},{"m":20,"spend":6000,"cpl":64,"leads":93.4,"booked":23.4,"demos":14.0,"ads":4.3,"ref":10.6,"anchor":0,"total":14.9,"active":171.2},{"m":21,"spend":6000,"cpl":63,"leads":95.4,"booked":23.8,"demos":14.3,"ads":4.4,"ref":11.3,"anchor":0,"total":15.7,"active":182.3},{"m":22,"spend":6000,"cpl":68,"leads":88.3,"booked":22.1,"demos":13.2,"ads":4.1,"ref":12.0,"anchor":0,"total":16.1,"active":193.6},{"m":23,"spend":6000,"cpl":66,"leads":90.4,"booked":22.6,"demos":13.6,"ads":4.2,"ref":12.8,"anchor":0,"total":17.0,"active":205.4},{"m":24,"spend":6000,"cpl":71,"leads":84.0,"booked":21.0,"demos":12.6,"ads":3.9,"ref":13.5,"anchor":0,"total":17.4,"active":217.5}];
+const $=s=>document.querySelector(s);
+const nm=(v,d=0)=>Number(v).toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
+function renderStats(){const tot=D.reduce((a,d)=>a+d.total,0),ads=D.reduce((a,d)=>a+d.ads,0),ref=D.reduce((a,d)=>a+d.ref,0),anc=D.reduce((a,d)=>a+d.anchor,0);
+ $('#stats').innerHTML=`
+  <div class="stat"><div class="v">${nm(tot)}</div><div class="l">clientes fechados em 24 meses</div></div>
+  <div class="stat"><div class="v">3–17<span class="u"> /mês</span></div><div class="l">a meta sobe ao longo do tempo</div></div>
+  <div class="stat"><div class="v" style="color:var(--ads)">${nm(ads)}</div><div class="l">de ads (~5/mês no cruzeiro)</div></div>
+  <div class="stat"><div class="v" style="color:var(--ref)">${nm(ref+anc)}</div><div class="l">de indicação + âncoras</div></div>`;}
+function renderChart(){const wrap=$('#chart'),W=880,H=360,padL=40,padR=14,padT=14,padB=42;
+ const mx=Math.ceil(Math.max(...D.map(d=>d.total))/5)*5;
+ const bw=(W-padL-padR)/24*0.66,gap=(W-padL-padR)/24;
+ const x=m=>padL+(m-0.5)*gap,y=v=>padT+(1-v/mx)*(H-padT-padB);
+ let svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Novos clientes por mês por fonte">`;
+ for(let gv=0;gv<=mx;gv+=5)svg+=`<line x1="${padL}" y1="${y(gv)}" x2="${W-padR}" y2="${y(gv)}" class="gridline"/>
+  <text x="${padL-7}" y="${y(gv)+4}" class="axis tnum" text-anchor="end">${gv}</text>`;
+ D.forEach(d=>{const cx=x(d.m)-bw/2;let acc=0;
+  [['ads','var(--ads)'],['ref','var(--ref)'],['anchor','var(--anc)']].forEach(([k,c])=>{const v=d[k];if(v<=0)return;
+   const y0=y(acc),y1=y(acc+v);svg+=`<rect x="${cx.toFixed(1)}" y="${y1.toFixed(1)}" width="${bw.toFixed(1)}" height="${(y0-y1).toFixed(1)}" fill="${c}" rx="1.5"/>`;acc+=v;});
+  if(d.m%3===0||d.m===1)svg+=`<text x="${x(d.m)}" y="${H-padB+20}" class="axis tnum" text-anchor="middle">${d.m}</text>`;});
+ // hit areas
+ D.forEach(d=>svg+=`<rect x="${(x(d.m)-gap/2).toFixed(1)}" y="0" width="${gap.toFixed(1)}" height="${H-padB}" fill="transparent" class="hz" data-m="${d.m}"/>`);
+ svg+=`</svg>`;wrap.innerHTML=svg;
+ wrap.querySelectorAll('.hz').forEach(rr=>{rr.addEventListener('mousemove',e=>{const d=D[+rr.dataset.m-1];
+   showTip(e,'Mês '+d.m+(d.anchor?' · ÂNCORA':''),[['Total novos',nm(d.total,1)],['Ads',nm(d.ads,1)],['Indicação',nm(d.ref,1)],['Âncora',d.anchor||'—'],['Ativos acum.',nm(d.active,0)]]);});
+  rr.addEventListener('mouseleave',()=>$('#tip').style.opacity=0);});
+ $('#chartCap').innerHTML=`No começo é quase tudo azul (ads) — no fim é quase tudo verde (indicação). Os 3 blocos dourados são as âncoras (meses 4, 10, 16).`;}
+const TC=[['m','Mês'],['total','META novos'],['ads','Ads'],['ref','Indic.'],['anchor','Âncora'],['demos','Demos/mês'],['spend','$ ads'],['active','Ativos']];
+function renderTable(){const th=$('#tbl thead'),tb=$('#tbl tbody');
+ th.innerHTML='<tr>'+TC.map(c=>`<th>${c[1]}</th>`).join('')+'</tr>';tb.innerHTML='';
+ D.forEach(d=>{const tr=document.createElement('tr');if(d.anchor)tr.className='anc';
+  tr.innerHTML=TC.map(c=>{const k=c[0];let v=d[k],cls='';
+   if(k==='total'){cls='meta-col';v=nm(v,1);}
+   else if(k==='ads')v=`<span class="dot" style="background:var(--ads)"></span>${nm(v,1)}`;
+   else if(k==='ref')v=`<span class="dot" style="background:var(--ref)"></span>${nm(v,1)}`;
+   else if(k==='anchor')v=v?`<span class="dot" style="background:var(--anc)"></span>${v}`:'—';
+   else if(k==='spend')v='$'+nm(v,0);
+   else if(k==='demos')v=nm(v,1);
+   else if(k==='active')v=nm(v,0);
+   return `<td class="${cls}">${v}</td>`;}).join('');tb.appendChild(tr);});}
+function showTip(e,title,rows){const t=$('#tip');let h=`<div class="tt">${title}</div>`;
+ rows.forEach(r=>h+=`<div class="tr"><span class="k">${r[0]}</span><span class="v">${r[1]}</span></div>`);
+ t.innerHTML=h;t.style.opacity=1;const pad=14;let X=e.clientX+pad,Y=e.clientY+pad;const rc=t.getBoundingClientRect();
+ if(X+rc.width>innerWidth-8)X=e.clientX-rc.width-pad;if(Y+rc.height>innerHeight-8)Y=e.clientY-rc.height-pad;
+ t.style.left=X+'px';t.style.top=Y+'px';}
+function renderAll(){renderStats();renderChart();renderTable();}
+$('#themeBtn').onclick=()=>{const cur=document.documentElement.getAttribute('data-theme');
+ const next=cur==='dark'?'light':(cur==='light'?'dark':(matchMedia('(prefers-color-scheme: dark)').matches?'light':'dark'));
+ document.documentElement.setAttribute('data-theme',next);renderAll();};
+document.addEventListener('DOMContentLoaded',renderAll);
+</script>
