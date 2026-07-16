@@ -19,6 +19,7 @@ AI-automation agency serving **med spas only**. Six scaling paths, one engine,
 | `bolso.html` | The simple view (PT): company revenue vs. net profit "in your pocket" over 24 months — one clean chart, the money-split, and Year 1 vs Year 2. Based on the franchise plan. |
 | `aquisicao.html` | The acquisition plan (PT): new clients to close each month and how — stacked bars by source (ads / referral / anchor), the full monthly table with the ads-funnel requirement ($ → leads → demos → closes), and per-phase actions. Based on the franchise plan. |
 | `boafe.html` | The conservative good-faith base (PT): a flat 4 new clients/mo at $500 with 1.4 upsold to $1,500 two months later, 3% churn. Simple hand-checkable MRR build (entry vs full) + net profit → $56k MRR / $45k pocket by month 24. |
+| `sprint.html` | The 6-month sprint plan (PT): the fastest honest path to $15k/mo NET — real funnel dynamics, stay solo/lean, let the upsell carry. Crosses $15k between months 5–6 (lands ~$17k) at a −$3.8k max drawdown; with the accelerators, the focus list, and the why-it's-possible math. |
 | `outputs/*.csv` | One CSV per scenario, all 24 months, every metric. |
 | `outputs/all_scenarios.json` | Machine-readable full output. |
 

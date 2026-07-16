@@ -1,0 +1,214 @@
+<title>Sprint 6 meses → $15k limpo</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<style>
+:root{
+  color-scheme:light;
+  --paper:#f4f2ee;--card:#fcfcfb;--card-2:#f7f6f2;--sunk:#eeece6;
+  --ink:#17181a;--ink-2:#54534e;--muted:#8a8781;--hair:#e2e0d8;--hair-2:#d3d0c6;
+  --gold:#a8791e;--gold-soft:#c8a548;--good:#0a7d1e;--crit:#c0392b;
+  --net:#0a7d1e;--mrr:#8a8781;--target:#a8791e;
+  --serif:"Iowan Old Style","Palatino Linotype",Palatino,Georgia,"Times New Roman",serif;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+  --mono:"SF Mono",ui-monospace,"Cascadia Mono",Menlo,Consolas,monospace;
+  --shadow:0 1px 2px rgba(20,20,18,.06),0 10px 30px -20px rgba(20,20,18,.28);
+}
+@media (prefers-color-scheme:dark){:root:where(:not([data-theme="light"])){
+  color-scheme:dark;
+  --paper:#0e0f10;--card:#1a1a19;--card-2:#212120;--sunk:#161615;
+  --ink:#f6f5f0;--ink-2:#bfbdb3;--muted:#8f8d85;--hair:#2c2c2a;--hair-2:#3a3a37;
+  --gold:#d0a659;--gold-soft:#b58f43;--good:#3fb54e;--crit:#e2685a;
+  --net:#3fb54e;--mrr:#8f8d85;--target:#d0a659;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 14px 34px -20px rgba(0,0,0,.7);
+}}
+:root[data-theme="dark"]{
+  color-scheme:dark;
+  --paper:#0e0f10;--card:#1a1a19;--card-2:#212120;--sunk:#161615;
+  --ink:#f6f5f0;--ink-2:#bfbdb3;--muted:#8f8d85;--hair:#2c2c2a;--hair-2:#3a3a37;
+  --gold:#d0a659;--gold-soft:#b58f43;--good:#3fb54e;--crit:#e2685a;
+  --net:#3fb54e;--mrr:#8f8d85;--target:#d0a659;
+  --shadow:0 1px 2px rgba(0,0,0,.3),0 14px 34px -20px rgba(0,0,0,.7);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:15.5px;line-height:1.5;-webkit-font-smoothing:antialiased}
+.wrap{max-width:940px;margin:0 auto;padding:36px 24px 70px}
+h1{font-family:var(--serif);font-weight:600;font-size:clamp(28px,4.8vw,42px);letter-spacing:-.015em;line-height:1.04;margin:0;text-wrap:balance}
+.eyebrow{font-size:11.5px;font-weight:700;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin:0 0 10px}
+.lead{color:var(--ink-2);font-size:16.5px;max-width:64ch;margin:14px 0 0}
+.tnum{font-variant-numeric:tabular-nums}
+.themebtn{position:absolute;top:20px;right:20px;border:1px solid var(--hair-2);background:var(--card);color:var(--ink-2);border-radius:8px;padding:6px 11px;font-size:12px;font-weight:600;cursor:pointer}
+.hero{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:26px 0 6px}
+@media(max-width:700px){.hero{grid-template-columns:repeat(2,1fr)}}
+.h{background:var(--card);border:1px solid var(--hair);border-radius:14px;padding:16px 17px;box-shadow:var(--shadow)}
+.h.win{background:linear-gradient(155deg,var(--good),#0f9a2c);color:#fff;border:0}
+:root[data-theme="dark"] .h.win,@media(prefers-color-scheme:dark){:root:where(:not([data-theme="light"])) .h.win{color:#0e0f10}}
+.h .l{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;opacity:.85}
+.h .v{font-family:var(--serif);font-weight:700;font-size:29px;line-height:1;margin-top:7px}
+.h .s{font-size:11.5px;margin-top:5px;opacity:.9}
+.card{background:var(--card);border:1px solid var(--hair);border-radius:16px;box-shadow:var(--shadow);padding:22px 24px;margin-top:22px}
+.card h2{font-family:var(--serif);font-weight:600;font-size:20px;margin:0 0 3px}
+.card .sub{color:var(--muted);font-size:13px;margin:0 0 16px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 18px;margin-bottom:8px}
+.legend .li{display:flex;align-items:center;gap:7px;font-size:13px;color:var(--ink-2)}
+.legend .li .sw{width:15px;height:4px;border-radius:2px}
+svg{display:block;width:100%;height:auto;overflow:visible}
+.axis{font-size:11.5px;fill:var(--muted);font-family:var(--sans)}
+.axis.tnum{font-variant-numeric:tabular-nums}
+.gridline{stroke:var(--hair);stroke-width:1}
+.tip{position:fixed;z-index:60;pointer-events:none;background:var(--card);border:1px solid var(--hair-2);border-radius:10px;box-shadow:var(--shadow);padding:10px 12px;font-size:12.5px;opacity:0;transition:opacity .08s}
+.tip .tt{font-weight:700;margin-bottom:6px}
+.tip .tr{display:flex;justify-content:space-between;gap:18px;line-height:1.55}
+.tip .tr .k{color:var(--muted)}.tip .tr .v{font-variant-numeric:tabular-nums;font-weight:700}
+.tscroll{overflow-x:auto;border:1px solid var(--hair);border-radius:12px;background:var(--card);margin-top:6px}
+table{border-collapse:collapse;width:100%;font-size:12.5px;min-width:560px}
+th,td{padding:7px 10px;text-align:right;font-variant-numeric:tabular-nums;white-space:nowrap}
+th{background:var(--card-2);color:var(--ink-2);font-weight:600;font-size:11px;border-bottom:1px solid var(--hair-2)}
+th:first-child,td:first-child{text-align:left}
+tbody tr:nth-child(even) td{background:var(--card-2)}
+td.neg{color:var(--crit)}td.net{color:var(--net);font-weight:700}
+tr.m6 td{background:color-mix(in srgb,var(--good) 13%,transparent)!important;font-weight:700}
+.cols{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+@media(max-width:860px){.cols{grid-template-columns:1fr}}
+.col{background:var(--card);border:1px solid var(--hair);border-radius:14px;padding:18px;border-top:3px solid}
+.col.a{border-top-color:var(--net)}.col.b{border-top-color:var(--gold)}.col.c{border-top-color:var(--mrr)}
+.col .tag{font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase;margin-bottom:10px}
+.col.a .tag{color:var(--net)}.col.b .tag{color:var(--gold)}.col.c .tag{color:var(--ink-2)}
+.col ol,.col ul{margin:0;padding-left:17px;display:flex;flex-direction:column;gap:9px}
+.col li{font-size:13.5px;color:var(--ink-2);line-height:1.42}
+.col li b{color:var(--ink)}
+.col li .big{font-family:var(--serif);color:var(--net);font-weight:700}
+.no{color:var(--crit);font-weight:700}
+.note{background:var(--sunk);border-left:3px solid var(--gold);border-radius:0 10px 10px 0;padding:14px 17px;font-size:13.5px;color:var(--ink-2);margin-top:22px}
+.note b{color:var(--ink)}
+</style>
+
+<button class="themebtn" id="themeBtn" type="button">◐ Tema</button>
+<div class="wrap">
+  <p class="eyebrow">Sprint · meta $15k limpo/mês em 6 meses · US$</p>
+  <h1>Como chegar em $15k limpo em 6 meses</h1>
+  <p class="lead">O modelo diz que dá — e com folga. Rodando o funil real (close rate destravando com os case studies)
+    e ficando <b>solo e magro</b>, você cruza os $15k no bolso entre o mês 5 e 6, chegando a <b>$17k</b>. O segredo não é
+    volume: é o <b>upsell</b> + ficar <b>enxuto</b>.</p>
+
+  <div class="hero" id="hero"></div>
+
+  <div class="card">
+    <h2>O caminho — limpo no bolso, mês a mês</h2>
+    <p class="sub">A linha verde é o que sobra no bolso. A tracejada dourada é a meta de $15k. Cruza antes do mês 6.</p>
+    <div class="legend">
+      <div class="li"><span class="sw" style="background:var(--net)"></span>No bolso (limpo)</div>
+      <div class="li"><span class="sw" style="background:var(--mrr)"></span>MRR (faturamento)</div>
+      <div class="li"><span class="sw" style="background:var(--target);height:3px"></span>Meta $15k</div>
+    </div>
+    <div id="chart"></div>
+  </div>
+
+  <div class="card">
+    <h2>A tabela do sprint</h2>
+    <p class="sub">Linha verde = mês 6. "Full" = clientes no $1.500 (teto solo = 15, você fica em 8).</p>
+    <div class="tscroll"><table id="tbl"><thead></thead><tbody></tbody></table></div>
+  </div>
+
+  <div class="card">
+    <h2>Como escalar o quanto antes — e o que focar</h2>
+    <p class="sub">Três colunas: os aceleradores, o foco (e o que NÃO fazer), e por que a conta fecha.</p>
+    <div class="cols">
+      <div class="col a">
+        <div class="tag">Como escalar ASAP</div>
+        <ol>
+          <li><b>Banca $4–5k de ads já no mês 1.</b> Não rampa devagar. Aguenta o vermelho do mês 1–2 (−$3,8k no fundo — é barato).</li>
+          <li><b>Fabrica 3 case studies até o mês 2–3.</b> É O destravador: close rate dobra de <b>12% → 28%</b>. Metade do CAC. Over-entrega nos 3 primeiros e mostra o "$5k recuperado".</li>
+          <li><b>Dispara o upsell no mês 2 de cada cliente.</b> ROI dashboard → $5k recuperado → $1.500. É onde o limpo aparece.</li>
+          <li><b>~1 demo por dia.</b> 6–8 closes/mês = ~25 demos/mês. Callback &lt;5 min + lembretes = protege o show (60%).</li>
+        </ol>
+      </div>
+      <div class="col b">
+        <div class="tag">O que ficar (foco)</div>
+        <ul>
+          <li><b>Só 3 coisas movem a agulha:</b> close rate (cases), show rate (callback), upsell (ROI dash). O resto é ruído.</li>
+          <li><span class="no">NÃO</span> contrata AM antes do mês 6 — você entrega 15 full installs sozinho, e no mês 6 tem só <b>8</b>. Hire cedo demais <b>mata o limpo</b>.</li>
+          <li><span class="no">NÃO</span> diversifica nicho nem complica o stack. Um snapshot, um funil, um nicho.</li>
+          <li><b>Fica solo, magro, alto-margem.</b> Custo do mês 6 ~$8,6k num MRR de $26k = você guarda 66%.</li>
+        </ul>
+      </div>
+      <div class="col c">
+        <div class="tag">Por que é muito possível</div>
+        <ul>
+          <li><b>É um livro PEQUENO:</b> $15k limpo = ~$26k MRR = <b>36 clientes</b>, dos quais só <b>8 no completo</b>.</li>
+          <li><b>~38 clientes em 6 meses = ~6/mês = ~1 demo/dia.</b> Não é volume absurdo pra quem fecha bem.</li>
+          <li><b>O upsell carrega:</b> 8 clientes a $1.500 = <b>$12k</b> — metade do MRR vem de 8 pessoas.</li>
+          <li><b>Cash não trava:</b> $0 setup + payback ~2 meses. Buraco máximo <b>−$3,8k</b>. Você não precisa de capital, precisa fechar.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <b>O único risco real é o close rate.</b> Toda essa conta assume que você bate os <b>~28%</b> em tráfego frio depois
+    dos 3 case studies (e 60% de show). Se bater, fecha com folga ($17k no mês 6). Se ficar em ~14% (metade), não fecha
+    no mês 6 — vira mês 9–10. Ou seja: <b>a meta não depende de dinheiro nem de sorte, depende de você fechar demos e
+    entregar resultado rápido pra virar case.</b> Números em US$, "limpo" é antes de imposto e do seu pró-labore.
+  </div>
+</div>
+<div class="tip" id="tip"></div>
+
+<script>
+"use strict";
+const S=[{"m":1,"ad":4000,"demos":15.0,"newc":3.1,"entry":3.1,"full":0.0,"active":3.1,"mrr":1540,"cost":4346,"net":-2806,"cum":-2806,"cs":0.0,"clo":7},{"m":2,"ad":4000,"demos":17.7,"newc":3.7,"entry":6.7,"full":0.0,"active":6.7,"mrr":3367,"cost":4401,"net":-1034,"cum":-3841,"cs":0.0,"clo":10},{"m":3,"ad":5000,"demos":25.8,"newc":6.7,"entry":12.0,"full":1.2,"active":13.2,"mrr":7751,"cost":5498,"net":2254,"cum":-1587,"cs":1.2,"clo":19},{"m":4,"ad":5000,"demos":22.1,"newc":7.6,"entry":17.9,"full":2.5,"active":20.4,"mrr":12733,"cost":7406,"net":5327,"cum":3740,"cs":2.7,"clo":27},{"m":5,"ad":6000,"demos":25.7,"newc":9.0,"entry":23.9,"full":5.0,"active":28.8,"mrr":19374,"cost":8532,"net":10842,"cum":14582,"cs":5.4,"clo":29},{"m":6,"ad":6000,"demos":22.4,"newc":8.2,"entry":28.5,"full":7.7,"active":36.2,"mrr":25763,"cost":8643,"net":17121,"cum":31703,"cs":8.4,"clo":30},{"m":7,"ad":6000,"demos":21.9,"newc":8.1,"entry":32.3,"full":10.8,"active":43.2,"mrr":32427,"cost":8747,"net":23679,"cum":55382,"cs":12,"clo":31},{"m":8,"ad":6000,"demos":19.6,"newc":7.4,"entry":35.6,"full":13.6,"active":49.2,"mrr":38224,"cost":8838,"net":29386,"cum":84768,"cs":12,"clo":31},{"m":9,"ad":6000,"demos":19.5,"newc":7.5,"entry":40.3,"full":15.0,"active":55.3,"mrr":42625,"cost":8929,"net":33697,"cum":118465,"cs":12,"clo":31}];
+const $=s=>document.querySelector(s);
+const money=v=>{const n=Math.round(v),x=Math.abs(n);if(x>=1e6)return (n<0?'−$':'$')+(x/1e6).toFixed(2)+'M';
+ if(x>=1000)return (n<0?'−$':'$')+(x/1000).toFixed(x>=1e5?0:1)+'k';return (n<0?'−$':'$')+x;};
+const nm=(v,d=0)=>Number(v).toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});
+function renderHero(){const r6=S[5];
+ $('#hero').innerHTML=`
+  <div class="h win"><div class="l">Limpo no mês 6</div><div class="v">${money(r6.net)}</div><div class="s">meta era $15k — passou</div></div>
+  <div class="h"><div class="l">MRR no mês 6</div><div class="v">${money(r6.mrr)}</div><div class="s">${nm(r6.active,0)} clientes ativos</div></div>
+  <div class="h"><div class="l">Buraco máximo</div><div class="v" style="color:var(--crit)">−$3,8k</div><div class="s">no mês 2 — cash não trava</div></div>
+  <div class="h"><div class="l">Full installs</div><div class="v">8<span style="font-size:15px;color:var(--muted)"> / 15</span></div><div class="s">ainda solo, sem AM</div></div>`;}
+function renderChart(){const wrap=$('#chart'),W=840,H=380,padL=56,padR=18,padT=18,padB=38;
+ const rows=S.slice(0,9);const mx=Math.ceil(Math.max(...rows.map(d=>d.mrr))/10000)*10000;
+ const mn=Math.min(0,...rows.map(d=>d.net));const rng=mx-mn;
+ const x=m=>padL+(m-1)*(W-padL-padR)/8,y=v=>padT+(1-(v-mn)/rng)*(H-padT-padB);
+ let svg=`<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="Limpo e MRR por mês">`;
+ for(let gv=Math.floor(mn/10000)*10000;gv<=mx;gv+=10000)svg+=`<line x1="${padL}" y1="${y(gv)}" x2="${W-padR}" y2="${y(gv)}" class="gridline"/>
+  <text x="${padL-9}" y="${y(gv)+4}" class="axis tnum" text-anchor="end">${gv?money(gv):'0'}</text>`;
+ svg+=`<line x1="${padL}" y1="${y(0)}" x2="${W-padR}" y2="${y(0)}" stroke="var(--hair-2)" stroke-width="1.3"/>`;
+ for(let m=1;m<=9;m++)svg+=`<text x="${x(m)}" y="${H-padB+20}" class="axis tnum" text-anchor="middle">${m}</text>`;
+ // 15k target
+ svg+=`<line x1="${padL}" y1="${y(15000)}" x2="${W-padR}" y2="${y(15000)}" stroke="var(--target)" stroke-width="1.5" stroke-dasharray="6 4"/>
+  <text x="${W-padR-4}" y="${y(15000)-6}" class="axis" style="fill:var(--target);font-weight:700" text-anchor="end">meta $15k</text>`;
+ // mrr line (context)
+ let ml=rows.map((d,i)=>(i?'L':'M')+x(d.m).toFixed(1)+' '+y(d.mrr).toFixed(1)+' ').join('');
+ svg+=`<path d="${ml}" fill="none" stroke="var(--mrr)" stroke-width="1.6" stroke-dasharray="1 0" opacity="0.7"/>`;
+ // net area + line
+ let na=rows.map((d,i)=>(i?'L':'M')+x(d.m).toFixed(1)+' '+y(d.net).toFixed(1)+' ').join('');
+ let nb=na;for(let i=rows.length-1;i>=0;i--)nb+='L'+x(rows[i].m).toFixed(1)+' '+y(0).toFixed(1)+' ';
+ svg+=`<path d="${nb}Z" fill="var(--net)" fill-opacity="0.13"/>`;
+ svg+=`<path d="${na}" fill="none" stroke="var(--net)" stroke-width="2.6"/>`;
+ // month 6 marker
+ const r6=S[5];svg+=`<circle cx="${x(6)}" cy="${y(r6.net)}" r="5" fill="var(--net)" stroke="var(--card)" stroke-width="2"/>
+  <text x="${x(6)}" y="${y(r6.net)-12}" class="axis" style="fill:var(--net);font-weight:700;font-size:12px" text-anchor="middle">${money(r6.net)}</text>`;
+ const band=(x(2)-x(1));for(let m=1;m<=9;m++)svg+=`<rect x="${(x(m)-band/2).toFixed(1)}" y="0" width="${band.toFixed(1)}" height="${H-padB}" fill="transparent" class="hz" data-m="${m}"/>`;
+ svg+=`</svg>`;wrap.innerHTML=svg;
+ wrap.querySelectorAll('.hz').forEach(rr=>{rr.addEventListener('mousemove',e=>{const d=S[+rr.dataset.m-1];
+   showTip(e,'Mês '+d.m,[['No bolso',money(d.net)],['MRR',money(d.mrr)],['Ativos',nm(d.active,0)],['Close rate',d.clo+'%'],['Case studies',nm(d.cs,1)]]);});
+  rr.addEventListener('mouseleave',()=>$('#tip').style.opacity=0);});}
+const TC=[['m','Mês'],['ad','Ads'],['newc','Novos'],['active','Ativos'],['full','Full'],['mrr','MRR'],['cost','Custo'],['net','LIMPO']];
+function renderTable(){const th=$('#tbl thead'),tb=$('#tbl tbody');
+ th.innerHTML='<tr>'+TC.map(c=>`<th>${c[1]}</th>`).join('')+'</tr>';tb.innerHTML='';
+ S.slice(0,9).forEach(d=>{const tr=document.createElement('tr');if(d.m===6)tr.className='m6';
+  tr.innerHTML=TC.map(c=>{const k=c[0];let v=d[k],cls='';
+   if(k==='ad'||k==='mrr'||k==='cost')v=money(v);
+   else if(k==='net'){cls=v<0?'neg':'net';v=money(v);}
+   else if(k==='newc')v=nm(v,1);else if(k==='active'||k==='full')v=nm(v,0);
+   return `<td class="${cls}">${v}</td>`;}).join('');tb.appendChild(tr);});}
+function showTip(e,title,rows){const t=$('#tip');let h=`<div class="tt">${title}</div>`;
+ rows.forEach(r=>h+=`<div class="tr"><span class="k">${r[0]}</span><span class="v">${r[1]}</span></div>`);
+ t.innerHTML=h;t.style.opacity=1;const pad=14;let X=e.clientX+pad,Y=e.clientY+pad;const rc=t.getBoundingClientRect();
+ if(X+rc.width>innerWidth-8)X=e.clientX-rc.width-pad;if(Y+rc.height>innerHeight-8)Y=e.clientY-rc.height-pad;
+ t.style.left=X+'px';t.style.top=Y+'px';}
+function renderAll(){renderHero();renderChart();renderTable();}
+$('#themeBtn').onclick=()=>{const cur=document.documentElement.getAttribute('data-theme');
+ const next=cur==='dark'?'light':(cur==='light'?'dark':(matchMedia('(prefers-color-scheme: dark)').matches?'light':'dark'));
+ document.documentElement.setAttribute('data-theme',next);renderAll();};
+document.addEventListener('DOMContentLoaded',renderAll);
+</script>
