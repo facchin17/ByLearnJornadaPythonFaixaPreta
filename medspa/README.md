@@ -13,6 +13,7 @@ AI-automation agency serving **med spas only**. Six scaling paths, one engine,
 | File | What it is |
 |---|---|
 | `model.py` | The engine. Pure Python stdlib. Editable assumptions at top. Run it. |
+| `franchise.py` | The chosen single-niche strategy: franchise anchors + network referrals + ramping ads. Models the accelerant on top of the ads+referral engine, with concentration risk + anchor-churn stress. |
 | `dashboard.html` | Interactive cockpit — same math in JS, live-editable, all charts + tables + playbooks. Open in any browser. |
 | `outputs/*.csv` | One CSV per scenario, all 24 months, every metric. |
 | `outputs/all_scenarios.json` | Machine-readable full output. |
