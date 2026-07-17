@@ -116,6 +116,7 @@ svg{display:block;width:100%;height:auto;overflow:visible}
         <div class="field"><label>Churn / mês</label><div class="inw"><input type="number" id="nChurn" step="0.5" value="3"><span class="pre">%</span></div></div>
         <div class="field"><label>Preço entrada</label><div class="inw"><span class="pre">$</span><input type="number" id="nPe" step="50" value="500"></div></div>
         <div class="field"><label>Preço completo</label><div class="inw"><span class="pre">$</span><input type="number" id="nPf" step="100" value="1500"></div></div>
+        <div class="field"><label>Upsell cai em (meses)</label><div class="inw"><input type="number" id="nDelay" step="1" min="1" max="4" value="2"><span class="pre">mês</span></div></div>
       </div>
       <button class="reset" id="reset" type="button">Voltar ao cenário (4/mês, 50%)</button>
       <div class="note" style="margin-top:16px;font-size:12.5px">Custos = ads (CAC × novos) + ferramentas ($300+$15/cliente) + VA (aos 22 ativos) + AM (aos 13 no completo). "Limpo" é antes de imposto e do seu pró-labore.</div>
@@ -146,13 +147,13 @@ svg{display:block;width:100%;height:auto;overflow:visible}
 <script>
 "use strict";
 const $=s=>document.querySelector(s);
-const DEF={new:4,take:50,cac:750,churn:3,pe:500,pf:1500};
+const DEF={new:4,take:50,cac:750,churn:3,pe:500,pf:1500,delay:2};
 function sim(p){
- const surv=1-p.churn/100, NEW=p.new, TAKE=p.take/100, AD=NEW*p.cac;
+ const surv=1-p.churn/100, NEW=p.new, TAKE=p.take/100, AD=NEW*p.cac, D=Math.max(1,Math.round(p.delay||2));
  let hist=[],entry=0,full=0,cum=0,va=0,am=0;const rows=[];
  for(let m=1;m<=24;m++){
   entry*=surv;full*=surv;entry+=NEW;hist.push(NEW);
-  if(m>=3){let up=NEW*TAKE*Math.pow(surv,2);if(am===0)up=Math.min(up,Math.max(0,15-full));up=Math.min(up,entry);entry-=up;full+=up;}
+  if(m>D){let up=NEW*TAKE*Math.pow(surv,D);if(am===0)up=Math.min(up,Math.max(0,15-full));up=Math.min(up,entry);entry-=up;full+=up;}
   const active=entry+full,mrr=entry*p.pe+full*p.pf;
   if(va===0&&active>=22)va=1;if(am===0&&full>=13)am=1;
   const tools=300+15*active,team=1800*va+4500*am,net=mrr-AD-tools-team;cum+=net;
@@ -163,7 +164,7 @@ function sim(p){
 function money(v){const n=Math.round(v),x=Math.abs(n);if(x>=1e6)return(n<0?'−$':'$')+(x/1e6).toFixed(2)+'M';
  if(x>=1000)return(n<0?'−$':'$')+(x/1000).toFixed(x>=1e5?0:1)+'k';return(n<0?'−$':'$')+x;}
 function nm(v,d=0){return Number(v).toLocaleString('pt-BR',{minimumFractionDigits:d,maximumFractionDigits:d});}
-function getP(){return{new:+$('#sNew').value,take:+$('#sTake').value,cac:+$('#nCac').value,churn:+$('#nChurn').value,pe:+$('#nPe').value,pf:+$('#nPf').value};}
+function getP(){return{new:+$('#sNew').value,take:+$('#sTake').value,cac:+$('#nCac').value,churn:+$('#nChurn').value,pe:+$('#nPe').value,pf:+$('#nPf').value,delay:+$('#nDelay').value};}
 function render(){
  const p=getP();$('#vNew').textContent=p.new;$('#vTake').textContent=p.take+'%';
  const R=sim(p),l=R[23];
@@ -204,8 +205,8 @@ function renderChart(R,p){const wrap=$('#chart'),W=820,H=340,padL=54,padR=16,pad
 function showTip(e,title,rows){const t=$('#tip');let h=`<div class="tt">${title}</div>`;rows.forEach(r=>h+=`<div class="tr"><span class="k">${r[0]}</span><span class="v">${r[1]}</span></div>`);
  t.innerHTML=h;t.style.opacity=1;const pad=14;let X=e.clientX+pad,Y=e.clientY+pad;const rc=t.getBoundingClientRect();
  if(X+rc.width>innerWidth-8)X=e.clientX-rc.width-pad;if(Y+rc.height>innerHeight-8)Y=e.clientY-rc.height-pad;t.style.left=X+'px';t.style.top=Y+'px';}
-['sNew','sTake','nCac','nChurn','nPe','nPf'].forEach(id=>$('#'+id).addEventListener('input',render));
-$('#reset').onclick=()=>{$('#sNew').value=DEF.new;$('#sTake').value=DEF.take;$('#nCac').value=DEF.cac;$('#nChurn').value=DEF.churn;$('#nPe').value=DEF.pe;$('#nPf').value=DEF.pf;render();};
+['sNew','sTake','nCac','nChurn','nPe','nPf','nDelay'].forEach(id=>$('#'+id).addEventListener('input',render));
+$('#reset').onclick=()=>{$('#sNew').value=DEF.new;$('#sTake').value=DEF.take;$('#nCac').value=DEF.cac;$('#nChurn').value=DEF.churn;$('#nPe').value=DEF.pe;$('#nPf').value=DEF.pf;$('#nDelay').value=DEF.delay;render();};
 $('#themeBtn').onclick=()=>{const cur=document.documentElement.getAttribute('data-theme');
  const next=cur==='dark'?'light':(cur==='light'?'dark':(matchMedia('(prefers-color-scheme: dark)').matches?'light':'dark'));
  document.documentElement.setAttribute('data-theme',next);render();};
